@@ -1,5 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="backgroundColor">#3772E7</color>
+    <color name="buttonTextColor">#1A1B22</color>
+    <color name="buttonColor">#FFFFFFFF</color>
+    <color name="menuColor">#FFFFFFFF</color>
+    <color name="menu_items_text_color">#1A1B22</color>
+    <color name="backgroundTextColor">#FFFFFFFF</color>
+    <color name="iconColor">#AEAFB4</color>
+    <color name="editIconColor">#AEAFB4</color>
+    <color name="clear_button_color">#AEAFB4</color>
+    <color name="edit_text_color">#1A1B22</color>
+    <color name="editHintColor">#AEAFB4</color>
+    <color name="edit_color">#E6E8EB</color>
+
+    <!--
+    TRACK RECYCLER
+    -->
+    <color name="arrowNextColor">#AEAFB4</color>
+    <color name="track_name_color">#000000</color>
+    <color name="artist_name_color">#AEAFB4</color>
+    <color name="track_time_color">#AEAFB4</color>
+    <color name="dot_color">#AEAFB4</color>
+
+    <!--
+    SEARCH ACTIVITY
+    -->
+    <color name="not_found_text_color">#1A1B22</color>
+    <color name="not_found_renew_button_color">#1A1B22</color>
+    <color name="not_found_renew_button_text_color">#FFFFFF</color>
+    <color name="search_cursor_color">#3772E7</color>
+
+    <!--
+    PLAYER ACVTIVITY
+    -->
+    <color name="player_background">#FFFFFF</color>
+    <color name="round_button_grey_color">#1A1B22</color>
+    <color name="round_play_button_main_color">#FFFFFF</color>
+    <color name="track_play_color">#1A1B22</color>
+    <color name="track_plus_and_like_button_color">#401A1B22</color>
+    <color name="player_track_info_text_color">#1A1B22</color>
+
+    <!--
+    SETTINGS ACVTIVITY
+    -->
+    <color name="switcher_color_control_activated">#3772E7</color>
+    <color name="switcher_color_switch_thumb_normal">#AEAFB4</color>
+    <color name="switcher_foreground">#E6E8EB</color>
+
+    <!--
+    BOTTOM MENU ITEMS
+    -->
+    <color name="item_color_active">#3772E7</color>
+    <color name="item_color_inactive">#1A1B22</color>
+    <color name="divider_color">#E6E8EB</color>
+
 </resources>

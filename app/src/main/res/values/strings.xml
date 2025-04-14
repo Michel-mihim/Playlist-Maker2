@@ -1,3 +1,43 @@
 <resources>
-    <string name="app_name">Playlist-Maker2</string>
+    <string name="app_name">Playlist Maker</string>
+    <string name="button_search">Поиск</string>
+    <string name="button_lib">Медиатека</string>
+    <string name="button_settings">Настройки</string>
+    <string name="dark_theme">Тёмная тема</string>
+    <string name="share_app">Поделиться приложением</string>
+    <string name="support">Написать в поддержку</string>
+    <string name="license">Пользовательское соглашение</string>
+    <string name="share_message_subject">Полезная ссылка:</string>
+    <string name="share_message">https://practicum.yandex.ru/profile/android-developer/</string>
+    <string name="student_email">ya-mihim@yandex.ru</string>
+    <string name="letter_text_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="letter_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="license_url">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="empty_string"></string>
+
+    <!--
+    TRACK RECYCLER
+    -->
+    <string name="track_name">Название песнииииииииииииииииииииииииииииииииии</string>
+    <string name="artist_name">Исполнитель</string>
+    <string name="track_time">Длительность</string>
+    <string name="track_not_found">Ничего не нашлось</string>
+
+    <!--
+    SEARCH ACTIVITY
+    -->
+    <string name="renew">Обновить</string>
+    <string name="history">Вы искали</string>
+    <string name="clear_history">Очистить историю</string>
+
+    <!--
+    LIB ACTIVITY
+    -->
+    <string name="lib_empty">Ваша медиатека пуста</string>
+    <string name="no_playlist">Вы не создали\n ни одного плейлиста</string>
+    <string name="new_playlist">Новый плейлист</string>
+    <string name="favourite_tracks">Избранные треки</string>
+    <string name="playlists">Плейлисты</string>
+
+
 </resources>

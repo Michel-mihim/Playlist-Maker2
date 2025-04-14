@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dp12">12dp</dimen>
+    <dimen name="dp16">16dp</dimen>
+    <dimen name="dp14">14dp</dimen>
+    <dimen name="dp10">10dp</dimen>
+    <dimen name="dp24">24dp</dimen>
+    <dimen name="dp28">28dp</dimen>
+    <dimen name="button_margin">20dp</dimen>
+    <dimen name="text_padding">13dp</dimen>
+    <dimen name="head_text_margin">12dp</dimen>
+    <dimen name="text_size">22sp</dimen>
+    <dimen name="tiny_text_size">16sp</dimen>
+    <dimen name="super_tiny_text_size">11dp</dimen>
+    <dimen name="radius">16dp</dimen>
+    <dimen name="dp_0">0dp</dimen>
+    <dimen name="history_corner_radius">54dp</dimen>
+    <dimen name="dp4">4dp</dimen>
+
+    <!--
+    SEARCH ACTIVITY
+    -->
+    <dimen name="edit_search_height">36dp</dimen>
+    <dimen name="radius_tiny">8dp</dimen>
+    <dimen name="edit_text_padding">8dp</dimen>
+    <dimen name="not_found_text_size">19sp</dimen>
+    <dimen name="not_found_margin_top">238dp</dimen>
+    <dimen name="not_found_pic_margin_top">102dp</dimen>
+    <dimen name="not_found_margin_horizontal">24dp</dimen>
+    <dimen name="not_found_renew_button_text_size">14sp</dimen>
+    <dimen name="not_found_renew_button_margin_top">350dp</dimen>
+    <dimen name="track_layout_marginLeft">66dp</dimen>
+    <dimen name="track_layout_marginRight">44dp</dimen>
+    <dimen name="search_edit_margin_horizontal">16dp</dimen>
+    <dimen name="search_edit_margin_vertical">8dp</dimen>
+    <dimen name="history_padding_top">18dp</dimen>
+    <dimen name="history_padding_bottom">12dp</dimen>
+    <dimen name="history_clear_button_margin_bottom">42dp</dimen>
+    <dimen name="progressbar_size">44dp</dimen>
+    <dimen name="progressbar_margin_top">140dp</dimen>
+    <!--
+    TRACK RECYCLERs
+    -->
+    <dimen name="recycler_height">61dp</dimen>
+    <dimen name="music_info_frame_width">270dp</dimen>
+    <dimen name="track_image_corner">2px</dimen>
+    <dimen name="recycler_margin_top">16dp</dimen>
+    <dimen name="image_padding_left">13dp</dimen>
+    <dimen name="image_padding_top_bottom">8dp</dimen>
+    <dimen name="music_info_text_padding_left_right">8dp</dimen>
+    <dimen name="info_dot_padding">5dp</dimen>
+    <dimen name="inter_button_margin_top">18dp</dimen>
+    <dimen name="inter_button_margin_right">12dp</dimen>
+    <dimen name="artist_name_height">13dp</dimen>
+
+    <dimen name="history_recycler_margin_top">8dp</dimen>
+    <dimen name="history_recycler_height">175dp</dimen>
+    <!--
+    TRACK PLAYER
+    -->
+    <dimen name="track_poster_corner">8px</dimen>
+    <!--
+    SETTINGS ACTIVITY
+    -->
+    <dimen name="settings_item_padding_vertical">21dp</dimen>
+    <dimen name="theme_margin_top">24dp</dimen>
+    <dimen name="settings_name_padding_top">14dp</dimen>
+    <dimen name="settings_name_padding_bottom">16dp</dimen>
+
+    <!--
+    LIB ACTIVITY
+    -->
+    <dimen name="lib_tab_text_size">14sp</dimen>
+    <dimen name="lib_pic_margin_top">106dp</dimen>
+    <dimen name="lib_text_margin_top">242dp</dimen>
+    <dimen name="lib_button_margin_top">24dp</dimen>
+
+</resources>
