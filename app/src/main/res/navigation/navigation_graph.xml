@@ -16,17 +16,17 @@
     </fragment>
     <fragment
         android:id="@+id/libFragment"
-        android:name="com.practicum.playlistmaker.lib.ui.LibFragment"
+        android:name="com.example.playlist_maker2.lib.ui.LibFragment"
         android:label="fragment_lib"
         tools:layout="@layout/fragment_lib" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.practicum.playlistmaker.settings.ui.SettingsFragment"
+        android:name="com.example.playlist_maker2.settings.ui.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <activity
         android:id="@+id/playerActivity"
-        android:name="com.practicum.playlistmaker.player.ui.PlayerActivity"
+        android:name="com.example.playlist_maker2.player.ui.PlayerActivity"
         android:label="activity_player"
         tools:layout="@layout/activity_player" />
 </navigation>

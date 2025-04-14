@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settingsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/menuColor"
+    android:orientation="vertical"
+    tools:context=".settings.ui.SettingsFragment">
+
+    <LinearLayout
+        style="@style/SettingsActivityMenuListStyle"
+        android:layout_marginStart="@dimen/dp4">
+
+        <TextView
+            style="@style/menu_head_text_style"
+            android:text="@string/button_settings"
+            android:paddingTop="@dimen/settings_name_padding_top"
+            android:paddingBottom="@dimen/settings_name_padding_bottom"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/SettingsActivityMenuListStyle">
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/theme_switcher"
+            style="@style/SettingsActivityMenuItemThemeTextStyle"
+            android:theme="@style/SCBSwitch"
+            android:layout_width="match_parent"
+            android:text="@string/dark_theme"
+            android:textSize="@dimen/tiny_text_size"
+            android:layout_marginTop="@dimen/theme_margin_top"
+            android:paddingVertical="@dimen/settings_item_padding_vertical"/>
+
+    </LinearLayout>
+
+    <!--применены кнопки вместо TextView потому что у них
+    при нажатии есть нужный визуальный эффект-->
+    <Button
+        android:id="@+id/button_share"
+        style="@style/SettingsActivityMenuItemTextStyle"
+        android:text="@string/share_app"
+        android:drawableEnd="@drawable/share"
+        android:paddingVertical="@dimen/settings_item_padding_vertical"
+        />
+
+    <!--style="?attr/borderlessButtonStyle"-->
+
+    <Button
+        android:id="@+id/button_support"
+        style="@style/SettingsActivityMenuItemTextStyle"
+        android:text="@string/support"
+        android:drawableEnd="@drawable/support"
+        android:paddingVertical="@dimen/settings_item_padding_vertical"/>
+
+    <Button
+        android:id="@+id/button_license"
+        style="@style/SettingsActivityMenuItemTextStyle"
+        android:drawableEnd="@drawable/arrow_next"
+        android:text="@string/license"
+        android:paddingVertical="@dimen/settings_item_padding_vertical"/>
+
+
+</LinearLayout>
