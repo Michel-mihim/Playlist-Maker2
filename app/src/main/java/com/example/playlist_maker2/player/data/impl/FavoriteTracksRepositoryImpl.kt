@@ -1,5 +1,6 @@
 package com.example.playlist_maker2.player.data.impl
 
+import android.util.Log
 import com.example.playlist_maker2.player.data.converters.TrackDbConvertor
 import com.example.playlist_maker2.player.data.db.AppDatabase
 import com.example.playlist_maker2.player.data.db.entities.TrackEntity
@@ -12,6 +13,7 @@ class FavoriteTracksRepositoryImpl(
     private val appDatabase: AppDatabase,
     private val trackDbConvertor: TrackDbConvertor
 ) : FavoriteTracksRepository {
+
     override suspend fun addTrack(track: Track) {
         val trackEntity = convertToTrackEntity(track)
         appDatabase.trackDao().insertTrack(trackEntity)

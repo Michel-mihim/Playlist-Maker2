@@ -44,5 +44,6 @@ object Constants {
     const val TRACK_COUNTRY_KEY = "b_track_country"
     const val PIC_URL_KEY = "b_artworkUrl100"
     const val PREVIEW_PIC_URL_KEY = "b_previewUrl"
+    const val TRACK_JSON = "b_track_json"
 
 }

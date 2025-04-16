@@ -110,7 +110,7 @@
         android:layout_height="51dp"
         android:background="@drawable/round_button"
         android:backgroundTint="@color/track_plus_and_like_button_color"
-        android:src="@drawable/track_like"
+        android:src="@drawable/track_unliked"
 
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/button_play_2"

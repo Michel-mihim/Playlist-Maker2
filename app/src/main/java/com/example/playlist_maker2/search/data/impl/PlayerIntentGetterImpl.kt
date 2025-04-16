@@ -7,6 +7,7 @@ import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants
 import com.example.playlist_maker2.utils.converters.getCoverArtwork
 import com.example.playlist_maker2.utils.converters.isoDateToYearConvert
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -27,6 +28,8 @@ class PlayerIntentGetterImpl(
         bundle.putString(Constants.TRACK_GENRE_KEY, track.primaryGenreName)
         bundle.putString(Constants.TRACK_COUNTRY_KEY, track.country)
         bundle.putString(Constants.PREVIEW_PIC_URL_KEY, track.previewUrl)
+        val trackJson = Gson().toJson(track)
+        bundle.putString(Constants.TRACK_JSON, trackJson)
         playerIntent.putExtras(bundle)
         onPlayerIntentReady.invoke(playerIntent)
     }

@@ -1,19 +1,25 @@
 package com.practicum.playlistmaker.player.ui
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlist_maker2.player.domain.api.FavoriteTracksInteractor
 import com.example.playlist_maker2.player.domain.api.MediaPlayerInteractor
 import com.example.playlist_maker2.player.domain.models.PlayerActivityState
 import com.example.playlist_maker2.player.domain.models.PlayerStatus
+import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class PlayerViewModel(
-    private val mediaPlayerInteractor: MediaPlayerInteractor
+    private val mediaPlayerInteractor: MediaPlayerInteractor,
+    private val favoriteTracksInteractor: FavoriteTracksInteractor
 ): ViewModel() {
 
     private var playerReadiness: Boolean = false
@@ -130,6 +136,29 @@ class PlayerViewModel(
         timerJob = viewModelScope.launch {
             delay(Constants.SHOW_PROGRESS_DELAY)
             showProgress()
+        }
+    }
+
+    fun likeButtonSet(trackId: String?) {
+        if (trackId != null) {
+            viewModelScope.launch {
+                favoriteTracksInteractor.getTracksById(trackId).collect { tracks ->
+                    if (tracks.isEmpty()) {
+                        likeButtonLiked = false
+                    } else {
+                        likeButtonLiked = true
+                    }
+
+                    playerActivityPostState(
+                        PlayerActivityState(
+                            playerReadiness,
+                            playerStatus,
+                            currentProgress,
+                            likeButtonLiked
+                        )
+                    )
+                }
+            }
         }
     }
 
