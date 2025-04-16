@@ -1,7 +1,10 @@
 package com.example.playlist_maker2.di
 
 import android.content.Intent
+import com.example.playlist_maker2.player.data.converters.TrackDbConvertor
+import com.example.playlist_maker2.player.data.impl.FavoriteTracksRepositoryImpl
 import com.example.playlist_maker2.player.data.impl.MediaPlayerRepositoryImpl
+import com.example.playlist_maker2.player.domain.api.FavoriteTracksRepository
 import com.example.playlist_maker2.player.domain.api.MediaPlayerRepository
 import com.example.playlist_maker2.player.ui.PlayerActivity
 import com.example.playlist_maker2.search.data.impl.HistoryTracksRepositoryImpl
@@ -53,6 +56,14 @@ val repositoryModule = module {
 
     factory<MediaPlayerRepository> {
         MediaPlayerRepositoryImpl(get())
+    }
+
+    factory {
+        TrackDbConvertor()
+    }
+
+    single<FavoriteTracksRepository> {
+        FavoriteTracksRepositoryImpl(get(), get())
     }
 
 }
