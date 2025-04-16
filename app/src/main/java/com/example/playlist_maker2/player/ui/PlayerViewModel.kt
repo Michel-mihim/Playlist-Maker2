@@ -16,9 +16,13 @@ class PlayerViewModel(
     private val mediaPlayerInteractor: MediaPlayerInteractor
 ): ViewModel() {
 
+    private var playerReadiness: Boolean = false
+
     private var playerStatus: PlayerStatus = PlayerStatus.STATE_DEFAULT
 
     private var currentProgress: String = ""
+
+    private var likeButtonLiked: Boolean = false
 
     private val playerActivityCurrentStateLiveData = MutableLiveData<PlayerActivityState>()
     fun observePlayerActivityCurrentState(): LiveData<PlayerActivityState> = playerActivityCurrentStateLiveData
@@ -37,23 +41,27 @@ class PlayerViewModel(
         mediaPlayerInteractor.prepare(
             previewUrl,
             onPrepared = { ->
+                playerReadiness = true
+                playerStatus = PlayerStatus.STATE_PREPARED
                 playerActivityPostState(
                     PlayerActivityState(
-                        true,
-                        PlayerStatus.STATE_PREPARED,
-                        ""
+                        playerReadiness,
+                        playerStatus,
+                        "", //to exclude bug
+                        likeButtonLiked
                     )
                 )
-                playerStatus = PlayerStatus.STATE_PREPARED
             },
             onCompletion = { -> //окончание воспроизведения
                 playerStatus = PlayerStatus.STATE_PREPARED
+                currentProgress = Constants.TRACK_IS_OVER_PROGRESS
                 timerJob?.cancel()
                 playerActivityPostState(
                     PlayerActivityState(
-                        true,
-                        PlayerStatus.STATE_PREPARED,
-                        Constants.TRACK_IS_OVER_PROGRESS
+                        playerReadiness,
+                        playerStatus,
+                        currentProgress,
+                        likeButtonLiked
                     )
                 )
             }
@@ -80,9 +88,10 @@ class PlayerViewModel(
         playerStatus = PlayerStatus.STATE_PLAYING
         playerActivityPostState(
             PlayerActivityState(
-                true,
-                PlayerStatus.STATE_PLAYING,
-                currentProgress
+                playerReadiness,
+                playerStatus,
+                currentProgress,
+                likeButtonLiked
             )
         )
         showProgress()
@@ -93,9 +102,10 @@ class PlayerViewModel(
         playerStatus = PlayerStatus.STATE_PAUSED
         playerActivityPostState(
             PlayerActivityState(
-                true,
-                PlayerStatus.STATE_PAUSED,
-                currentProgress
+                playerReadiness,
+                playerStatus,
+                currentProgress,
+                likeButtonLiked
             )
         )
         timerJob?.cancel()
@@ -104,14 +114,16 @@ class PlayerViewModel(
     private fun showProgress(){
         mediaPlayerInteractor.timerUpdate(
             onTimerUpdated = { progress ->
+                playerStatus = PlayerStatus.STATE_PLAYING
+                currentProgress = progress
                 playerActivityPostState(
                     PlayerActivityState(
-                        true,
-                        PlayerStatus.STATE_PLAYING,
-                        progress
+                        playerReadiness,
+                        playerStatus,
+                        currentProgress,
+                        likeButtonLiked
                     )
                 )
-                currentProgress = progress
             }
         )
 
