@@ -66,7 +66,7 @@ class PlayerActivity : AppCompatActivity() {
                 .into(binding.playerTrackImage)
         }
 
-        playerViewModel.likeButtonSet(track?.trackId)
+        playerViewModel.likeButtonSet(track)
         playerViewModel.mediaPlayerPrepare(bundle?.getString((Constants.PREVIEW_PIC_URL_KEY)))
 
         //слушатели нажатий
@@ -81,7 +81,9 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         binding.buttonLike3.setOnClickListener {
-            if (clickDebouncer()) { }
+            if (clickDebouncer()) {
+                playerViewModel.onFavoriteClicked(track)
+            }
         }
     }
 

@@ -11,8 +11,10 @@ import com.example.playlist_maker2.player.domain.models.PlayerActivityState
 import com.example.playlist_maker2.player.domain.models.PlayerStatus
 import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -139,10 +141,24 @@ class PlayerViewModel(
         }
     }
 
-    fun likeButtonSet(trackId: String?) {
-        if (trackId != null) {
+    fun likeButtonSet(track: Track?) {
+        if (track != null) {
             viewModelScope.launch {
-                favoriteTracksInteractor.getTracksById(trackId).collect { tracks ->
+
+                val isLiked: Deferred<Boolean> = async {
+                    var result = false
+                    favoriteTracksInteractor.getTracksById(track.trackId).collect { tracks ->
+                        if (tracks.isEmpty()) {
+                            result = false
+                        } else {
+                            result = true
+                        }
+                    }
+                    return@async result
+                }
+
+
+                favoriteTracksInteractor.getTracksById(track.trackId).collect { tracks ->
                     if (tracks.isEmpty()) {
                         likeButtonLiked = false
                     } else {
@@ -157,6 +173,29 @@ class PlayerViewModel(
                             likeButtonLiked
                         )
                     )
+                }
+            }
+        }
+    }
+
+    fun onFavoriteClicked(track: Track?) {
+        if (track != null) {
+            viewModelScope.launch {
+                favoriteTracksInteractor.getTracksById(track.trackId).collect { tracks ->
+                    if (tracks.isEmpty()) {
+                        favoriteTracksInteractor.addTrack(track)
+                    } else {
+                        favoriteTracksInteractor.deleteTrack(track)
+                    }
+                }
+
+                favoriteTracksInteractor.getTracksById(track.trackId).collect { tracks ->
+                    if (tracks.isEmpty()) {
+                        likeButtonLiked = false
+                    } else {
+                        likeButtonLiked = true
+                    }
+
                 }
             }
         }
