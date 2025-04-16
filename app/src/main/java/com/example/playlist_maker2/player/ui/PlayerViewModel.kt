@@ -62,7 +62,7 @@ class PlayerViewModel(
             },
             onCompletion = { -> //окончание воспроизведения
                 playerStatus = PlayerStatus.STATE_PREPARED
-                currentProgress = Constants.TRACK_IS_OVER_PROGRESS
+                currentProgress = ""//Constants.TRACK_IS_OVER_PROGRESS
                 timerJob?.cancel()
                 playerActivityPostState(
                     PlayerActivityState(
@@ -144,7 +144,6 @@ class PlayerViewModel(
     fun likeButtonSet(track: Track?) {
         if (track != null) {
             viewModelScope.launch {
-
                 val isLiked: Deferred<Boolean> = async {
                     var result = false
                     favoriteTracksInteractor.getTracksById(track.trackId).collect { tracks ->
@@ -157,47 +156,31 @@ class PlayerViewModel(
                     return@async result
                 }
 
+                likeButtonLiked = isLiked.await()
 
-                favoriteTracksInteractor.getTracksById(track.trackId).collect { tracks ->
-                    if (tracks.isEmpty()) {
-                        likeButtonLiked = false
-                    } else {
-                        likeButtonLiked = true
-                    }
-
-                    playerActivityPostState(
-                        PlayerActivityState(
-                            playerReadiness,
-                            playerStatus,
-                            currentProgress,
-                            likeButtonLiked
-                        )
+                playerActivityPostState(
+                    PlayerActivityState(
+                        playerReadiness,
+                        playerStatus,
+                        currentProgress,
+                        likeButtonLiked
                     )
-                }
+                )
             }
         }
     }
 
     fun onFavoriteClicked(track: Track?) {
         if (track != null) {
-            viewModelScope.launch {
-                favoriteTracksInteractor.getTracksById(track.trackId).collect { tracks ->
-                    if (tracks.isEmpty()) {
-                        favoriteTracksInteractor.addTrack(track)
-                    } else {
-                        favoriteTracksInteractor.deleteTrack(track)
-                    }
-                }
-
-                favoriteTracksInteractor.getTracksById(track.trackId).collect { tracks ->
-                    if (tracks.isEmpty()) {
-                        likeButtonLiked = false
-                    } else {
-                        likeButtonLiked = true
-                    }
-
+            runBlocking {
+                if (likeButtonLiked) {
+                    favoriteTracksInteractor.deleteTrack(track)
+                } else {
+                    favoriteTracksInteractor.addTrack(track)
                 }
             }
+
+            likeButtonSet(track)
         }
     }
 
