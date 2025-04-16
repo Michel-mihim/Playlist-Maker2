@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlist_maker2.R
 import com.example.playlist_maker2.search.domain.models.Track
 
-class TracksAdapter(private val clickListener: TrackClickListener) : RecyclerView.Adapter<TrackViewHolder>() {
+class TracksAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 
     var tracks = ArrayList<Track>()
 
@@ -32,10 +32,5 @@ class TracksAdapter(private val clickListener: TrackClickListener) : RecyclerVie
     }
 
     override fun getItemCount() = tracks.size
-
-    interface TrackClickListener {
-        fun onTrackClick(track: Track)
-        fun onLikeClick(track: Track)
-    }
 
 }

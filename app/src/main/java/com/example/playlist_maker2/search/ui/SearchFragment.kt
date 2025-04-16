@@ -35,17 +35,7 @@ class SearchFragment: Fragment() {
 
     private val searchViewModel by viewModel<SearchViewModel>()
 
-    private val adapter = TracksAdapter (
-        object : TracksAdapter.TrackClickListener {
-            override fun onTrackClick(track: Track) {
-                if (clickDebouncer()) { }
-            }
-
-            override fun onLikeClick(track: Track) {
-
-            }
-        }
-    )
+    private val adapter = TracksAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
