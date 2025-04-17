@@ -35,6 +35,7 @@
     -->
     <string name="lib_empty">Ваша медиатека пуста</string>
     <string name="no_playlist">Вы не создали\n ни одного плейлиста</string>
+    <string name="no_favorite">Ваша медиатека пуста</string>
     <string name="new_playlist">Новый плейлист</string>
     <string name="favourite_tracks">Избранные треки</string>
     <string name="playlists">Плейлисты</string>

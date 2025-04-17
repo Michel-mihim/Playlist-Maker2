@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlist_maker2.player.domain.api.FavoriteTracksInteractor
+import com.example.playlist_maker2.player.domain.models.DBActivityState
 import com.example.playlist_maker2.search.domain.api.GetPlayerIntentUseCase
 import com.example.playlist_maker2.search.domain.models.SearchActivityNavigationState
 import com.example.playlist_maker2.search.domain.models.SearchActivityState
@@ -20,8 +21,8 @@ class FavoriteViewModel(
 
     private var favoriteTracks = ArrayList<Track>()
 
-    private val favoriteTracksLiveData = MutableLiveData<ArrayList<Track>>()
-    fun observeFavoriteTracks(): LiveData<ArrayList<Track>> = favoriteTracksLiveData
+    private val favoriteTracksStateLiveData = MutableLiveData<DBActivityState>()
+    fun observeFavoriteTracksState(): LiveData<DBActivityState> = favoriteTracksStateLiveData
 
     private val playerActivityIntentLiveData = SingleLiveEvent<Intent>()
     fun observePlayerActivityIntent(): LiveData<Intent> = playerActivityIntentLiveData
@@ -34,8 +35,8 @@ class FavoriteViewModel(
                 favoriteTracks.addAll(tracks)
 
                 if (favoriteTracks.isNotEmpty()) {
-                    renderTracks(favoriteTracks)
-                } else renderTracks(ArrayList())
+                    renderState(DBActivityState.Content(favoriteTracks))
+                } else renderState(DBActivityState.Empty)
             }
 
         }
@@ -56,7 +57,7 @@ class FavoriteViewModel(
     }
 
     //POSTING=======================================================================================
-    private fun renderTracks(tracks: ArrayList<Track>) {
-        favoriteTracksLiveData.postValue(tracks)
+    private fun renderState(state: DBActivityState) {
+        favoriteTracksStateLiveData.postValue(state)
     }
 }
