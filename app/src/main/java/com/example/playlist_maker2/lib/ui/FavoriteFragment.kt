@@ -68,10 +68,11 @@ class FavoriteFragment: Fragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         favoriteViewModel.showFavorite()
+        contentViewsShow() //именно в методе onStart() видимость отрабатывает однократно без мерцаний
     }
 
     private fun showFavorite(state: DBActivityState) {
