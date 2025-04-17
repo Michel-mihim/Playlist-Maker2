@@ -13,6 +13,7 @@ import com.example.playlist_maker2.databinding.FragmentFavouriteBinding
 import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.adapters.TracksAdapter
 import com.example.playlist_maker2.utils.constants.Constants.CLICK_DEBOUNCE_DELAY
+import com.practicum.playlistmaker.player.ui.PlayerViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -55,8 +56,6 @@ class FavoriteFragment: Fragment() {
 
         binding.favoriteTracksRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        favoriteViewModel.showFavorite()
-
         //слушатели=================================================================================
 
         adapter.onItemClickListener = { track ->
@@ -65,6 +64,12 @@ class FavoriteFragment: Fragment() {
                 favoriteViewModel.getPlayerIntent(track)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        favoriteViewModel.showFavorite()
     }
 
     private fun showFavorite(tracks: List<Track>) {

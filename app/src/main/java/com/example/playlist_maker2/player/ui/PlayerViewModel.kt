@@ -10,6 +10,7 @@ import com.example.playlist_maker2.player.domain.api.MediaPlayerInteractor
 import com.example.playlist_maker2.player.domain.models.PlayerActivityState
 import com.example.playlist_maker2.player.domain.models.PlayerStatus
 import com.example.playlist_maker2.search.domain.models.Track
+import com.example.playlist_maker2.utils.classes.SingleLiveEvent
 import com.example.playlist_maker2.utils.constants.Constants
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
