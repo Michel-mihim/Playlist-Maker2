@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlist_maker2.R
+import com.example.playlist_maker2.adapters.TracksAdapter
 import com.example.playlist_maker2.databinding.FragmentSearchBinding
 import com.example.playlist_maker2.search.domain.models.SearchActivityState
 import com.example.playlist_maker2.search.domain.models.Track

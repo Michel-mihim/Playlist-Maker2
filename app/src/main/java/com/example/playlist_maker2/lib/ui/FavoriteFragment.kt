@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlist_maker2.R
 import com.example.playlist_maker2.databinding.FragmentFavouriteBinding
 import com.example.playlist_maker2.search.domain.models.Track
-import com.example.playlist_maker2.search.ui.TracksAdapter
+import com.example.playlist_maker2.adapters.TracksAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteFragment: Fragment() {
