@@ -1,10 +1,16 @@
 package com.example.playlist_maker2.player.data.converters
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.playlist_maker2.player.data.db.entities.TrackEntity
 import com.example.playlist_maker2.search.domain.models.Track
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.util.Date
 
 class TrackDbConvertor {
-
+    
+    @RequiresApi(Build.VERSION_CODES.O)
     fun map(track: Track): TrackEntity {
         return TrackEntity(
             track.trackId,
@@ -16,7 +22,8 @@ class TrackDbConvertor {
             track.releaseDate,
             track.primaryGenreName,
             track.country,
-            track.previewUrl
+            track.previewUrl,
+            LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
         )
     }
 

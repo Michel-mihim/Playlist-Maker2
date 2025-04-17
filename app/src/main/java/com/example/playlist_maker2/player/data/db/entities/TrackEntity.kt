@@ -5,11 +5,12 @@ import androidx.room.ColumnInfo.Companion.INTEGER
 import androidx.room.ColumnInfo.Companion.TEXT
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.LocalDateTime
 
 @Entity(tableName = "track_table")
 data class TrackEntity(
     @PrimaryKey @ColumnInfo(name = "trackId", typeAffinity = TEXT)
-    val trackId:String,
+    val trackId: String,
     @ColumnInfo(name = "trackName", typeAffinity = TEXT)
     val trackName: String,
     @ColumnInfo(name = "artistName", typeAffinity = TEXT)
@@ -27,5 +28,7 @@ data class TrackEntity(
     @ColumnInfo(name = "country", typeAffinity = TEXT)
     val country: String,
     @ColumnInfo(name = "previewUrl", typeAffinity = TEXT)
-    val previewUrl: String
+    val previewUrl: String,
+    @ColumnInfo(name = "dateTime", typeAffinity = INTEGER)
+    val dateTimeStamp: Long
 )

@@ -2,6 +2,7 @@ package com.example.playlist_maker2.player.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.playlist_maker2.player.data.db.dao.TrackDao
 import com.example.playlist_maker2.player.data.db.entities.TrackEntity
 
