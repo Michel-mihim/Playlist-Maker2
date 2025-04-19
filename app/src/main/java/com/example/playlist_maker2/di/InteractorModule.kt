@@ -1,7 +1,9 @@
 package com.example.playlist_maker2.di
 
 
+import com.example.playlist_maker2.player.domain.api.FavoriteTracksInteractor
 import com.example.playlist_maker2.player.domain.api.MediaPlayerInteractor
+import com.example.playlist_maker2.player.domain.impl.FavoriteTracksInteractorImpl
 import com.example.playlist_maker2.player.domain.impl.MediaPlayerInteractorImpl
 import com.example.playlist_maker2.search.domain.api.GetPlayerIntentUseCase
 import com.example.playlist_maker2.search.domain.api.HistoryTracksInteractor
@@ -38,6 +40,10 @@ val interactorModule = module {
 
     factory<MediaPlayerInteractor> {
         MediaPlayerInteractorImpl(get())
+    }
+
+    factory<FavoriteTracksInteractor> {
+        FavoriteTracksInteractorImpl(get())
     }
 
 }

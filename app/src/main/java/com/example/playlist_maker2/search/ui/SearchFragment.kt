@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlist_maker2.R
+import com.example.playlist_maker2.adapters.TracksAdapter
 import com.example.playlist_maker2.databinding.FragmentSearchBinding
 import com.example.playlist_maker2.search.domain.models.SearchActivityState
 import com.example.playlist_maker2.search.domain.models.Track
@@ -35,17 +36,7 @@ class SearchFragment: Fragment() {
 
     private val searchViewModel by viewModel<SearchViewModel>()
 
-    private val adapter = TracksAdapter (
-        object : TracksAdapter.TrackClickListener {
-            override fun onTrackClick(track: Track) {
-                if (clickDebouncer()) { }
-            }
-
-            override fun onLikeClick(track: Track) {
-
-            }
-        }
-    )
+    private val adapter = TracksAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,

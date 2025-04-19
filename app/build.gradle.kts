@@ -52,6 +52,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    //RxJava
+    implementation ("io.reactivex.rxjava2:rxjava:2.2.21")
+
     //Jetpack Navigation Component
     implementation ("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation ("androidx.navigation:navigation-ui-ktx:2.5.3")
@@ -83,8 +86,9 @@ dependencies {
     //ViewModel
     implementation ("androidx.core:core-ktx:1.9.0")
 
-    //Room"2.5.1" // текущая стабильная версия
-    implementation("androidx.room:room-runtime:2.5.1") // библиотека Room
-    kapt("androidx.room:room-compiler:2.5.1")
-    implementation("androidx.room:room-ktx:2.5.1") // поддержка корутин
+    //Room"2.5.1-error: Not sure how to convert a Cursor to this method's return type (java.lang.Object)"
+    //текущая стабильная версия 2.7.0
+    implementation("androidx.room:room-runtime:2.7.0") // библиотека Room
+    kapt("androidx.room:room-compiler:2.7.0")
+    implementation("androidx.room:room-ktx:2.7.0") // поддержка корутин
 }

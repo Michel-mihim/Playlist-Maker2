@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/not_found"
         android:layout_marginTop="@dimen/lib_pic_margin_top"
-        android:visibility="visible"/>
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/lib_empty_text"
@@ -22,10 +22,16 @@
         android:layout_marginTop="@dimen/lib_text_margin_top"
         android:fontFamily="@font/ys_display_medium"
         android:gravity="center_horizontal"
-        android:text="@string/no_playlist"
+        android:text="@string/no_favorite"
         android:textColor="@color/not_found_text_color"
         android:textSize="@dimen/not_found_text_size"
         android:textStyle="bold"
-        android:visibility="visible"/>
+        android:visibility="invisible"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/favorite_tracks_recycler"
+        android:layout_marginTop="@dimen/dp16"/>
 
 </FrameLayout>

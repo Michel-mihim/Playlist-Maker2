@@ -1,20 +1,17 @@
-package com.example.playlist_maker2.search.ui
+package com.example.playlist_maker2.adapters
 
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlist_maker2.R
 import com.example.playlist_maker2.search.domain.models.Track
+import com.example.playlist_maker2.adapters.TrackViewHolder
 
-class TracksAdapter(private val clickListener: TrackClickListener) : RecyclerView.Adapter<TrackViewHolder>() {
+class TracksAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 
     var tracks = ArrayList<Track>()
 
     var onItemClickListener: ((Track) -> Unit)? = null
-
-    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
@@ -32,10 +29,5 @@ class TracksAdapter(private val clickListener: TrackClickListener) : RecyclerVie
     }
 
     override fun getItemCount() = tracks.size
-
-    interface TrackClickListener {
-        fun onTrackClick(track: Track)
-        fun onLikeClick(track: Track)
-    }
 
 }

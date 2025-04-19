@@ -1,4 +1,4 @@
-package com.example.playlist_maker2.search.ui
+package com.example.playlist_maker2.adapters
 
 import android.view.View
 import android.widget.ImageView
@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
     private val trackNameView: TextView
     private val artistNameView: TextView
     private val trackTimeView: TextView
