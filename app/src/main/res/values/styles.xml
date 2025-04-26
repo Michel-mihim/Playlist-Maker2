@@ -84,7 +84,7 @@
         <item name="android:colorForeground">@color/switcher_foreground</item>
     </style>
 
-    <style name="arrow_back_button_style">
+    <style name="ArrowBackButtonStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:src">@drawable/arrow_back</item>

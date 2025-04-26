@@ -40,5 +40,11 @@
     <string name="favourite_tracks">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
 
+    <!--
+    NEW PLAYLIST
+    -->
+    <string name="create_button">Создать</string>
+    <string name="playlist_name">Название*</string>
+    <string name="playlist_about">Описание</string>
 
 </resources>
