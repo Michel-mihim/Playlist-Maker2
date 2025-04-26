@@ -31,5 +31,9 @@ class PlaylistFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.playlistEmptyText.text = getString(R.string.no_playlist)
+
+        binding.addPlaylistButton.setOnClickListener {
+
+        }
     }
 }
