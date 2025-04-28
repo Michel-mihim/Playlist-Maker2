@@ -1,10 +1,12 @@
 package com.example.playlist_maker2.lib.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.example.playlist_maker2.R
 import com.example.playlist_maker2.databinding.FragmentPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,7 +35,11 @@ class PlaylistFragment: Fragment() {
         binding.playlistEmptyText.text = getString(R.string.no_playlist)
 
         binding.addPlaylistButton.setOnClickListener {
-
+            childFragmentManager.commit {
+                setReorderingAllowed(true)
+                add(binding.newPlaylistContainer.id, PlaylistNewFragment())
+                addToBackStack(null)
+            }
         }
     }
 }
