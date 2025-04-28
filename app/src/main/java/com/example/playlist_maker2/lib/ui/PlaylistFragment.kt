@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.navigation.fragment.findNavController
 import com.example.playlist_maker2.R
 import com.example.playlist_maker2.databinding.ActivityRootBinding
 import com.example.playlist_maker2.databinding.FragmentPlaylistBinding
@@ -37,11 +38,8 @@ class PlaylistFragment: Fragment() {
         binding.playlistEmptyText.text = getString(R.string.no_playlist)
 
         binding.addPlaylistButton.setOnClickListener {
-            parentFragmentManager.commit {
-                setReorderingAllowed(true)
-                add(, PlaylistNewFragment())
-                addToBackStack(null)
-            }
+
+            findNavController().navigate(R.id.action_libFragment_to_playlistNewFragment)
         }
     }
 }
