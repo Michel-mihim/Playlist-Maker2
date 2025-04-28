@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.playlist_maker2.R
+import com.example.playlist_maker2.databinding.ActivityRootBinding
 import com.example.playlist_maker2.databinding.FragmentPlaylistBinding
+import com.example.playlist_maker2.main.ui.RootActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistFragment: Fragment() {
@@ -35,9 +37,9 @@ class PlaylistFragment: Fragment() {
         binding.playlistEmptyText.text = getString(R.string.no_playlist)
 
         binding.addPlaylistButton.setOnClickListener {
-            childFragmentManager.commit {
+            parentFragmentManager.commit {
                 setReorderingAllowed(true)
-                add(binding.newPlaylistContainer.id, PlaylistNewFragment())
+                add(, PlaylistNewFragment())
                 addToBackStack(null)
             }
         }
