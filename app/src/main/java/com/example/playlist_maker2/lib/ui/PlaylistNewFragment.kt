@@ -27,5 +27,11 @@ class PlaylistNewFragment: Fragment() {
         binding.newPlaylistBackButton.setOnClickListener {
             findNavController().navigateUp()
         }
+
+        binding.newPlaylistPicture.setOnClickListener {
+
+        }
     }
+
+
 }

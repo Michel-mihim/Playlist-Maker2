@@ -81,6 +81,7 @@
             android:fontFamily="@font/ys_display_medium"
             android:textSize="16sp"
             android:textAllCaps="false"
+            android:enabled="false"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
