@@ -51,7 +51,11 @@
             android:layout_marginHorizontal="@dimen/dp16"
             android:background="@drawable/rounded_edittext2"
             android:hint="@string/playlist_name"
-            android:paddingStart="@dimen/dp16"/>
+            android:paddingStart="@dimen/dp16"
+            android:maxLines="1"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
 
         <EditText
             android:id="@+id/new_playlist_about"
@@ -64,7 +68,11 @@
             android:layout_marginHorizontal="@dimen/dp16"
             android:background="@drawable/rounded_edittext2"
             android:hint="@string/playlist_about"
-            android:paddingStart="@dimen/dp16"/>
+            android:paddingStart="@dimen/dp16"
+            android:maxLines="1"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
 
         <Button
             android:id="@+id/create_new_playlist_button"
