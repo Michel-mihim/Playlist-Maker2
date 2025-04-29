@@ -13,6 +13,7 @@ object Constants {
     const val SOMETHING_WRONG = "Что-то пошло не так.."
     const val SEARCH_SUCCESS = "Поиск успешно произведен!"
     const val HISTORY_CLEARED = "История поиска была удалена"
+    const val READ_MEDIA_IMAGES_DENIED = "Доступ к изображениям на устройстве не получен"
     const val EMAIL_CLIENT_NOT_FOUND = "Не обнаружен почтовый клиент!"
 
     const val SEARCH_DEBOUNCE_DELAY = 2000L
