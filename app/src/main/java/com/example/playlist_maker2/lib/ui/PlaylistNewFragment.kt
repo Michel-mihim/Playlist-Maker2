@@ -25,6 +25,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.playlist_maker2.R
 import com.example.playlist_maker2.databinding.FragmentNewPlaylistBinding
 import com.example.playlist_maker2.utils.constants.Constants
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -84,6 +85,11 @@ class PlaylistNewFragment: Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 nameIsLoaded = !stringIsEmpty(s)
                 binding.createNewPlaylistButton.isEnabled = nameIsLoaded
+                if (nameIsLoaded) {
+                    binding.createNewPlaylistButton.setBackgroundColor(requireContext().getColor(R.color.new_playlist_button_active_color))
+                } else {
+                    binding.createNewPlaylistButton.setBackgroundColor(requireContext().getColor(R.color.new_playlist_button_inactive_color))
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {}

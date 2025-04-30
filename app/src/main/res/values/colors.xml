@@ -54,4 +54,10 @@
     <color name="item_color_inactive">#1A1B22</color>
     <color name="divider_color">#E6E8EB</color>
 
+    <!--
+    NEW PLAYLIST
+    -->
+    <color name="new_playlist_button_inactive_color">#AEAFB4</color>
+    <color name="new_playlist_button_active_color">#3772E7</color>
+
 </resources>
