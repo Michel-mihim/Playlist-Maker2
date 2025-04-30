@@ -36,7 +36,6 @@ import com.markodevcic.peko.PermissionResult
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
-import java.nio.file.WatchEvent
 
 class PlaylistNewFragment: Fragment() {
 
@@ -53,7 +52,7 @@ class PlaylistNewFragment: Fragment() {
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
             binding.newPlaylistPicture.setImageURI(uri)
-            saveImageToPrivateStorage(uri)
+            //saveImageToPrivateStorage(uri)
         } else {
             Toast.makeText(requireContext(), "Изображение не выбрано", Toast.LENGTH_SHORT)
         }
@@ -115,11 +114,11 @@ class PlaylistNewFragment: Fragment() {
         binding.newPlaylistAbout.addTextChangedListener(aboutTextWatcher)
 
         //==========================================================================================
+        /*
         val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_album")
-        val file = File(filePath, "first_cover.jpg")
-
+        val file = File(filePath, "temp_cover.jpg")
         binding.newPlaylistPicture.setImageURI(file.toUri())
-        binding.newPlaylistPicture.cropToPadding = true
+         */
 
         //==========================================================================================
         requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
@@ -166,7 +165,7 @@ class PlaylistNewFragment: Fragment() {
             filePath.mkdirs()
         }
         //создаём экземпляр класса File, который указывает на файл внутри каталога
-        val file = File(filePath, "first_cover.jpg")
+        val file = File(filePath, "temp_cover.jpg")
         // создаём входящий поток байтов из выбранной картинки
         val inputStream = requireActivity().contentResolver.openInputStream(uri)
         // создаём исходящий поток байтов в созданный выше файл
