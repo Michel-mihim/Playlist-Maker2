@@ -13,6 +13,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.RoundedCorner
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -21,6 +22,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.graphics.alpha
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -34,6 +36,7 @@ import com.markodevcic.peko.PermissionResult
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
+import java.nio.file.WatchEvent
 
 class PlaylistNewFragment: Fragment() {
 
@@ -114,7 +117,10 @@ class PlaylistNewFragment: Fragment() {
         //==========================================================================================
         val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_album")
         val file = File(filePath, "first_cover.jpg")
+
         binding.newPlaylistPicture.setImageURI(file.toUri())
+        binding.newPlaylistPicture.cropToPadding = true
+
         //==========================================================================================
         requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
