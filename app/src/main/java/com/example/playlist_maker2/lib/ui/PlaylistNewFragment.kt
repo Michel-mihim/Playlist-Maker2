@@ -16,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -26,6 +27,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.playlist_maker2.databinding.FragmentNewPlaylistBinding
 import com.example.playlist_maker2.utils.constants.Constants
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.PermissionResult
 import kotlinx.coroutines.launch
@@ -41,6 +43,8 @@ class PlaylistNewFragment: Fragment() {
     private var picIsLoaded = false
     private var nameIsLoaded = false
     private var aboutIsLoaded = false
+
+    lateinit var confirmDialog: MaterialAlertDialogBuilder
 
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
@@ -63,29 +67,58 @@ class PlaylistNewFragment: Fragment() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        confirmDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Завершить создание плейлиста?")
+            .setMessage("Все несохраненные данные будут потеряны")
+            .setNeutralButton("Отмена") { dialog, which ->
+                // ничего не делаем
+            }.setNegativeButton("Завершить") { dialog, which ->
+                // выходим из окна без сохранения
+                findNavController().navigateUp()
+            }
         //==========================================================================================
-        val textWatcher = object : TextWatcher {
+        val nameTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.createNewPlaylistButton.isEnabled = newPlaylistCreateButtonIsEnabled(s)
-                binding.createNewPlaylistButton.text = newPlaylistCreateButtonIsEnabled(s).toString()
-                nameIsLoaded = newPlaylistCreateButtonIsEnabled(s)
+                nameIsLoaded = !stringIsEmpty(s)
+                binding.createNewPlaylistButton.isEnabled = nameIsLoaded
             }
 
             override fun afterTextChanged(s: Editable?) {}
         }
 
-        binding.newPlaylistName.addTextChangedListener(textWatcher)
+        binding.newPlaylistName.addTextChangedListener(nameTextWatcher)
+
+        //==========================================================================================
+        val aboutTextWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                aboutIsLoaded = !stringIsEmpty(s)
+                binding.createNewPlaylistButton.isEnabled = nameIsLoaded
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        }
+
+        binding.newPlaylistAbout.addTextChangedListener(aboutTextWatcher)
 
         //==========================================================================================
         val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_album")
         val file = File(filePath, "first_cover.jpg")
         binding.newPlaylistPicture.setImageURI(file.toUri())
         //==========================================================================================
+        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                confirmationDialogManager()
+            }
+        })
 
+        //==========================================================================================
         binding.newPlaylistBackButton.setOnClickListener {
-            findNavController().navigateUp()
+            confirmationDialogManager()
         }
 
         binding.newPlaylistPicture.setOnClickListener {
@@ -94,8 +127,8 @@ class PlaylistNewFragment: Fragment() {
                     when (result) {
                         is PermissionResult.Granted -> {
                             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            picIsLoaded = true
                         }
-
                         else -> {
                             Toast.makeText(requireContext(), Constants.READ_MEDIA_IMAGES_DENIED,
                                 Toast.LENGTH_SHORT).show()
@@ -106,11 +139,12 @@ class PlaylistNewFragment: Fragment() {
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-
-
+    private fun confirmationDialogManager() {
+        if (nameIsLoaded || picIsLoaded || aboutIsLoaded) {
+            confirmDialog.show()
+        } else findNavController().navigateUp()
     }
+
 
     private fun saveImageToPrivateStorage(uri: Uri) {
         //создаём экземпляр класса File, который указывает на нужный каталог
@@ -131,11 +165,11 @@ class PlaylistNewFragment: Fragment() {
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
     }
 
-    private fun newPlaylistCreateButtonIsEnabled(s: CharSequence?): Boolean {
+    private fun stringIsEmpty(s: CharSequence?): Boolean {
         return if (s.isNullOrEmpty()) {
-            false
-        } else {
             true
+        } else {
+            false
         }
     }
 
