@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlist_maker2.R
+import com.example.playlist_maker2.adapters.PlaylistsAdapter
 import com.example.playlist_maker2.databinding.ActivityRootBinding
 import com.example.playlist_maker2.databinding.FragmentPlaylistBinding
 import com.example.playlist_maker2.main.ui.RootActivity
@@ -24,6 +26,8 @@ class PlaylistFragment: Fragment() {
 
     private val playlistViewModel: PlaylistViewModel by viewModel()
 
+    private val adapter = PlaylistsAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,6 +40,8 @@ class PlaylistFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.playlistEmptyText.text = getString(R.string.no_playlist)
+
+        binding.playlistsRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
 
         binding.addPlaylistButton.setOnClickListener {
 

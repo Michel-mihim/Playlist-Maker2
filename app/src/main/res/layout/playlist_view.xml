@@ -13,13 +13,24 @@
         android:scaleType="centerCrop" />
 
     <TextView
+        android:id="@+id/new_playlist_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test"/>
+        android:layout_marginTop="@dimen/dp4"
+        android:fontFamily="@font/ys_display_regular"
+        android:textSize="12sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Name"/>
 
     <TextView
+        android:id="@+id/new_playlist_about"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test"/>
+        android:fontFamily="@font/ys_display_regular"
+        android:textSize="12sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="About"/>
 
 </LinearLayout>
