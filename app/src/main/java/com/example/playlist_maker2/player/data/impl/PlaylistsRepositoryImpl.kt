@@ -8,6 +8,8 @@ import com.example.playlist_maker2.player.data.converters.PlaylistDbConvertor
 import com.example.playlist_maker2.player.data.converters.TrackDbConvertor
 import com.example.playlist_maker2.player.data.db.AppDatabase
 import com.example.playlist_maker2.player.data.db.entities.PlaylistEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class PlaylistsRepositoryImpl(
     private val appDatabase: AppDatabase,
@@ -18,6 +20,11 @@ class PlaylistsRepositoryImpl(
     override suspend fun addPlaylist(playlist: Playlist) {
         val playlistEntity = convertToPlaylistEntity(playlist)
         appDatabase.playlistDao().insertPlaylist(playlistEntity)
+    }
+
+    override fun getPlaylists(): Flow<List<Playlist>> = flow {
+        val playlists = appDatabase.playlistDao().getPlaylists()
+        emit(convertFromPlaylistEntity(playlists))
     }
 
     private fun convertFromPlaylistEntity(playlists: List<PlaylistEntity>): List<Playlist> {
