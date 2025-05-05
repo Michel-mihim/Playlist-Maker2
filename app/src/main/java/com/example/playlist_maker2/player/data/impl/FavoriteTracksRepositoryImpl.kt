@@ -1,6 +1,7 @@
 package com.example.playlist_maker2.player.data.impl
 
-import android.util.Log
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.playlist_maker2.player.data.converters.TrackDbConvertor
 import com.example.playlist_maker2.player.data.db.AppDatabase
 import com.example.playlist_maker2.player.data.db.entities.TrackEntity
@@ -14,11 +15,13 @@ class FavoriteTracksRepositoryImpl(
     private val trackDbConvertor: TrackDbConvertor
 ) : FavoriteTracksRepository {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun addTrack(track: Track) {
         val trackEntity = convertToTrackEntity(track)
         appDatabase.trackDao().insertTrack(trackEntity)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun deleteTrack(track: Track) {
         val trackEntity = convertToTrackEntity(track)
         appDatabase.trackDao().deleteTrack(trackEntity)
@@ -37,6 +40,7 @@ class FavoriteTracksRepositoryImpl(
         return tracks.map { track -> trackDbConvertor.map(track) }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun convertToTrackEntity(track: Track): TrackEntity {
         return trackDbConvertor.map(track)
     }
