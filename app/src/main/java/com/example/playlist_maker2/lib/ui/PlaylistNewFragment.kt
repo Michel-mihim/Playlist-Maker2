@@ -36,9 +36,11 @@ import com.example.playlist_maker2.player.domain.models.DBActivityState
 import com.example.playlist_maker2.player.domain.models.DBPlaylistsState
 import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants
+import com.example.playlist_maker2.utils.constants.Constants.CLICK_DEBOUNCE_DELAY
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.PermissionResult
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -47,6 +49,11 @@ import java.io.FileOutputStream
 class PlaylistNewFragment: Fragment() {
 
     private lateinit var binding:  FragmentNewPlaylistBinding
+
+    private var inputUri: Uri? = null
+    private var playlistPic = ""
+
+    private var isClickAllowed = true
 
     private val requester = PermissionRequester.instance()
 
@@ -59,7 +66,7 @@ class PlaylistNewFragment: Fragment() {
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
             binding.newPlaylistPicture.setImageURI(uri)
-            //saveImageToPrivateStorage(uri)
+            inputUri = uri
         } else {
             Toast.makeText(requireContext(), "Изображение не выбрано", Toast.LENGTH_SHORT)
         }
@@ -123,13 +130,6 @@ class PlaylistNewFragment: Fragment() {
         binding.newPlaylistAbout.addTextChangedListener(aboutTextWatcher)
 
         //==========================================================================================
-        /*
-        val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_album")
-        val file = File(filePath, "temp_cover.jpg")
-        binding.newPlaylistPicture.setImageURI(file.toUri())
-         */
-
-        //==========================================================================================
         requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 confirmationDialogManager()
@@ -159,13 +159,19 @@ class PlaylistNewFragment: Fragment() {
         }
 
         //==========================================================================================
-        binding.createNewPlaylistButton.setOnClickListener {//debouncer need
-            val playlistPic = ""
-            val playlistName = binding.newPlaylistName.text.toString()
-            val playlistAbout = binding.newPlaylistAbout.text.toString()
-            playlistNewViewModel.onAddPlaylistButtonClicked(Playlist(playlistPic, playlistName, playlistAbout))
+        binding.createNewPlaylistButton.setOnClickListener {
+            if (clickDebouncer()) {
+                if (inputUri != null) {
+                    saveImageToPrivateStorage(inputUri!!)
+                    playlistPic = inputUri.toString()
+                }
 
-            findNavController().navigateUp()
+                val playlistName = binding.newPlaylistName.text.toString()
+                val playlistAbout = binding.newPlaylistAbout.text.toString()
+                playlistNewViewModel.onAddPlaylistButtonClicked(Playlist(playlistPic, playlistName, playlistAbout))
+
+                findNavController().navigateUp()
+            }
         }
 
     }
@@ -176,7 +182,13 @@ class PlaylistNewFragment: Fragment() {
         } else findNavController().navigateUp()
     }
 
-    private fun saveImageToPrivateStorage(uri: Uri) {
+    private fun saveImageToPrivateStorage(
+        uri: Uri,
+
+        ) {
+        // создаём входящий поток байтов из выбранной картинки
+        val inputStream = requireActivity().contentResolver.openInputStream(uri)
+
         //создаём экземпляр класса File, который указывает на нужный каталог
         val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_album")
         //создаем каталог, если он не создан
@@ -185,8 +197,6 @@ class PlaylistNewFragment: Fragment() {
         }
         //создаём экземпляр класса File, который указывает на файл внутри каталога
         val file = File(filePath, "temp_cover.jpg")
-        // создаём входящий поток байтов из выбранной картинки
-        val inputStream = requireActivity().contentResolver.openInputStream(uri)
         // создаём исходящий поток байтов в созданный выше файл
         val outputStream = FileOutputStream(file)
         // записываем картинку с помощью BitmapFactory
@@ -201,6 +211,18 @@ class PlaylistNewFragment: Fragment() {
         } else {
             false
         }
+    }
+
+    private fun clickDebouncer() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
     }
 
 }
