@@ -1,12 +1,14 @@
 package com.example.playlist_maker2.adapters
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlist_maker2.R
@@ -26,11 +28,16 @@ class PlaylistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     fun bind(playlist: Playlist, context: Context) {
-        try {
-            val filePath = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_album")
-            val file = File(filePath, playlist.playlistName+".jpg")
+        val filePath = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_album")
+        val file = File(filePath, playlist.playlistName+".jpg")
+
+        if (file.exists()) {
             playlistPicView.setImageURI(file.toUri())
-        } catch (e: Exception) {Log.d("wtf", "error")}
+        } else {
+            playlistPicView.setImageDrawable(context.getDrawable(R.drawable.placeholder_large))
+        }
+
+
 
         playlistNameView.text = playlist.playlistName
         playlistAboutView.text = playlist.playlistAbout
