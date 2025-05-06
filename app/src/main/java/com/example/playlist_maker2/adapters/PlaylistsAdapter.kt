@@ -1,13 +1,14 @@
 package com.example.playlist_maker2.adapters
 
+import android.app.Activity
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlist_maker2.R
 import com.example.playlist_maker2.lib.domain.models.Playlist
-import com.example.playlist_maker2.search.domain.models.Track
 
-class PlaylistsAdapter() : RecyclerView.Adapter<PlaylistViewHolder>() {
+class PlaylistsAdapter(val context: Context) : RecyclerView.Adapter<PlaylistViewHolder>() {
 
     var playlists = ArrayList<Playlist>()
 
@@ -17,7 +18,7 @@ class PlaylistsAdapter() : RecyclerView.Adapter<PlaylistViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
-        holder.bind(playlists[position])
+        holder.bind(playlists[position], context)
     }
 
     override fun getItemCount() = playlists.size

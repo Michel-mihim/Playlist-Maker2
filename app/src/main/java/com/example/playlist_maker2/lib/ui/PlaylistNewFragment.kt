@@ -51,7 +51,6 @@ class PlaylistNewFragment: Fragment() {
     private lateinit var binding:  FragmentNewPlaylistBinding
 
     private var inputUri: Uri? = null
-    private var playlistPic = ""
 
     private var isClickAllowed = true
 
@@ -161,14 +160,14 @@ class PlaylistNewFragment: Fragment() {
         //==========================================================================================
         binding.createNewPlaylistButton.setOnClickListener {
             if (clickDebouncer()) {
-                if (inputUri != null) {
-                    saveImageToPrivateStorage(inputUri!!)
-                    playlistPic = inputUri.toString()
-                }
-
                 val playlistName = binding.newPlaylistName.text.toString()
                 val playlistAbout = binding.newPlaylistAbout.text.toString()
-                playlistNewViewModel.onAddPlaylistButtonClicked(Playlist(playlistPic, playlistName, playlistAbout))
+
+                if (inputUri != null) {
+                    saveImageToPrivateStorage(inputUri!!, playlistName)
+                }
+
+                playlistNewViewModel.onAddPlaylistButtonClicked(Playlist(playlistName, playlistAbout))
 
                 findNavController().navigateUp()
             }
@@ -184,7 +183,7 @@ class PlaylistNewFragment: Fragment() {
 
     private fun saveImageToPrivateStorage(
         uri: Uri,
-
+        playlistName: String
         ) {
         // создаём входящий поток байтов из выбранной картинки
         val inputStream = requireActivity().contentResolver.openInputStream(uri)
@@ -196,7 +195,7 @@ class PlaylistNewFragment: Fragment() {
             filePath.mkdirs()
         }
         //создаём экземпляр класса File, который указывает на файл внутри каталога
-        val file = File(filePath, "temp_cover.jpg")
+        val file = File(filePath, playlistName+".jpg")
         // создаём исходящий поток байтов в созданный выше файл
         val outputStream = FileOutputStream(file)
         // записываем картинку с помощью BitmapFactory

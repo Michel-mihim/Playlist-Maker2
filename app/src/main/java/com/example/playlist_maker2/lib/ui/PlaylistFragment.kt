@@ -28,7 +28,7 @@ class PlaylistFragment: Fragment() {
 
     private val playlistViewModel: PlaylistViewModel by viewModel()
 
-    private val adapter = PlaylistsAdapter()
+    private lateinit var adapter: PlaylistsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,6 +75,8 @@ class PlaylistFragment: Fragment() {
 
     private fun showContent(playlists: List<Playlist>) {
         contentViewsShow()
+
+        adapter = PlaylistsAdapter(requireContext())
 
         binding.playlistsRecycler.adapter = adapter
         adapter.playlists.clear()

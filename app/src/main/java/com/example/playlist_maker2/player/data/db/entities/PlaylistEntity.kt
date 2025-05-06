@@ -8,8 +8,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "playlist_table")
 data class PlaylistEntity(
-    @ColumnInfo(name = "playlistPic", typeAffinity = TEXT)
-    val playlistPic: String,
     @PrimaryKey @ColumnInfo(name = "playlistName", typeAffinity = TEXT)
     val playlistName: String,
     @ColumnInfo(name = "playlistAbout", typeAffinity = TEXT)
