@@ -68,7 +68,8 @@
             android:maxLines="1"
             android:inputType="text"
             android:imeOptions="actionDone"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            />
 
         <EditText
             android:id="@+id/new_playlist_about"

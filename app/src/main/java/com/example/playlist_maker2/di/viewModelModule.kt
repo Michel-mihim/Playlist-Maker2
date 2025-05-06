@@ -1,6 +1,7 @@
 package com.example.playlist_maker2.di
 
 import com.example.playlist_maker2.lib.ui.FavoriteViewModel
+import com.example.playlist_maker2.lib.ui.PlaylistNewViewModel
 import com.example.playlist_maker2.lib.ui.PlaylistViewModel
 import com.example.playlist_maker2.search.ui.SearchViewModel
 import com.example.playlist_maker2.settings.ui.SettingsViewModel
@@ -28,7 +29,11 @@ val viewModelModule = module {
     }
 
     viewModel {
-        PlaylistViewModel()
+        PlaylistViewModel(get())
+    }
+
+    viewModel {
+        PlaylistNewViewModel(get())
     }
 
 }

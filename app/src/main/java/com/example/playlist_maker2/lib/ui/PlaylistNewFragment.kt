@@ -27,13 +27,20 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlist_maker2.R
 import com.example.playlist_maker2.databinding.FragmentNewPlaylistBinding
+import com.example.playlist_maker2.lib.domain.api.PlaylistsInteractor
+import com.example.playlist_maker2.lib.domain.models.Playlist
+import com.example.playlist_maker2.player.domain.models.DBActivityState
+import com.example.playlist_maker2.player.domain.models.DBPlaylistsState
+import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.PermissionResult
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
@@ -57,6 +64,8 @@ class PlaylistNewFragment: Fragment() {
             Toast.makeText(requireContext(), "Изображение не выбрано", Toast.LENGTH_SHORT)
         }
     }
+
+    private val playlistNewViewModel: PlaylistNewViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -148,6 +157,17 @@ class PlaylistNewFragment: Fragment() {
                 }
             }
         }
+
+        //==========================================================================================
+        binding.createNewPlaylistButton.setOnClickListener {//debouncer need
+            val playlistPic = ""
+            val playlistName = binding.newPlaylistName.text.toString()
+            val playlistAbout = binding.newPlaylistAbout.text.toString()
+            playlistNewViewModel.onAddPlaylistButtonClicked(Playlist(playlistPic, playlistName, playlistAbout))
+
+            findNavController().navigateUp()
+        }
+
     }
 
     private fun confirmationDialogManager() {
@@ -155,7 +175,6 @@ class PlaylistNewFragment: Fragment() {
             confirmDialog.show()
         } else findNavController().navigateUp()
     }
-
 
     private fun saveImageToPrivateStorage(uri: Uri) {
         //создаём экземпляр класса File, который указывает на нужный каталог

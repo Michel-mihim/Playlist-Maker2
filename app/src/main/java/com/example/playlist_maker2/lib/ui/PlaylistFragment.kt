@@ -13,7 +13,9 @@ import com.example.playlist_maker2.R
 import com.example.playlist_maker2.adapters.PlaylistsAdapter
 import com.example.playlist_maker2.databinding.ActivityRootBinding
 import com.example.playlist_maker2.databinding.FragmentPlaylistBinding
+import com.example.playlist_maker2.lib.domain.models.Playlist
 import com.example.playlist_maker2.main.ui.RootActivity
+import com.example.playlist_maker2.player.domain.models.DBPlaylistsState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistFragment: Fragment() {
@@ -39,13 +41,57 @@ class PlaylistFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        playlistViewModel.observePlaylistsState().observe(viewLifecycleOwner) {
+            showPlaylists(it)
+        }
+
         binding.playlistEmptyText.text = getString(R.string.no_playlist)
 
         binding.playlistsRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
 
         binding.addPlaylistButton.setOnClickListener {
-
             findNavController().navigate(R.id.action_libFragment_to_playlistNewFragment)
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+
+        playlistViewModel.showPlaylists()
+        contentViewsShow()
+    }
+
+    private fun showPlaylists(state: DBPlaylistsState) {
+        when (state) {
+            is DBPlaylistsState.Empty -> {showEmpty()}
+            is DBPlaylistsState.Content -> {showContent(state.playlists)}
+        }
+    }
+
+    private fun showEmpty() {
+        emptyViewsShow()
+    }
+
+    private fun showContent(playlists: List<Playlist>) {
+        contentViewsShow()
+
+        binding.playlistsRecycler.adapter = adapter
+        adapter.playlists.clear()
+        adapter.playlists.addAll(playlists)
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun emptyViewsShow() {
+        binding.playlistsRecycler.visibility = View.GONE
+        binding.playlistEpmtyPic.visibility = View.VISIBLE
+        binding.playlistEmptyText.visibility = View.VISIBLE
+    }
+
+    private fun contentViewsShow() {
+        binding.playlistsRecycler.visibility = View.VISIBLE
+        binding.playlistEpmtyPic.visibility = View.INVISIBLE
+        binding.playlistEmptyText.visibility = View.INVISIBLE
+    }
+
 }
