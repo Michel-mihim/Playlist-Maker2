@@ -37,8 +37,6 @@ class PlaylistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             playlistPicView.setImageDrawable(context.getDrawable(R.drawable.placeholder_large))
         }
 
-
-
         playlistNameView.text = playlist.playlistName
         playlistAboutView.text = playlist.playlistAbout
     }

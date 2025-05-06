@@ -86,6 +86,10 @@ class PlaylistNewFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        playlistNewViewModel.observePlaylistFragmentToastState().observe(viewLifecycleOwner) {
+            showToast(it)
+        }
+
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Завершить создание плейлиста?")
             .setMessage("Все несохраненные данные будут потеряны")
@@ -222,6 +226,11 @@ class PlaylistNewFragment: Fragment() {
             }
         }
         return current
+    }
+
+    private fun showToast(message: String) {
+        Log.d("wtf", message)
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
 }
