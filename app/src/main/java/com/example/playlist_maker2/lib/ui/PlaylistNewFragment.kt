@@ -172,8 +172,6 @@ class PlaylistNewFragment: Fragment() {
                 }
 
                 playlistNewViewModel.onAddPlaylistButtonClicked(Playlist(playlistName, playlistAbout))
-
-                findNavController().navigateUp()
             }
         }
 
@@ -229,7 +227,7 @@ class PlaylistNewFragment: Fragment() {
     }
 
     private fun showToast(message: String) {
-        Log.d("wtf", message)
+        findNavController().navigateUp()
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 

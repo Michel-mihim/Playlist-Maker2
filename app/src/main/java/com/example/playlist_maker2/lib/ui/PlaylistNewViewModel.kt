@@ -23,13 +23,11 @@ class PlaylistNewViewModel(
             playlistNewInteractor.addPlaylist(playlist)
 
             showToastState("Плейлист "+playlist.playlistName+" создан")
-            Log.d("wtf", "message")
         }
     }
 
     //POSTING=======================================================================================
     private fun showToastState(message: String) {
-        Log.d("wtf", message)
         playlistFragmentToastStateLiveData.postValue(message)
     }
 
