@@ -6,6 +6,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface PlaylistsInteractor {
 
-    suspend fun addPlaylist(playlist: Playlist)
+    suspend fun addPlaylist(
+        playlist: Playlist,
+        onGetResult: (Long) -> Unit
+        )
     fun getPlaylists(): Flow<List<Playlist>>
+
 }

@@ -20,14 +20,23 @@ class PlaylistNewViewModel(
 
     fun onAddPlaylistButtonClicked(playlist: Playlist) {
         viewModelScope.launch {
-            playlistNewInteractor.addPlaylist(playlist)
-
-            showToastState("Плейлист "+playlist.playlistName+" создан")
+            playlistNewInteractor.addPlaylist(
+                playlist,
+                onGetResult = { result ->
+                    var message = ""
+                    if (result.toInt() == -1) {
+                        message = "Плейлист уже существует"
+                    } else {
+                        message = "Плейлист "+playlist.playlistName+" создан"
+                    }
+                    showResult(message)
+                }
+                )
         }
     }
 
     //POSTING=======================================================================================
-    private fun showToastState(message: String) {
+    private fun showResult(message: String) {
         playlistFragmentToastStateLiveData.postValue(message)
     }
 

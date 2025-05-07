@@ -10,8 +10,11 @@ class PlaylistsInteractorImpl(
     private val playlistsRepository: PlaylistsRepository
 ) : PlaylistsInteractor {
 
-    override suspend fun addPlaylist(playlist: Playlist) {
-        playlistsRepository.addPlaylist(playlist)
+    override suspend fun addPlaylist(
+        playlist: Playlist,
+        onGetResult: (Long) -> Unit
+        ) {
+        playlistsRepository.addPlaylist(playlist, onGetResult)
     }
 
     override fun getPlaylists(): Flow<List<Playlist>> {

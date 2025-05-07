@@ -1,6 +1,7 @@
 package com.example.playlist_maker2.player.data.impl
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.playlist_maker2.lib.domain.api.PlaylistsRepository
 import com.example.playlist_maker2.lib.domain.models.Playlist
@@ -17,9 +18,13 @@ class PlaylistsRepositoryImpl(
 ) : PlaylistsRepository {
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun addPlaylist(playlist: Playlist) {
+    override suspend fun addPlaylist(
+        playlist: Playlist,
+        onGetResult: (Long) -> Unit
+        ) {
         val playlistEntity = convertToPlaylistEntity(playlist)
-        appDatabase.playlistDao().insertPlaylist(playlistEntity)
+        val result = appDatabase.playlistDao().insertPlaylist(playlistEntity)
+        onGetResult.invoke(result)
     }
 
     override fun getPlaylists(): Flow<List<Playlist>> = flow {
