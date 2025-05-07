@@ -31,7 +31,7 @@ class PlaylistNewViewModel(
                     }
                     showResult(message)
                 }
-                )
+            )
         }
     }
 
