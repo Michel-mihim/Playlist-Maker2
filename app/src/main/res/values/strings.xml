@@ -47,4 +47,10 @@
     <string name="playlist_name">Название*</string>
     <string name="playlist_about">Описание</string>
 
+    <!--
+    BOTTOM SHEET
+    -->
+    <string name="add_to_playlist">Добавить в плейлист</string>
+    <string name="tracks_count">Количество треков</string>
+
 </resources>

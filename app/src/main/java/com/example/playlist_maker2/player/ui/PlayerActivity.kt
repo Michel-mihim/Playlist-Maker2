@@ -2,6 +2,8 @@ package com.example.playlist_maker2.player.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -13,6 +15,7 @@ import com.example.playlist_maker2.player.domain.models.PlayerActivityState
 import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants
 import com.example.playlist_maker2.utils.converters.dimensionsFloatToIntConvert
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.practicum.playlistmaker.player.ui.PlayerViewModel
 import kotlinx.coroutines.delay
@@ -28,6 +31,8 @@ class PlayerActivity : AppCompatActivity() {
 
     private var track: Track? = null
 
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+
     //VAL BY
     private val playerViewModel by viewModel<PlayerViewModel>()
 
@@ -37,6 +42,9 @@ class PlayerActivity : AppCompatActivity() {
 
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.addTrackToPlaylistBottomSheet)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         playerViewModel.observePlayerActivityCurrentState().observe(this) {
             renderPlayerState(it)
@@ -83,6 +91,12 @@ class PlayerActivity : AppCompatActivity() {
         binding.buttonLike3.setOnClickListener {
             if (clickDebouncer()) {
                 playerViewModel.onFavoriteClicked(track)
+            }
+        }
+
+        binding.buttonPlus1.setOnClickListener {
+            if (clickDebouncer()) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
         }
     }
