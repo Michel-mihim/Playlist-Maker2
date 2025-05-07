@@ -285,6 +285,16 @@
             app:layout_constraintTop_toBottomOf="@id/attr4_2_genre"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+        <FrameLayout
+            android:id="@+id/blackout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:background="#1A1B2280"
+            android:visibility="gone">
+
+        </FrameLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout

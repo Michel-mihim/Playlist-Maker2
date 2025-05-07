@@ -1,9 +1,10 @@
 package com.example.playlist_maker2.player.ui
 
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -37,6 +38,7 @@ class PlayerActivity : AppCompatActivity() {
     private val playerViewModel by viewModel<PlayerViewModel>()
 
     //основной листинг==============================================================================
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -99,6 +101,26 @@ class PlayerActivity : AppCompatActivity() {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
         }
+
+        binding.blackout.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(object  : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        blackout(true)
+                    }
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        blackout(false)
+                    }
+                    else -> {}
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
     }
 
     override fun onPause() {
@@ -157,6 +179,27 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
         return current
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun blackout(enabled: Boolean) {
+        if (enabled) {
+            binding.blackout.apply {
+                alpha = 0.5f
+                visibility = View.VISIBLE
+                focusable = View.FOCUSABLE
+                isEnabled = true
+                isActivated = true
+            }
+        } else {
+            binding.blackout.apply {
+                alpha = 0f
+                visibility = View.GONE
+                focusable = View.NOT_FOCUSABLE
+                isEnabled = false
+                isActivated = false
+            }
+        }
     }
 
 }
