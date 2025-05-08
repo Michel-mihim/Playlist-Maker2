@@ -20,8 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginLeft="@dimen/track_layout_marginLeft"
-        android:layout_marginRight="@dimen/track_layout_marginRight">
+        android:layout_marginLeft="@dimen/track_layout_marginLeft">
 
         <TextView
             android:id="@+id/track_name"
@@ -43,7 +42,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/artist_name"
+                android:id="@+id/tracks_count"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/artist_name_height"
                 android:gravity="top|left"

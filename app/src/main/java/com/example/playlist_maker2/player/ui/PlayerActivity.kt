@@ -7,10 +7,13 @@ import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlist_maker2.R
+import com.example.playlist_maker2.adapters.BottomPlaylistsAdapter
 import com.example.playlist_maker2.databinding.ActivityPlayerBinding
+import com.example.playlist_maker2.lib.domain.models.Playlist
 import com.example.playlist_maker2.player.domain.models.PlayerStatus
 import com.example.playlist_maker2.player.domain.models.PlayerActivityState
 import com.example.playlist_maker2.search.domain.models.Track
@@ -34,6 +37,8 @@ class PlayerActivity : AppCompatActivity() {
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
+    private lateinit var adapter: BottomPlaylistsAdapter
+
     //VAL BY
     private val playerViewModel by viewModel<PlayerViewModel>()
 
@@ -41,6 +46,10 @@ class PlayerActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        playerViewModel.observePlaylistsState().observe(this) {
+            showPlaylists(it)
+        }
 
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -99,6 +108,9 @@ class PlayerActivity : AppCompatActivity() {
         binding.buttonPlus1.setOnClickListener {
             if (clickDebouncer()) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                blackout(true) //тут в самый раз
+
+                playerViewModel.showPlaylists()
             }
         }
 
@@ -106,12 +118,12 @@ class PlayerActivity : AppCompatActivity() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
 
+        binding.bottomPlaylistsRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
         bottomSheetBehavior.addBottomSheetCallback(object  : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        blackout(true)
-                    }
+                    BottomSheetBehavior.STATE_EXPANDED -> {} //тут слишком поздно blackout
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         blackout(false)
                     }
@@ -200,6 +212,14 @@ class PlayerActivity : AppCompatActivity() {
                 isActivated = false
             }
         }
+    }
+
+    private fun showPlaylists(playlists: List<Playlist>) {
+        adapter = BottomPlaylistsAdapter(this@PlayerActivity)
+        binding.bottomPlaylistsRecycler.adapter = adapter
+        adapter.playlists.clear()
+        adapter.playlists.addAll(playlists)
+        adapter.notifyDataSetChanged()
     }
 
 }

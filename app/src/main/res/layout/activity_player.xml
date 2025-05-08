@@ -290,7 +290,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="0"
-            android:background="#1A1B2280"
+            android:background="#1A1B22"
             android:visibility="gone">
 
         </FrameLayout>
@@ -333,9 +333,9 @@
             android:visibility="visible"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bottom_playlists_recycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/bottom_playlists_recycler"/>
+            android:layout_height="match_parent"/>
 
 
     </LinearLayout>
