@@ -120,10 +120,10 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.bottomPlaylistsRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        bottomSheetBehavior.addBottomSheetCallback(object  : BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
-                    BottomSheetBehavior.STATE_EXPANDED -> {} //тут слишком поздно blackout
+                    BottomSheetBehavior.STATE_EXPANDED -> {} //тут слишком поздно для blackout
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         blackout(false)
                     }

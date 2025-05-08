@@ -18,9 +18,9 @@ class BottomPlaylistsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
     private val playlistTracksCount: TextView
 
     init {
-        playlistPicView = itemView.findViewById(R.id.track_image)
-        playlistNameView = itemView.findViewById(R.id.track_name)
-        playlistTracksCount = itemView.findViewById(R.id.tracks_count)
+        playlistPicView = itemView.findViewById(R.id.bottom_track_image)
+        playlistNameView = itemView.findViewById(R.id.bottom_track_name)
+        playlistTracksCount = itemView.findViewById(R.id.bottom_tracks_count)
     }
 
     fun bind(playlist: Playlist, context: Context) {
