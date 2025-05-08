@@ -132,7 +132,7 @@ class PlaylistNewFragment: Fragment() {
 
         binding.newPlaylistAbout.addTextChangedListener(aboutTextWatcher)
 
-        //==========================================================================================
+        //СИСТЕМНАЯ КНОПКА НАЗАД====================================================================
         requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 confirmationDialogManager()
@@ -180,7 +180,12 @@ class PlaylistNewFragment: Fragment() {
     private fun confirmationDialogManager() {
         if (nameIsLoaded || picIsLoaded || aboutIsLoaded) {
             confirmDialog.show()
-        } else findNavController().navigateUp()
+        } else try {//костыль чтобы не проверять каким образом вызван фрагмент
+            findNavController().navigateUp()
+        } catch (e: Exception) {//если вход через bottomSheet
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
     }
 
     private fun saveImageToPrivateStorage(

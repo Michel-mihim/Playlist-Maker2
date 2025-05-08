@@ -14,6 +14,7 @@ import com.example.playlist_maker2.R
 import com.example.playlist_maker2.adapters.BottomPlaylistsAdapter
 import com.example.playlist_maker2.databinding.ActivityPlayerBinding
 import com.example.playlist_maker2.lib.domain.models.Playlist
+import com.example.playlist_maker2.lib.ui.PlaylistNewFragment
 import com.example.playlist_maker2.player.domain.models.PlayerStatus
 import com.example.playlist_maker2.player.domain.models.PlayerActivityState
 import com.example.playlist_maker2.search.domain.models.Track
@@ -116,6 +117,16 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.blackout.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        binding.addPlaylistButton.setOnClickListener {
+            if (savedInstanceState == null) {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.add_playlist_in_player_container_view, PlaylistNewFragment())
+                    .addToBackStack("new_playlist")
+                    .setReorderingAllowed(true)
+                    .commit()
+            }
         }
 
         binding.bottomPlaylistsRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

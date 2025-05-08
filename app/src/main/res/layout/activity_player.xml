@@ -341,4 +341,9 @@
 
     </LinearLayout>
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/add_playlist_in_player_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
