@@ -6,9 +6,10 @@ import androidx.room.TypeConverters
 import com.example.playlist_maker2.player.data.db.dao.PlaylistDao
 import com.example.playlist_maker2.player.data.db.dao.TrackDao
 import com.example.playlist_maker2.player.data.db.entities.PlaylistEntity
+import com.example.playlist_maker2.player.data.db.entities.PlaylistTracksEntity
 import com.example.playlist_maker2.player.data.db.entities.TrackEntity
 
-@Database(version = 1, entities = [TrackEntity::class, PlaylistEntity::class])
+@Database(version = 1, entities = [TrackEntity::class, PlaylistEntity::class, PlaylistTracksEntity::class])
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun trackDao(): TrackDao
