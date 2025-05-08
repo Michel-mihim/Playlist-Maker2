@@ -2,6 +2,7 @@ package com.example.playlist_maker2.player.ui
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
@@ -108,18 +109,19 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.buttonPlus1.setOnClickListener {
             if (clickDebouncer()) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                blackout(true) //тут в самый раз
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
 
                 playerViewModel.showPlaylists()
             }
         }
 
-        binding.blackout.setOnClickListener {
+        binding.overlay.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
 
         binding.addPlaylistButton.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
             if (savedInstanceState == null) {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.add_playlist_in_player_container_view, PlaylistNewFragment())
@@ -134,15 +136,23 @@ class PlayerActivity : AppCompatActivity() {
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
-                    BottomSheetBehavior.STATE_EXPANDED -> {} //тут слишком поздно для blackout
+                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+                        overlay(true)
+                    }
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        overlay(true)
+                    }
                     BottomSheetBehavior.STATE_HIDDEN -> {
-                        blackout(false)
+                        overlay(false)
                     }
                     else -> {}
                 }
             }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                binding.overlay.alpha = (slideOffset + 1) / 2
+            }
+
         })
     }
 
@@ -205,18 +215,16 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun blackout(enabled: Boolean) {
+    fun overlay(enabled: Boolean) {
         if (enabled) {
-            binding.blackout.apply {
-                alpha = 0.5f
+            binding.overlay.apply {
                 visibility = View.VISIBLE
                 focusable = View.FOCUSABLE
                 isEnabled = true
                 isActivated = true
             }
         } else {
-            binding.blackout.apply {
-                alpha = 0f
+            binding.overlay.apply {
                 visibility = View.GONE
                 focusable = View.NOT_FOCUSABLE
                 isEnabled = false
@@ -231,6 +239,12 @@ class PlayerActivity : AppCompatActivity() {
         adapter.playlists.clear()
         adapter.playlists.addAll(playlists)
         adapter.notifyDataSetChanged()
+
+        adapter.onPlaylistItemClickListener = { playlistName ->
+            if (clickDebouncer()) {
+                Log.d("wtf",  intent.extras?.getString(Constants.TRACK_NAME_KEY)+ " to " +playlistName)
+            }
+        }
     }
 
 }

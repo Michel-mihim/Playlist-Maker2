@@ -11,6 +11,8 @@ class BottomPlaylistsAdapter(val context: Context) : RecyclerView.Adapter<Bottom
 
     var playlists = ArrayList<Playlist>()
 
+    var onPlaylistItemClickListener: ((String) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BottomPlaylistsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.playlist_bottom_view, parent, false)
         return BottomPlaylistsViewHolder(view)
@@ -18,6 +20,12 @@ class BottomPlaylistsAdapter(val context: Context) : RecyclerView.Adapter<Bottom
 
     override fun onBindViewHolder(holder: BottomPlaylistsViewHolder, position: Int) {
         holder.bind(playlists[position], context)
+
+        holder.itemView.setOnClickListener {
+            val playlistName = playlists[position].playlistName
+            onPlaylistItemClickListener?.invoke(playlistName)
+        }
+
     }
 
     override fun getItemCount(): Int = playlists.size

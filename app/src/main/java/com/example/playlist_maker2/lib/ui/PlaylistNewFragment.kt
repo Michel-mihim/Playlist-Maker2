@@ -97,7 +97,11 @@ class PlaylistNewFragment: Fragment() {
                 // ничего не делаем
             }.setNegativeButton("Завершить") { dialog, which ->
                 // выходим из окна без сохранения
-                findNavController().navigateUp()
+                try {//костыль чтобы не проверять каким образом вызван фрагмент
+                    findNavController().navigateUp()
+                } catch (e: Exception) {//если вход через bottomSheet
+                    requireActivity().supportFragmentManager.popBackStack()
+                }
             }
         //==========================================================================================
         val nameTextWatcher = object : TextWatcher {
@@ -232,7 +236,11 @@ class PlaylistNewFragment: Fragment() {
     }
 
     private fun showToast(message: String) {
-        findNavController().navigateUp()
+        try {//костыль чтобы не проверять каким образом вызван фрагмент
+            findNavController().navigateUp()
+        } catch (e: Exception) {//если вход через bottomSheet
+            requireActivity().supportFragmentManager.popBackStack()
+        }
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 

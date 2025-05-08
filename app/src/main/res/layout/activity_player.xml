@@ -286,11 +286,11 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <FrameLayout
-            android:id="@+id/blackout"
+            android:id="@+id/overlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="0"
-            android:background="#1A1B22"
+            android:background="#000000"
             android:visibility="gone">
 
         </FrameLayout>
