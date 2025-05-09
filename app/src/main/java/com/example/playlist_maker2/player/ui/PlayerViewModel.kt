@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlist_maker2.lib.domain.api.PlaylistsInteractor
 import com.example.playlist_maker2.lib.domain.models.Playlist
+import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
 import com.example.playlist_maker2.player.domain.api.FavoriteTracksInteractor
 import com.example.playlist_maker2.player.domain.api.MediaPlayerInteractor
+import com.example.playlist_maker2.player.domain.api.TrackToPlaylistInteractor
 import com.example.playlist_maker2.player.domain.models.DBPlaylistsState
 import com.example.playlist_maker2.player.domain.models.PlayerActivityState
 import com.example.playlist_maker2.player.domain.models.PlayerStatus
@@ -26,7 +28,8 @@ import kotlinx.coroutines.runBlocking
 class PlayerViewModel(
     private val mediaPlayerInteractor: MediaPlayerInteractor,
     private val favoriteTracksInteractor: FavoriteTracksInteractor,
-    private val playlistNewInteractor: PlaylistsInteractor
+    private val playlistNewInteractor: PlaylistsInteractor,
+    private val trackToPlaylistInteractor: TrackToPlaylistInteractor
 ): ViewModel() {
 
     private var playerReadiness: Boolean = false
@@ -46,6 +49,9 @@ class PlayerViewModel(
 
     private val playlistsStateLiveData = MutableLiveData<List<Playlist>>()
     fun observePlaylistsState(): LiveData<List<Playlist>> = playlistsStateLiveData
+
+    private val playerPlaylistTrackToastStateLiveData = SingleLiveEvent<String>()
+    fun observePlayerPlaylistTrackToastState(): LiveData<String> = playerPlaylistTrackToastStateLiveData
 
     //LIFE_CYCLE====================================================================================
     override fun onCleared() {
@@ -206,6 +212,23 @@ class PlayerViewModel(
         }
     }
 
+    fun addPlaylistTrack(playlistTrack: PlaylistTrack) {
+        viewModelScope.launch {
+            trackToPlaylistInteractor.addTrack(
+                playlistTrack,
+                onGetResult = { result ->
+                    var message = ""
+                    if (result.toInt() == -1) {
+                        message = "Трек уже добавлен в плейлист "+playlistTrack.playlistName
+                    } else {
+                        message = "Добавлено в плейлист "+playlistTrack.playlistName
+                    }
+                    showResult(message)
+                }
+            )
+        }
+    }
+
     //POSTING=======================================================================================
 
     private fun playerActivityPostState(playerActivityState: PlayerActivityState) {
@@ -214,6 +237,10 @@ class PlayerViewModel(
 
     private fun renderPlaylists(playlists: List<Playlist>) {
         playlistsStateLiveData.postValue(playlists)
+    }
+
+    private fun showResult(message: String) {
+        playerPlaylistTrackToastStateLiveData.postValue(message)
     }
 
 }

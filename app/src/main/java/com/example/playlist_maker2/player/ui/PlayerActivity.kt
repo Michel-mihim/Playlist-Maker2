@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +16,7 @@ import com.example.playlist_maker2.R
 import com.example.playlist_maker2.adapters.BottomPlaylistsAdapter
 import com.example.playlist_maker2.databinding.ActivityPlayerBinding
 import com.example.playlist_maker2.lib.domain.models.Playlist
+import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
 import com.example.playlist_maker2.lib.ui.PlaylistNewFragment
 import com.example.playlist_maker2.player.domain.models.PlayerStatus
 import com.example.playlist_maker2.player.domain.models.PlayerActivityState
@@ -61,6 +63,10 @@ class PlayerActivity : AppCompatActivity() {
 
         playerViewModel.observePlayerActivityCurrentState().observe(this) {
             renderPlayerState(it)
+        }
+
+        playerViewModel.observePlayerPlaylistTrackToastState().observe(this) {
+            showPlaylistTrackToast(it)
         }
 
         binding.buttonPlay2.isEnabled = false //пока плеер не готов на нее нельзя нажимать
@@ -244,9 +250,18 @@ class PlayerActivity : AppCompatActivity() {
 
         adapter.onPlaylistItemClickListener = { playlistName ->
             if (clickDebouncer()) {
-
+                playerViewModel.addPlaylistTrack(PlaylistTrack(
+                    trackId = trackId!!,
+                    playlistName = playlistName
+                ))
             }
         }
+    }
+
+    private fun showPlaylistTrackToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
 }
