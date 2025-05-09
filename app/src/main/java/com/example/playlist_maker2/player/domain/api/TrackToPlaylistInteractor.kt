@@ -1,0 +1,14 @@
+package com.example.playlist_maker2.player.domain.api
+
+import com.example.playlist_maker2.lib.domain.models.Playlist
+import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
+import kotlinx.coroutines.flow.Flow
+
+interface TrackToPlaylistInteractor {
+
+    suspend fun addTrack(
+        playlistTrack: PlaylistTrack,
+        onGetResult: (Long) -> Unit
+    )
+    fun getTracksCount(playlistName: String): Flow<Long>
+}

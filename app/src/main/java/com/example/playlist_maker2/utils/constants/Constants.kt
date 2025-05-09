@@ -36,6 +36,7 @@ object Constants {
     const val TRACK_IS_OVER_PROGRESS = "00:00"
 
     //ключи
+    const val TRACK_ID_KEY = "b_track_id"
     const val TRACK_NAME_KEY = "b_track_name"
     const val ARTIST_NAME_KEY = "b_artist_name"
     const val TRACK_TIME_KEY = "b_track_time"

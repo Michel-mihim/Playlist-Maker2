@@ -240,9 +240,11 @@ class PlayerActivity : AppCompatActivity() {
         adapter.playlists.addAll(playlists)
         adapter.notifyDataSetChanged()
 
+        val trackId = intent.extras?.getString(Constants.TRACK_ID_KEY)
+
         adapter.onPlaylistItemClickListener = { playlistName ->
             if (clickDebouncer()) {
-                Log.d("wtf",  intent.extras?.getString(Constants.TRACK_NAME_KEY)+ " to " +playlistName)
+
             }
         }
     }
