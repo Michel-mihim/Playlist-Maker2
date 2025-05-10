@@ -10,6 +10,10 @@ interface PlaylistsInteractor {
         playlist: Playlist,
         onGetResult: (Long) -> Unit
         )
+    suspend fun setPlaylistTracksCount(
+        playlistName: String,
+        playlistTracksCount: Int
+    )
     fun getPlaylists(): Flow<List<Playlist>>
 
 }

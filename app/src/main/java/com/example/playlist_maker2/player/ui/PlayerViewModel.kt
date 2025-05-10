@@ -28,7 +28,7 @@ import kotlinx.coroutines.runBlocking
 class PlayerViewModel(
     private val mediaPlayerInteractor: MediaPlayerInteractor,
     private val favoriteTracksInteractor: FavoriteTracksInteractor,
-    private val playlistNewInteractor: PlaylistsInteractor,
+    private val playlistInteractor: PlaylistsInteractor,
     private val trackToPlaylistInteractor: TrackToPlaylistInteractor
 ): ViewModel() {
 
@@ -204,7 +204,7 @@ class PlayerViewModel(
         playlists.clear()
 
         viewModelScope.launch {
-            playlistNewInteractor.getPlaylists().collect { playlistsFromDb ->
+            playlistInteractor.getPlaylists().collect { playlistsFromDb ->
                 playlists.addAll(playlistsFromDb)
 
                 renderPlaylists(playlists)
@@ -216,17 +216,27 @@ class PlayerViewModel(
         viewModelScope.launch {
             trackToPlaylistInteractor.addTrack(
                 playlistTrack,
-                onGetResult = { result ->
+                onGetResult = { result, tracksCount ->
                     var message = ""
                     if (result.toInt() == -1) {
                         message = "Трек уже добавлен в плейлист "+playlistTrack.playlistName
                     } else {
                         message = "Добавлено в плейлист "+playlistTrack.playlistName
+
+                        viewModelScope.launch { setPlaylistTracksCount(playlistTrack.playlistName, tracksCount) }
+
                     }
                     showResult(message)
                 }
             )
         }
+    }
+
+    suspend fun setPlaylistTracksCount(playlistName: String, tracksCount: Int) {
+        playlistInteractor.setPlaylistTracksCount(
+            playlistName = playlistName,
+            playlistTracksCount = tracksCount
+        )
     }
 
     //POSTING=======================================================================================

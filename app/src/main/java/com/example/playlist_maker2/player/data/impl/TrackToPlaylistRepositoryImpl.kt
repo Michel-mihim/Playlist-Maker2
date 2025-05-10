@@ -1,10 +1,9 @@
 package com.example.playlist_maker2.player.data.impl
 
-import com.example.playlist_maker2.lib.domain.models.Playlist
+import android.util.Log
 import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
 import com.example.playlist_maker2.player.data.converters.PlaylistTrackDbConvertor
 import com.example.playlist_maker2.player.data.db.AppDatabase
-import com.example.playlist_maker2.player.data.db.entities.PlaylistEntity
 import com.example.playlist_maker2.player.data.db.entities.PlaylistTracksEntity
 import com.example.playlist_maker2.player.domain.api.TrackToPlaylistRepository
 import kotlinx.coroutines.flow.Flow
@@ -17,16 +16,12 @@ class TrackToPlaylistRepositoryImpl(
 
     override suspend fun addTrack(
         playlistTrack: PlaylistTrack,
-        onGetResult: (Long) -> Unit
+        onGetResult: (Long, Int) -> Unit
     ) {
         val playlistTrackEntity = convertToPlaylistTrackEntity(playlistTrack)
         val result = appDatabase.playlistTracksDao().insertPlaylistTrack(playlistTrackEntity)
-        onGetResult.invoke(result)
-    }
-
-    override fun getTracksCount(playlistName: String): Flow<Long> = flow {
-        val playlistTracksCount = appDatabase.playlistTracksDao().getTracksCount(playlistName)
-        emit(playlistTracksCount)
+        val tracksCount = appDatabase.playlistTracksDao().getTracksCount(playlistTrackEntity.playlistName)
+        onGetResult.invoke(result, tracksCount)
     }
 
     private fun convertToPlaylistTrackEntity(playlistTrack: PlaylistTrack): PlaylistTracksEntity {

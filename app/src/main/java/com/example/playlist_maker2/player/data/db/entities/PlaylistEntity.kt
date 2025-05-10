@@ -13,5 +13,7 @@ data class PlaylistEntity(
     @ColumnInfo(name = "playlistAbout", typeAffinity = TEXT)
     val playlistAbout: String,
     @ColumnInfo(name = "dateTime", typeAffinity = INTEGER)
-    val dateTimeStamp: Long
+    val dateTimeStamp: Long,
+    @ColumnInfo(name = "playlistTracksCount", typeAffinity = INTEGER)
+    val playlistTracksCount: Int?
 )

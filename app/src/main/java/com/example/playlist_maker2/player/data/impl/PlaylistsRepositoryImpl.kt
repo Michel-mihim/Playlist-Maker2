@@ -27,6 +27,16 @@ class PlaylistsRepositoryImpl(
         onGetResult.invoke(result)
     }
 
+    override suspend fun setPlaylistTracksCount(
+        playlistName: String,
+        playlistTracksCount: Int
+    ) {
+        appDatabase.playlistDao().setPlaylistTracksCount(
+            playlistName = playlistName,
+            playlistTracksCount = playlistTracksCount
+            )
+    }
+
     override fun getPlaylists(): Flow<List<Playlist>> = flow {
         val playlists = appDatabase.playlistDao().getPlaylists()
         emit(convertFromPlaylistEntity(playlists))

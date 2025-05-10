@@ -34,7 +34,7 @@ class BottomPlaylistsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
         }
 
         playlistNameView.text = playlist.playlistName
-        playlistTracksCount.text = playlist.playlistAbout//исправить на количество треков
+        playlistTracksCount.text = (playlist.playlistTracksCount?.toString() ?: "0") + " трек(ов/а)"
     }
 
 }

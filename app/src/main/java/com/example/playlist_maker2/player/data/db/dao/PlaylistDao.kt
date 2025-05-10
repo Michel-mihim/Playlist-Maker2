@@ -14,4 +14,7 @@ interface PlaylistDao {
 
     @Query("SELECT * FROM playlist_table ORDER by playlistName ASC")
     suspend fun getPlaylists(): List<PlaylistEntity>
+
+    @Query("UPDATE playlist_table SET playlistTracksCount = :playlistTracksCount WHERE playlistName = :playlistName")
+    suspend fun setPlaylistTracksCount(playlistName: String, playlistTracksCount: Int)
 }

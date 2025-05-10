@@ -14,14 +14,16 @@ class PlaylistDbConvertor {
         return PlaylistEntity(
             playlist.playlistName,
             playlist.playlistAbout,
-            LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+            LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+            0
         )
     }
 
     fun map(playlist: PlaylistEntity): Playlist {
         return Playlist(
             playlist.playlistName,
-            playlist.playlistAbout
+            playlist.playlistAbout,
+            playlist.playlistTracksCount
         )
     }
 }

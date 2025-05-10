@@ -13,5 +13,5 @@ interface PlaylistTracksDao {
     suspend fun insertPlaylistTrack(playlistTrack: PlaylistTracksEntity): Long
 
     @Query("SELECT COUNT(trackId) FROM playlist_tracks_table WHERE playlistName = :playlistName")
-    suspend fun getTracksCount(playlistName: String): Long
+    suspend fun getTracksCount(playlistName: String): Int
 }

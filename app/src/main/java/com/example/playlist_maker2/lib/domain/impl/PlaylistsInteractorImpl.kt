@@ -17,6 +17,13 @@ class PlaylistsInteractorImpl(
         playlistsRepository.addPlaylist(playlist, onGetResult)
     }
 
+    override suspend fun setPlaylistTracksCount(playlistName: String, playlistTracksCount: Int) {
+        playlistsRepository.setPlaylistTracksCount(
+            playlistName = playlistName,
+            playlistTracksCount = playlistTracksCount
+        )
+    }
+
     override fun getPlaylists(): Flow<List<Playlist>> {
         return playlistsRepository.getPlaylists()
     }

@@ -11,7 +11,7 @@ class TrackToPlaylistInteractorImpl(
 
     override suspend fun addTrack(
         playlistTrack: PlaylistTrack,
-        onGetResult: (Long) -> Unit
+        onGetResult: (Long, Int) -> Unit
     ) {
         trackToPlaylistRepository.addTrack(
             playlistTrack,
@@ -19,7 +19,4 @@ class TrackToPlaylistInteractorImpl(
         )
     }
 
-    override fun getTracksCount(playlistName: String): Flow<Long> {
-        return trackToPlaylistRepository.getTracksCount(playlistName)
-    }
 }

@@ -7,7 +7,7 @@ interface TrackToPlaylistRepository {
 
     suspend fun addTrack(
         playlistTrack: PlaylistTrack,
-        onGetResult: (Long) -> Unit
+        onGetResult: (Long, Int) -> Unit
     )
-    fun getTracksCount(playlistName: String): Flow<Long>
+
 }
