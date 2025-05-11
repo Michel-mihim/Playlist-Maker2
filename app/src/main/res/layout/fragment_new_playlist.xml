@@ -74,6 +74,20 @@
             android:singleLine="true"
             />
 
+        <TextView
+            android:id="@+id/new_playlist_upper_hint_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/new_playlist_name"
+            app:layout_constraintBottom_toTopOf="@id/new_playlist_name"
+            app:layout_constraintTop_toTopOf="@id/new_playlist_name"
+            android:paddingHorizontal="6dp"
+            android:layout_marginLeft="@dimen/dp10"
+            android:textColor="@color/new_playlist_button_active_color"
+            android:background="@color/menuColor"
+            android:text="@string/playlist_name"
+            android:visibility="gone"/>
+
         <EditText
             android:id="@+id/new_playlist_about"
             android:layout_width="@dimen/dp_0"
@@ -92,6 +106,20 @@
             android:inputType="text"
             android:imeOptions="actionDone"
             android:singleLine="true"/>
+
+        <TextView
+            android:id="@+id/new_playlist_upper_hint_about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/new_playlist_about"
+            app:layout_constraintBottom_toTopOf="@id/new_playlist_about"
+            app:layout_constraintTop_toTopOf="@id/new_playlist_about"
+            android:paddingHorizontal="6dp"
+            android:layout_marginLeft="@dimen/dp10"
+            android:textColor="@color/new_playlist_button_active_color"
+            android:background="@color/menuColor"
+            android:text="@string/playlist_about"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/create_new_playlist_button"

@@ -113,8 +113,16 @@ class PlaylistNewFragment: Fragment() {
                 binding.createNewPlaylistButton.isEnabled = nameIsLoaded
                 if (nameIsLoaded) {
                     binding.createNewPlaylistButton.setBackgroundColor(requireContext().getColor(R.color.new_playlist_button_active_color))
+                    binding.newPlaylistName.background = requireContext().getDrawable(R.drawable.rounded_edittext2_active)
+                    binding.newPlaylistAbout.background = requireContext().getDrawable(R.drawable.rounded_edittext2_active)
+                    binding.newPlaylistUpperHintName.visibility = View.VISIBLE
+                    binding.newPlaylistUpperHintAbout.visibility = View.VISIBLE
                 } else {
                     binding.createNewPlaylistButton.setBackgroundColor(requireContext().getColor(R.color.new_playlist_button_inactive_color))
+                    binding.newPlaylistName.background = requireContext().getDrawable(R.drawable.rounded_edittext2)
+                    binding.newPlaylistAbout.background = requireContext().getDrawable(R.drawable.rounded_edittext2)
+                    binding.newPlaylistUpperHintName.visibility = View.GONE
+                    binding.newPlaylistUpperHintAbout.visibility = View.GONE
                 }
             }
 
