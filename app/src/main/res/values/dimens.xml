@@ -75,4 +75,10 @@
     <dimen name="lib_text_margin_top">242dp</dimen>
     <dimen name="lib_button_margin_top">24dp</dimen>
 
+    <!--
+    NEW PLAYLIST
+    -->
+    <dimen name="dp3.5">3.5dp</dimen>
+    <dimen name="dp44">44dp</dimen>
+
 </resources>

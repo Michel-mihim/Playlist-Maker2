@@ -19,12 +19,12 @@ class PlaylistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val playlistPicView: ImageView
     private val playlistNameView: TextView
-    private val playlistAboutView: TextView
+    private val playlistTracksCount: TextView
 
     init {
         playlistPicView = itemView.findViewById(R.id.new_playlist_picture)
         playlistNameView = itemView.findViewById(R.id.new_playlist_name)
-        playlistAboutView = itemView.findViewById(R.id.new_playlist_about)
+        playlistTracksCount = itemView.findViewById(R.id.new_playlist_tracks_count)
     }
 
     fun bind(playlist: Playlist, context: Context) {
@@ -38,7 +38,20 @@ class PlaylistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
 
         playlistNameView.text = playlist.playlistName
-        playlistAboutView.text = playlist.playlistAbout
+        playlistTracksCount.text = (playlist.playlistTracksCount?.toString() ?: "0") + wordModifier(playlist.playlistTracksCount)
+    }
+
+    private fun wordModifier(tracksCount: Int?): String {
+        val lastChar = tracksCount.toString().last()
+        var word = ""
+        when (lastChar) {//не умеет 11,12,13,14
+            '1' -> word = " трек"
+            '2' -> word = " трека"
+            '3' -> word = " трека"
+            '4' -> word = " трека"
+            else -> word = " треков"
+        }
+        return word
     }
 
 }

@@ -44,4 +44,13 @@
     <color name="item_color_active">#3772E7</color>
     <color name="item_color_inactive">#FFFFFF</color>
 
+    <!--
+    NEW PLAYLIST
+    -->
+    <color name="new_playlist_button_inactive_color">#AEAFB4</color>
+    <color name="new_playlist_button_active_color">#3772E7</color>
+    <color name="new_playlist_edit_text_color">#FFFFFF</color>
+    <color name="new_playlist_edit_back_color">#1A1B22</color>
+    <color name="new_playlist_edit_frame_color">#FFFFFF</color>
+
 </resources>
