@@ -10,6 +10,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -25,6 +26,7 @@ import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants
 import com.example.playlist_maker2.utils.converters.dimensionsFloatToIntConvert
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.practicum.playlistmaker.player.ui.PlayerViewModel
 import kotlinx.coroutines.delay
@@ -35,6 +37,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
+
+    lateinit var confirmDialog: MaterialAlertDialogBuilder
 
     private var isClickAllowed = true
 
@@ -51,6 +55,16 @@ class PlayerActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        confirmDialog = MaterialAlertDialogBuilder(this@PlayerActivity)
+            .setTitle("Завершить создание плейлиста?")
+            .setMessage("Все несохраненные данные будут потеряны")
+            .setNeutralButton("Отмена") { dialog, which ->
+                // ничего не делаем
+            }.setNegativeButton("Завершить") { dialog, which ->
+                // выходим из окна без сохранения
+                supportFragmentManager.popBackStack()
+            }
 
         playerViewModel.observePlaylistsState().observe(this) {
             showPlaylists(it)
@@ -121,15 +135,22 @@ class PlayerActivity : AppCompatActivity() {
                 playerViewModel.showPlaylists()
             }
         }
-
+/*
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                Log.d("wtf", "1")
                 if (supportFragmentManager.backStackEntryCount > 0) {
-                    supportFragmentManager.popBackStack()
-                } else finish()
+
+                    confirmDialog.show()
+                } else {
+                    Log.d("wtf", "2")
+                    finish()
+                }
             }
         })
 
+
+ */
         binding.overlay.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
@@ -175,13 +196,13 @@ class PlayerActivity : AppCompatActivity() {
         })
     }
 
-    /*
     override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStack()
-        } else super.onBackPressed()
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            super.onBackPressed()
+        }
     }
-     */
+
+
 
     override fun onPause() {
         super.onPause()

@@ -185,16 +185,15 @@ class PlaylistNewFragment: Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        /*
-        //СИСТЕМНАЯ КНОПКА НАЗАД====================================================================
-        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                try {
+
+        //if (requireActivity().supportFragmentManager.backStackEntryCount == 0) {//если вход из навигатора
+            requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+
                     confirmationDialogManager()
-                } catch (e: Exception) {Log.d("wtf", "catch e: "+e.toString())}
-            }
-        })
-         */
+                }
+            })
+        //}
     }
 
     override fun onDetach() {
@@ -211,7 +210,6 @@ class PlaylistNewFragment: Fragment() {
         } else try {//костыль чтобы не проверять каким образом вызван фрагмент
             findNavController().navigateUp()
         } catch (e: Exception) {//если вход через bottomSheet
-
             requireActivity().supportFragmentManager.popBackStack()
         }
 
