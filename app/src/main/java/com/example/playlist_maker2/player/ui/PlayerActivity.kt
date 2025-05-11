@@ -122,6 +122,14 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
+        onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (supportFragmentManager.backStackEntryCount > 0) {
+                    supportFragmentManager.popBackStack()
+                } else finish()
+            }
+        })
+
         binding.overlay.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
@@ -166,6 +174,14 @@ class PlayerActivity : AppCompatActivity() {
 
         })
     }
+
+    /*
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else super.onBackPressed()
+    }
+     */
 
     override fun onPause() {
         super.onPause()

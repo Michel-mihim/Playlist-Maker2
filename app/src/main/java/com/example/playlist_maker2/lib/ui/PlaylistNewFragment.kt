@@ -177,7 +177,7 @@ class PlaylistNewFragment: Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
+        /*
         //СИСТЕМНАЯ КНОПКА НАЗАД====================================================================
         requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -186,6 +186,7 @@ class PlaylistNewFragment: Fragment() {
                 } catch (e: Exception) {Log.d("wtf", "catch e: "+e.toString())}
             }
         })
+         */
     }
 
     override fun onDetach() {
@@ -194,14 +195,6 @@ class PlaylistNewFragment: Fragment() {
         picIsLoaded = false
         nameIsLoaded = false
         aboutIsLoaded = false
-
-        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {try {
-
-                Log.d("wtf", "Метод выхода не определен")
-            } catch (e: Exception) {Log.d("wtf", "catch e: "+e.toString())}}
-        })
-
     }
 
     private fun confirmationDialogManager() {
