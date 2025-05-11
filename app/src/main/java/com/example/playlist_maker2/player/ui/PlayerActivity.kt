@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -97,7 +98,7 @@ class PlayerActivity : AppCompatActivity() {
         playerViewModel.mediaPlayerPrepare(bundle?.getString((Constants.PREVIEW_PIC_URL_KEY)))
 
         //слушатели нажатий
-        binding.playerBackButton.setOnClickListener{
+        binding.playerBackButton.setOnClickListener{//СВОЯ КНОПКА НАЗАД
             finish()
         }
 
@@ -130,9 +131,13 @@ class PlayerActivity : AppCompatActivity() {
 
             if (savedInstanceState == null) {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.add_playlist_in_player_container_view, PlaylistNewFragment())
-                    .addToBackStack("new_playlist")
+                    //.add(R.id.add_playlist_in_player_container_view, PlaylistNewFragment())
+                    //1.replace(R.id.add_playlist_in_player_container_view, PlaylistNewFragment())
+                    //2.addToBackStack("new_playlist")
+                    //3.setReorderingAllowed(true)
                     .setReorderingAllowed(true)
+                    .add(R.id.add_playlist_in_player_container_view, PlaylistNewFragment())
+                    .addToBackStack("new_playlist")
                     .commit()
             }
         }

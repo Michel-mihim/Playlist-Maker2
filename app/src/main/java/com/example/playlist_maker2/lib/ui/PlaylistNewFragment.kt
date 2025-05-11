@@ -1,6 +1,7 @@
 package com.example.playlist_maker2.lib.ui
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -136,15 +137,8 @@ class PlaylistNewFragment: Fragment() {
 
         binding.newPlaylistAbout.addTextChangedListener(aboutTextWatcher)
 
-        //СИСТЕМНАЯ КНОПКА НАЗАД====================================================================
-        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                confirmationDialogManager()
-            }
-        })
-
         //==========================================================================================
-        binding.newPlaylistBackButton.setOnClickListener {
+        binding.newPlaylistBackButton.setOnClickListener {//СВОЯ КНОПКА НАЗАД
             confirmationDialogManager()
         }
 
@@ -181,12 +175,42 @@ class PlaylistNewFragment: Fragment() {
 
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        //СИСТЕМНАЯ КНОПКА НАЗАД====================================================================
+        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                try {
+                    confirmationDialogManager()
+                } catch (e: Exception) {Log.d("wtf", "catch e: "+e.toString())}
+            }
+        })
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+
+        picIsLoaded = false
+        nameIsLoaded = false
+        aboutIsLoaded = false
+
+        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {try {
+
+                Log.d("wtf", "Метод выхода не определен")
+            } catch (e: Exception) {Log.d("wtf", "catch e: "+e.toString())}}
+        })
+
+    }
+
     private fun confirmationDialogManager() {
         if (nameIsLoaded || picIsLoaded || aboutIsLoaded) {
             confirmDialog.show()
         } else try {//костыль чтобы не проверять каким образом вызван фрагмент
             findNavController().navigateUp()
         } catch (e: Exception) {//если вход через bottomSheet
+
             requireActivity().supportFragmentManager.popBackStack()
         }
 

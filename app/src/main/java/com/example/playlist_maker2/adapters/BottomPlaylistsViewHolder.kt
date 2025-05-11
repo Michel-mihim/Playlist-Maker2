@@ -34,7 +34,20 @@ class BottomPlaylistsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
         }
 
         playlistNameView.text = playlist.playlistName
-        playlistTracksCount.text = (playlist.playlistTracksCount?.toString() ?: "0") + " трек(ов/а)"
+        playlistTracksCount.text = (playlist.playlistTracksCount?.toString() ?: "0") + wordModifier(playlist.playlistTracksCount)
+    }
+
+    private fun wordModifier(tracksCount: Int?): String {
+        val lastChar = tracksCount.toString().last()
+        var word = ""
+        when (lastChar) {//не умеет 11,12,13,14
+            '1' -> word = " трек"
+            '2' -> word = " трека"
+            '3' -> word = " трека"
+            '4' -> word = " трека"
+            else -> word = " треков"
+        }
+        return word
     }
 
 }
