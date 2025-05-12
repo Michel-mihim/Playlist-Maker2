@@ -142,24 +142,6 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
                 playerViewModel.showPlaylists()
             }
         }
-/*
-        onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Log.d(
-                    "wtf",
-                    "activity overrides " + supportFragmentManager.backStackEntryCount.toString()
-                )
-                if (supportFragmentManager.backStackEntryCount == 0) {
-                    Log.d(
-                        "wtf",
-                        "activity overrides " + supportFragmentManager.backStackEntryCount.toString()
-                    )
-                    finish()
-                }
-            }
-        })
-
- */
 
         binding.overlay.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
@@ -170,10 +152,6 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
 
             if (savedInstanceState == null) {
                 supportFragmentManager.beginTransaction()
-                    //.add(R.id.add_playlist_in_player_container_view, PlaylistNewFragment())
-                    //1.replace(R.id.add_playlist_in_player_container_view, PlaylistNewFragment())
-                    //2.addToBackStack("new_playlist")
-                    //3.setReorderingAllowed(true)
                     .setReorderingAllowed(true)
                     .add(R.id.add_playlist_in_player_container_view, PlaylistNewFragment())
                     .addToBackStack("new_playlist")
