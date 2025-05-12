@@ -14,13 +14,13 @@
 
         <ImageView
             android:id="@+id/bottom_track_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/dp45"
+            android:layout_height="@dimen/dp45"
             android:layout_marginLeft="@dimen/image_padding_left"
             android:layout_marginVertical="@dimen/image_padding_top_bottom"
             android:background="@drawable/grid_bottom_frame"
             android:clipToOutline="true"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             android:src="@drawable/placeholder" />
 
     </FrameLayout>

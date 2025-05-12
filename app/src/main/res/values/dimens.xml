@@ -83,7 +83,9 @@
     <dimen name="sp12">12sp</dimen>
     <dimen name="dp61">61dp</dimen>
     <dimen name="dp58">58dp</dimen>
+    <dimen name="dp56">56dp</dimen>
     <dimen name="dp8">8dp</dimen>
     <dimen name="dp30">30dp</dimen>
+    <dimen name="dp45">45dp</dimen>
 
 </resources>

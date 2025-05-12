@@ -125,10 +125,10 @@
             android:id="@+id/create_new_playlist_button"
             style="@style/create_new_playlist_button_style"
             android:layout_width="@dimen/dp_0"
-            android:layout_height="@dimen/dp44"
+            android:layout_height="@dimen/dp56"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/new_playlist_about"
+
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="32dp"
             android:layout_marginHorizontal="17dp"
