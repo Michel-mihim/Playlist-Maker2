@@ -2,15 +2,12 @@ package com.example.playlist_maker2.player.ui
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -138,19 +135,22 @@ class PlayerActivity : AppCompatActivity() {
 /*
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                Log.d("wtf", "1")
-                if (supportFragmentManager.backStackEntryCount > 0) {
-
-                    confirmDialog.show()
-                } else {
-                    Log.d("wtf", "2")
+                Log.d(
+                    "wtf",
+                    "activity overrides " + supportFragmentManager.backStackEntryCount.toString()
+                )
+                if (supportFragmentManager.backStackEntryCount == 0) {
+                    Log.d(
+                        "wtf",
+                        "activity overrides " + supportFragmentManager.backStackEntryCount.toString()
+                    )
                     finish()
                 }
             }
         })
 
-
  */
+
         binding.overlay.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
@@ -198,11 +198,12 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount == 0) {
+            finish()
             super.onBackPressed()
+        } else {
+            confirmDialog.show()
         }
     }
-
-
 
     override fun onPause() {
         super.onPause()

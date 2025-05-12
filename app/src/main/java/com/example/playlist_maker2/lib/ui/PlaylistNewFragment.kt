@@ -189,7 +189,6 @@ class PlaylistNewFragment: Fragment() {
         //if (requireActivity().supportFragmentManager.backStackEntryCount == 0) {//если вход из навигатора
             requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-
                     confirmationDialogManager()
                 }
             })
@@ -202,6 +201,11 @@ class PlaylistNewFragment: Fragment() {
         picIsLoaded = false
         nameIsLoaded = false
         aboutIsLoaded = false
+
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {}
+        })
+
     }
 
     private fun confirmationDialogManager() {
