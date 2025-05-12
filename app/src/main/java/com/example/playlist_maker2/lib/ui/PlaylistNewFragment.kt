@@ -1,6 +1,7 @@
 package com.example.playlist_maker2.lib.ui
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -33,6 +34,7 @@ import com.example.playlist_maker2.R
 import com.example.playlist_maker2.databinding.FragmentNewPlaylistBinding
 import com.example.playlist_maker2.lib.domain.api.PlaylistsInteractor
 import com.example.playlist_maker2.lib.domain.models.Playlist
+import com.example.playlist_maker2.player.domain.NewPlaylistNameLoadNotifier
 import com.example.playlist_maker2.player.domain.models.DBActivityState
 import com.example.playlist_maker2.player.domain.models.DBPlaylistsState
 import com.example.playlist_maker2.search.domain.models.Track
@@ -47,13 +49,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
-class PlaylistNewFragment: Fragment() {
+class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
 
     private lateinit var binding:  FragmentNewPlaylistBinding
 
     private var inputUri: Uri? = null
 
     private var isClickAllowed = true
+
+    private lateinit var activity: Activity
 
     private val requester = PermissionRequester.instance()
 
@@ -73,6 +77,8 @@ class PlaylistNewFragment: Fragment() {
     }
 
     private val playlistNewViewModel: PlaylistNewViewModel by viewModel()
+
+    override fun loadUpdate(isLoaded: Boolean) {}
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -117,12 +123,23 @@ class PlaylistNewFragment: Fragment() {
                     binding.newPlaylistAbout.background = requireContext().getDrawable(R.drawable.rounded_edittext2_active)
                     binding.newPlaylistUpperHintName.visibility = View.VISIBLE
                     binding.newPlaylistUpperHintAbout.visibility = View.VISIBLE
+
+                    try {
+                        (activity as NewPlaylistNameLoadNotifier).loadUpdate(true)
+                    } catch (e: Exception) {}
+
                 } else {
                     binding.createNewPlaylistButton.setBackgroundColor(requireContext().getColor(R.color.new_playlist_button_inactive_color))
                     binding.newPlaylistName.background = requireContext().getDrawable(R.drawable.rounded_edittext2)
                     binding.newPlaylistAbout.background = requireContext().getDrawable(R.drawable.rounded_edittext2)
                     binding.newPlaylistUpperHintName.visibility = View.GONE
                     binding.newPlaylistUpperHintAbout.visibility = View.GONE
+
+                    try {
+                        (activity as NewPlaylistNameLoadNotifier).loadUpdate(false)
+                    } catch (e: Exception) {}
+
+
                 }
             }
 
@@ -186,13 +203,13 @@ class PlaylistNewFragment: Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        //if (requireActivity().supportFragmentManager.backStackEntryCount == 0) {//если вход из навигатора
-            requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    confirmationDialogManager()
-                }
-            })
-        //}
+        activity = context as Activity
+
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                confirmationDialogManager()
+            }
+        })
     }
 
     override fun onDetach() {

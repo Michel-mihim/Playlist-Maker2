@@ -2,6 +2,7 @@ package com.example.playlist_maker2.player.ui
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -17,6 +18,7 @@ import com.example.playlist_maker2.databinding.ActivityPlayerBinding
 import com.example.playlist_maker2.lib.domain.models.Playlist
 import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
 import com.example.playlist_maker2.lib.ui.PlaylistNewFragment
+import com.example.playlist_maker2.player.domain.NewPlaylistNameLoadNotifier
 import com.example.playlist_maker2.player.domain.models.PlayerStatus
 import com.example.playlist_maker2.player.domain.models.PlayerActivityState
 import com.example.playlist_maker2.search.domain.models.Track
@@ -31,11 +33,13 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
 
     private lateinit var binding: ActivityPlayerBinding
 
     lateinit var confirmDialog: MaterialAlertDialogBuilder
+
+    private var isNewPlaylistNameLoaded = false
 
     private var isClickAllowed = true
 
@@ -49,6 +53,12 @@ class PlayerActivity : AppCompatActivity() {
     private val playerViewModel by viewModel<PlayerViewModel>()
 
     //основной листинг==============================================================================
+    override fun loadUpdate(isLoaded: Boolean) {
+        Log.d("wtf", "updated in Activity")
+        isNewPlaylistNameLoaded = isLoaded
+        Log.d("wtf", isNewPlaylistNameLoaded.toString())
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -201,7 +211,11 @@ class PlayerActivity : AppCompatActivity() {
             finish()
             super.onBackPressed()
         } else {
-            confirmDialog.show()
+            if (isNewPlaylistNameLoaded) {
+                confirmDialog.show()
+            } else {
+                supportFragmentManager.popBackStack()
+            }
         }
     }
 
