@@ -19,6 +19,7 @@ class PlayerIntentGetterImpl(
         track: Track,
         onPlayerIntentReady: ((Any) -> Unit)
     ) {
+        bundle.putString(Constants.TRACK_ID_KEY, track.trackId)
         bundle.putString(Constants.TRACK_NAME_KEY, track.trackName)
         bundle.putString(Constants.ARTIST_NAME_KEY, track.artistName)
         bundle.putString(Constants.TRACK_TIME_KEY, SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))

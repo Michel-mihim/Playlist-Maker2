@@ -48,6 +48,9 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.firebase.crashlytics.buildtools)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -58,7 +61,12 @@ dependencies {
     //Jetpack Navigation Component
     implementation ("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation ("androidx.navigation:navigation-ui-ktx:2.5.3")
-    implementation ("androidx.fragment:fragment-ktx:1.5.6")
+
+    implementation ("androidx.fragment:fragment-ktx:<latest_version>")
+    implementation ("androidx.fragment:fragment:<latest_version>")
+
+    implementation ("androidx.activity:activity:<latest_version>")
+    implementation ("androidx.activity:activity-ktx:<latest_version>")
 
     //Glide
     implementation ("com.github.bumptech.glide:glide:4.14.2")
@@ -91,4 +99,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.7.0") // библиотека Room
     kapt("androidx.room:room-compiler:2.7.0")
     implementation("androidx.room:room-ktx:2.7.0") // поддержка корутин
+
+    //coroutine permissions
+    implementation ("com.markodevcic:peko:3.0.5")
 }

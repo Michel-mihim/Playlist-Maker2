@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ExtraText">
+    android:shape="rectangle"
+    android:padding="@dimen/text_padding">
+    <solid android:color="@color/round_play_button_main_color"/>
+    <corners
+        android:topLeftRadius="16dp"
+        android:topRightRadius="16dp"/>
+</shape>
