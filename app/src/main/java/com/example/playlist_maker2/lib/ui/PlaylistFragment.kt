@@ -53,6 +53,12 @@ class PlaylistFragment: Fragment() {
         binding.addPlaylistButton.setOnClickListener {
             findNavController().navigate(R.id.action_libFragment_to_playlistNewFragment)
         }
+        /*
+        adapter.onItemClickListener = {playlist ->
+            Log.d("wtf", "in fragment "+playlist.toString())
+        }
+
+         */
     }
 
     override fun onStart() {
@@ -82,6 +88,7 @@ class PlaylistFragment: Fragment() {
         adapter.playlists.clear()
         adapter.playlists.addAll(playlists)
         adapter.notifyDataSetChanged()
+
     }
 
     private fun emptyViewsShow() {
