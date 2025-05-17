@@ -30,8 +30,7 @@
         app:tabMode="fixed"
         app:tabIndicatorColor="@color/menu_items_text_color"
         android:layout_marginHorizontal="12dp"
-        style="@style/MyCustomTabLayout"
-        />
+        style="@style/MyCustomTabLayout"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/lib_view_pager"
