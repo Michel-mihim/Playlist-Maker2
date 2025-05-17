@@ -42,6 +42,8 @@ class PlaylistFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        adapter = PlaylistsAdapter(requireContext())
+
         playlistViewModel.observePlaylistsState().observe(viewLifecycleOwner) {
             showPlaylists(it)
         }
@@ -53,8 +55,6 @@ class PlaylistFragment: Fragment() {
         binding.addPlaylistButton.setOnClickListener {
             findNavController().navigate(R.id.action_libFragment_to_playlistNewFragment)
         }
-
-        adapter = PlaylistsAdapter(requireContext())
 
         adapter.onItemClickListener = {playlist ->
             Log.d("wtf", "in fragment "+playlist.toString())

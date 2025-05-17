@@ -24,7 +24,7 @@ class PlaylistsAdapter(val context: Context) : RecyclerView.Adapter<PlaylistView
 
         holder.itemView.setOnClickListener {
             val playlist = playlists[position]
-            Log.d("wtf", "in adapter "+playlist.toString())
+            onItemClickListener?.invoke(playlist)
         }
 
     }
