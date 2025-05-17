@@ -88,4 +88,11 @@
     <dimen name="dp30">30dp</dimen>
     <dimen name="dp45">45dp</dimen>
 
+    <!--
+    PLAYLIST EDIT
+    -->
+    <dimen name="sp24">24sp</dimen>
+    <dimen name="sp18">18sp</dimen>
+
+
 </resources>

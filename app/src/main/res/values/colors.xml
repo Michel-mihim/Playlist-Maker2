@@ -63,5 +63,10 @@
     <color name="new_playlist_edit_back_color">#FFFFFF</color>
     <color name="new_playlist_edit_frame_color">#AEAFB4</color>
 
+    <!--
+    PLAYLIST EDIT
+    -->
+    <color name="playlist_edit_background">#E6E8EB</color>
+    <color name="black">#1A1B22</color>
 
 </resources>
