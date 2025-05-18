@@ -59,7 +59,11 @@ class PlaylistFragment: Fragment() {
         adapter.onItemClickListener = {playlist ->
             Log.d("wtf", "in fragment "+playlist.toString())
 
-            findNavController().navigate(R.id.action_libFragment_to_playlistEditFragment)
+            val bundle = Bundle()
+            bundle.putString("name", playlist.playlistName)
+            bundle.putString("about", playlist.playlistAbout)
+
+            findNavController().navigate(R.id.action_libFragment_to_playlistEditFragment, bundle)
         }
 
 

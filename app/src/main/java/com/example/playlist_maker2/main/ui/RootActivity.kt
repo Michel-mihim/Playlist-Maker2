@@ -28,7 +28,11 @@ class RootActivity : AppCompatActivity() {
             val shouldBottomNavigationHide = when (destination.id) {
                 R.id.playlistNewFragment -> {
                     false
-                } else -> {
+                }
+                R.id.playlistEditFragment -> {
+                    false
+                }
+                else -> {
                     true
                 }
             }
