@@ -1,6 +1,7 @@
 package com.example.playlist_maker2.player.domain.api
 
 import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
+import com.example.playlist_maker2.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 
 interface TrackToPlaylistRepository {
@@ -9,5 +10,7 @@ interface TrackToPlaylistRepository {
         playlistTrack: PlaylistTrack,
         onGetResult: (Long, Int, Int) -> Unit
     )
+
+    fun getTracks(playlistName: String): Flow<List<PlaylistTrack>>
 
 }

@@ -285,6 +285,15 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
 
         val trackId = intent.extras?.getString(Constants.TRACK_ID_KEY)
         val trackDuration = intent.extras?.getInt(Constants.TRACK_DURATION_KEY)
+        val trackName = intent.extras?.getString(Constants.TRACK_NAME_KEY)
+        val artistName = intent.extras?.getString(Constants.ARTIST_NAME_KEY)
+        val trackTimeMillis = intent.extras?.getInt(Constants.TRACK_TIME_KEY)
+        val artworkUrl100 = intent.extras?.getString(Constants.PIC_URL_KEY)
+        val collectionName = intent.extras?.getString(Constants.TRACK_ALBUM_KEY)
+        val releaseDate = intent.extras?.getString(Constants.TRACK_YEAR_KEY)
+        val primaryGenreName = intent.extras?.getString(Constants.TRACK_GENRE_KEY)
+        val country = intent.extras?.getString(Constants.TRACK_COUNTRY_KEY)
+        val previewUrl = intent.extras?.getString(Constants.PREVIEW_PIC_URL_KEY)
 
         adapter.onPlaylistItemClickListener = { playlistName ->
             if (clickDebouncer()) {
@@ -292,14 +301,15 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
                     trackId = trackId!!,
                     trackDuration = trackDuration!!,
                     playlistName = playlistName,
-                    artistName = ,
-                    trackTimeMillis = ,
-                    artworkUrl100 = ,
-                    collectionName = ,
-                    releaseDate = ,
-                    primaryGenreName = ,
-                    country = ,
-                    previewUrl =
+                    trackName = trackName!!,
+                    artistName = artistName!!,
+                    trackTimeMillis = trackTimeMillis!!,
+                    artworkUrl100 = artworkUrl100!!,
+                    collectionName = collectionName!!,
+                    releaseDate = releaseDate!!,
+                    primaryGenreName = primaryGenreName!!,
+                    country = country!!,
+                    previewUrl = previewUrl!!
                 ))
             }
         }

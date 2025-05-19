@@ -6,7 +6,7 @@ import androidx.room.ColumnInfo.Companion.TEXT
 import androidx.room.Entity
 
 @Entity(tableName = "playlist_tracks_table", primaryKeys = ["playlistName", "trackId"])
-data class PlaylistTracksEntity(
+data class PlaylistTrackEntity(
     @ColumnInfo(name = "trackId", typeAffinity = TEXT)
     val trackId: String,
     @ColumnInfo(name = "trackDuration", typeAffinity = INTEGER)

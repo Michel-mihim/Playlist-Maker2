@@ -4,8 +4,9 @@ import android.util.Log
 import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
 import com.example.playlist_maker2.player.data.converters.PlaylistTrackDbConvertor
 import com.example.playlist_maker2.player.data.db.AppDatabase
-import com.example.playlist_maker2.player.data.db.entities.PlaylistTracksEntity
+import com.example.playlist_maker2.player.data.db.entities.PlaylistTrackEntity
 import com.example.playlist_maker2.player.domain.api.TrackToPlaylistRepository
+import com.example.playlist_maker2.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -25,8 +26,17 @@ class TrackToPlaylistRepositoryImpl(
         onGetResult.invoke(result, tracksCount, tracksDuration)
     }
 
-    private fun convertToPlaylistTrackEntity(playlistTrack: PlaylistTrack): PlaylistTracksEntity {
+    override fun getTracks(playlistName: String): Flow<List<PlaylistTrack>> = flow {
+        val tracks = appDatabase.playlistTracksDao().getEditTracks(playlistName)
+        emit(convertFromPlaylistTrackEntity(tracks))
+    }
+
+    private fun convertToPlaylistTrackEntity(playlistTrack: PlaylistTrack): PlaylistTrackEntity {
         return playlistTrackDbConvertor.map(playlistTrack)
+    }
+
+    private fun convertFromPlaylistTrackEntity(tracks: List<PlaylistTrackEntity>): List<PlaylistTrack> {
+        return tracks.map { track ->  playlistTrackDbConvertor.map(track) }
     }
 
 }

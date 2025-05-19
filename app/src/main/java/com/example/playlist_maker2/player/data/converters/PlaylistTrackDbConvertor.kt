@@ -1,12 +1,12 @@
 package com.example.playlist_maker2.player.data.converters
 
 import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
-import com.example.playlist_maker2.player.data.db.entities.PlaylistTracksEntity
+import com.example.playlist_maker2.player.data.db.entities.PlaylistTrackEntity
 
 class PlaylistTrackDbConvertor {
 
-    fun map(playlistTrack: PlaylistTrack): PlaylistTracksEntity {
-        return PlaylistTracksEntity(
+    fun map(playlistTrack: PlaylistTrack): PlaylistTrackEntity {
+        return PlaylistTrackEntity(
             playlistTrack.trackId,
             playlistTrack.trackDuration,
             playlistTrack.playlistName,
@@ -22,7 +22,7 @@ class PlaylistTrackDbConvertor {
         )
     }
 
-    fun map(playlistTrack: PlaylistTracksEntity): PlaylistTrack {
+    fun map(playlistTrack: PlaylistTrackEntity): PlaylistTrack {
         return PlaylistTrack(
             playlistTrack.trackId,
             playlistTrack.trackDuration,
