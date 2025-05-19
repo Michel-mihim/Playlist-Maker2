@@ -25,7 +25,6 @@
             android:id="@+id/playlist_edit_image"
             android:layout_width="@dimen/dp_0"
             android:layout_height="@dimen/dp_0"
-            android:layout_marginTop="26dp"
             android:background="@color/playlist_edit_background"
             android:scaleType="centerCrop"
             app:circularflow_radiusInDP="8dp"
@@ -39,9 +38,10 @@
             android:id="@+id/playlist_edit_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/playlist_edit_background"
+            android:layout_marginTop="@dimen/dp12"
+            android:background="@null"
             android:src="@drawable/edit_playlist_arrow_back"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/leftBorder"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView

@@ -1,13 +1,17 @@
 package com.example.playlist_maker2.lib.ui
 
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.playlist_maker2.R
 import com.example.playlist_maker2.databinding.FragmentEditPlaylistBinding
+import java.io.File
 
 class PlaylistEditFragment : Fragment() {
 
@@ -29,12 +33,22 @@ class PlaylistEditFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        binding.playlistEditName.text = requireArguments().getString("name")
+        val playlistEditName = requireArguments().getString("name")
+        binding.playlistEditName.text = playlistEditName
         binding.playlistEditAbout.text = requireArguments().getString("about")
         binding.playlistEditTracksCount.text = requireArguments().getInt("tracks_count").toString() +
                 wordModifier(requireArguments().getInt("tracks_count"))
         binding.playlistEditTracksDuration.text = (requireArguments().getInt("tracks_duration") / 1000).toString() +
                 wordMinuteModifier(requireArguments().getInt("tracks_duration") / 1000)
+
+        val filePath = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_album")
+        val file = File(filePath, playlistEditName+".jpg")
+
+        if (file.exists()) {
+            binding.playlistEditImage.setImageURI(file.toUri())
+        } else {
+            binding.playlistEditImage.setImageDrawable(requireContext().getDrawable(R.drawable.placeholder_large))
+        }
 
     }
 

@@ -66,7 +66,6 @@ class PlaylistFragment: Fragment() {
             findNavController().navigate(R.id.action_libFragment_to_playlistEditFragment, bundle)
         }
 
-
     }
 
     override fun onStart() {
