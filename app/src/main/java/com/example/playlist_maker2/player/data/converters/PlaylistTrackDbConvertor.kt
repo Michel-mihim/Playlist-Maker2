@@ -9,7 +9,16 @@ class PlaylistTrackDbConvertor {
         return PlaylistTracksEntity(
             playlistTrack.trackId,
             playlistTrack.trackDuration,
-            playlistTrack.playlistName
+            playlistTrack.playlistName,
+            playlistTrack.trackName,
+            playlistTrack.artistName,
+            playlistTrack.trackTimeMillis,
+            playlistTrack.artworkUrl100,
+            playlistTrack.collectionName,
+            playlistTrack.releaseDate,
+            playlistTrack.primaryGenreName,
+            playlistTrack.country,
+            playlistTrack.previewUrl
         )
     }
 
@@ -17,7 +26,16 @@ class PlaylistTrackDbConvertor {
         return PlaylistTrack(
             playlistTrack.trackId,
             playlistTrack.trackDuration,
-            playlistTrack.playlistName
+            playlistTrack.playlistName,
+            playlistTrack.trackName,
+            playlistTrack.artistName,
+            playlistTrack.trackTimeMillis,
+            playlistTrack.artworkUrl100,
+            playlistTrack.collectionName,
+            playlistTrack.releaseDate,
+            playlistTrack.primaryGenreName,
+            playlistTrack.country,
+            playlistTrack.previewUrl
         )
     }
 }

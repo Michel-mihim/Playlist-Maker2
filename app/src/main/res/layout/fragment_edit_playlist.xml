@@ -135,7 +135,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_bottom_sheet"
         android:orientation="vertical"
-        app:behavior_hideable="true"
+        app:behavior_hideable="false"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <androidx.recyclerview.widget.RecyclerView

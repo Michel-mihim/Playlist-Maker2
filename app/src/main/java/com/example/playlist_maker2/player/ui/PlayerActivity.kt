@@ -31,6 +31,8 @@ import com.practicum.playlistmaker.player.ui.PlayerViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.Int
+import kotlin.String
 
 
 class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
@@ -289,7 +291,15 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
                 playerViewModel.addPlaylistTrack(PlaylistTrack(
                     trackId = trackId!!,
                     trackDuration = trackDuration!!,
-                    playlistName = playlistName
+                    playlistName = playlistName,
+                    artistName = ,
+                    trackTimeMillis = ,
+                    artworkUrl100 = ,
+                    collectionName = ,
+                    releaseDate = ,
+                    primaryGenreName = ,
+                    country = ,
+                    previewUrl =
                 ))
             }
         }

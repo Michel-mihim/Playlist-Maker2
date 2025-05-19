@@ -9,13 +9,20 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlist_maker2.R
+import com.example.playlist_maker2.adapters.PlaylistsAdapter
+import com.example.playlist_maker2.adapters.TracksAdapter
 import com.example.playlist_maker2.databinding.FragmentEditPlaylistBinding
+import com.example.playlist_maker2.lib.domain.models.Playlist
+import com.example.playlist_maker2.search.domain.models.Track
 import java.io.File
 
 class PlaylistEditFragment : Fragment() {
 
     private lateinit var binding: FragmentEditPlaylistBinding
+
+    private lateinit var adapter: TracksAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,10 +43,12 @@ class PlaylistEditFragment : Fragment() {
         val playlistEditName = requireArguments().getString("name")
         binding.playlistEditName.text = playlistEditName
         binding.playlistEditAbout.text = requireArguments().getString("about")
+        /*
         binding.playlistEditTracksCount.text = requireArguments().getInt("tracks_count").toString() +
                 wordModifier(requireArguments().getInt("tracks_count"))
         binding.playlistEditTracksDuration.text = (requireArguments().getInt("tracks_duration") / 1000).toString() +
                 wordMinuteModifier(requireArguments().getInt("tracks_duration") / 1000)
+         */
 
         val filePath = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_album")
         val file = File(filePath, playlistEditName+".jpg")
@@ -49,6 +58,19 @@ class PlaylistEditFragment : Fragment() {
         } else {
             binding.playlistEditImage.setImageDrawable(requireContext().getDrawable(R.drawable.placeholder_large))
         }
+
+        binding.bottomPlaylistEditRecycler.layoutManager = LinearLayoutManager(requireContext(),
+            LinearLayoutManager.VERTICAL, false)
+
+        //showContent()
+
+    }
+
+    private fun showContent(tracks: List<Track>) {
+        binding.bottomPlaylistEditRecycler.adapter = adapter
+        adapter.tracks.clear()
+        adapter.tracks.addAll(tracks)
+        adapter.notifyDataSetChanged()
 
     }
 
