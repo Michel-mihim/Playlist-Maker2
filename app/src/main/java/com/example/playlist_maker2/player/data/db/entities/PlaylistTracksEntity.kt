@@ -7,6 +7,8 @@ import androidx.room.Entity
 data class PlaylistTracksEntity(
     @ColumnInfo(name = "trackId", typeAffinity = ColumnInfo.TEXT)
     val trackId: String,
+    @ColumnInfo(name = "trackDuration", typeAffinity = ColumnInfo.INTEGER)
+    val trackDuration: Int,
     @ColumnInfo(name = "playlistName", typeAffinity = ColumnInfo.TEXT)
     val playlistName: String
 )

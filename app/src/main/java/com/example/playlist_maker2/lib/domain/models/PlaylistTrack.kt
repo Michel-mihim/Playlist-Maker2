@@ -4,5 +4,6 @@ import androidx.room.ColumnInfo
 
 data class PlaylistTrack(
     val trackId: String,
+    val trackDuration: Int,
     val playlistName: String
 )

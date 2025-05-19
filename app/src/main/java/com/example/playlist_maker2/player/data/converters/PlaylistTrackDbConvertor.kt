@@ -8,6 +8,7 @@ class PlaylistTrackDbConvertor {
     fun map(playlistTrack: PlaylistTrack): PlaylistTracksEntity {
         return PlaylistTracksEntity(
             playlistTrack.trackId,
+            playlistTrack.trackDuration,
             playlistTrack.playlistName
         )
     }
@@ -15,6 +16,7 @@ class PlaylistTrackDbConvertor {
     fun map(playlistTrack: PlaylistTracksEntity): PlaylistTrack {
         return PlaylistTrack(
             playlistTrack.trackId,
+            playlistTrack.trackDuration,
             playlistTrack.playlistName
         )
     }

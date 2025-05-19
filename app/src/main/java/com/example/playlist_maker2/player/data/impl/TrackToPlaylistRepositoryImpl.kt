@@ -16,12 +16,13 @@ class TrackToPlaylistRepositoryImpl(
 
     override suspend fun addTrack(
         playlistTrack: PlaylistTrack,
-        onGetResult: (Long, Int) -> Unit
+        onGetResult: (Long, Int, Int) -> Unit
     ) {
         val playlistTrackEntity = convertToPlaylistTrackEntity(playlistTrack)
         val result = appDatabase.playlistTracksDao().insertPlaylistTrack(playlistTrackEntity)
         val tracksCount = appDatabase.playlistTracksDao().getTracksCount(playlistTrackEntity.playlistName)
-        onGetResult.invoke(result, tracksCount)
+        val tracksDuration = appDatabase.playlistTracksDao().getTracksDuration(playlistTrackEntity.playlistName)
+        onGetResult.invoke(result, tracksCount, tracksDuration)
     }
 
     private fun convertToPlaylistTrackEntity(playlistTrack: PlaylistTrack): PlaylistTracksEntity {

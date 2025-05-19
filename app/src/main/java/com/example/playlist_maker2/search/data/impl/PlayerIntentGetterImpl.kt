@@ -22,6 +22,7 @@ class PlayerIntentGetterImpl(
         bundle.putString(Constants.TRACK_ID_KEY, track.trackId)
         bundle.putString(Constants.TRACK_NAME_KEY, track.trackName)
         bundle.putString(Constants.ARTIST_NAME_KEY, track.artistName)
+        bundle.putInt(Constants.TRACK_DURATION_KEY, track.trackTimeMillis)
         bundle.putString(Constants.TRACK_TIME_KEY, SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))
         bundle.putString(Constants.PIC_URL_KEY, getCoverArtwork(track.artworkUrl100))
         bundle.putString(Constants.TRACK_ALBUM_KEY, track.collectionName)

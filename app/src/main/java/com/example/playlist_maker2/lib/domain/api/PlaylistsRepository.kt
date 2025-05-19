@@ -10,9 +10,10 @@ interface PlaylistsRepository {
         playlist: Playlist,
         onGetResult: (Long) -> Unit
         )
-    suspend fun setPlaylistTracksCount(
+    suspend fun setPlaylistTracksCalculation(
         playlistName: String,
-        playlistTracksCount: Int
+        playlistTracksCount: Int,
+        playlistTracksDuration: Int
     )
     fun getPlaylists(): Flow<List<Playlist>>
 }

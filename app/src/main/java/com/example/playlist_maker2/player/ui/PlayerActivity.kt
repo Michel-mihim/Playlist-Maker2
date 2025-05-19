@@ -282,11 +282,13 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
         adapter.notifyDataSetChanged()
 
         val trackId = intent.extras?.getString(Constants.TRACK_ID_KEY)
+        val trackDuration = intent.extras?.getInt(Constants.TRACK_DURATION_KEY)
 
         adapter.onPlaylistItemClickListener = { playlistName ->
             if (clickDebouncer()) {
                 playerViewModel.addPlaylistTrack(PlaylistTrack(
                     trackId = trackId!!,
+                    trackDuration = trackDuration!!,
                     playlistName = playlistName
                 ))
             }

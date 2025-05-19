@@ -216,14 +216,16 @@ class PlayerViewModel(
         viewModelScope.launch {
             trackToPlaylistInteractor.addTrack(
                 playlistTrack,
-                onGetResult = { result, tracksCount ->
+                onGetResult = { result, tracksCount, tracksDuration ->
                     var message = ""
                     if (result.toInt() == -1) {
                         message = "Трек уже добавлен в плейлист "+playlistTrack.playlistName
                     } else {
                         message = "Добавлено в плейлист "+playlistTrack.playlistName
 
-                        viewModelScope.launch { setPlaylistTracksCount(playlistTrack.playlistName, tracksCount) }
+                        viewModelScope.launch {
+                            setPlaylistTracksCalculation(playlistTrack.playlistName, tracksCount, tracksDuration)
+                        }
 
                     }
                     showResult(message)
@@ -232,10 +234,11 @@ class PlayerViewModel(
         }
     }
 
-    suspend fun setPlaylistTracksCount(playlistName: String, tracksCount: Int) {
-        playlistInteractor.setPlaylistTracksCount(
+    suspend fun setPlaylistTracksCalculation(playlistName: String, tracksCount: Int, tracksDuration: Int) {
+        playlistInteractor.setPlaylistTracksCalculation(
             playlistName = playlistName,
-            playlistTracksCount = tracksCount
+            playlistTracksCount = tracksCount,
+            playlistTracksDuration = tracksDuration
         )
     }
 

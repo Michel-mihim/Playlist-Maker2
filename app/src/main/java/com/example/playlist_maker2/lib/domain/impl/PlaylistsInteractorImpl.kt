@@ -17,10 +17,11 @@ class PlaylistsInteractorImpl(
         playlistsRepository.addPlaylist(playlist, onGetResult)
     }
 
-    override suspend fun setPlaylistTracksCount(playlistName: String, playlistTracksCount: Int) {
-        playlistsRepository.setPlaylistTracksCount(
+    override suspend fun setPlaylistTracksCalculation(playlistName: String, playlistTracksCount: Int, playlistTracksDuration: Int) {
+        playlistsRepository.setPlaylistTracksCalculation(
             playlistName = playlistName,
-            playlistTracksCount = playlistTracksCount
+            playlistTracksCount = playlistTracksCount,
+            playlistTracksDuration = playlistTracksDuration
         )
     }
 

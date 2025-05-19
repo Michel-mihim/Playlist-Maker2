@@ -39,6 +39,7 @@ object Constants {
     const val TRACK_ID_KEY = "b_track_id"
     const val TRACK_NAME_KEY = "b_track_name"
     const val ARTIST_NAME_KEY = "b_artist_name"
+    const val TRACK_DURATION_KEY = "b_track_duration"
     const val TRACK_TIME_KEY = "b_track_time"
     const val TRACK_ALBUM_KEY = "b_track_album"
     const val TRACK_YEAR_KEY = "b_track_year"

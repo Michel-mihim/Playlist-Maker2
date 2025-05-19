@@ -1,6 +1,7 @@
 package com.example.playlist_maker2.lib.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,8 @@ class PlaylistEditFragment : Fragment() {
         binding.playlistEditAbout.text = requireArguments().getString("about")
         binding.playlistEditTracksCount.text = requireArguments().getInt("tracks_count").toString() +
                 wordModifier(requireArguments().getInt("tracks_count"))
+        binding.playlistEditTracksDuration.text = (requireArguments().getInt("tracks_duration") / 1000).toString() +
+                wordMinuteModifier(requireArguments().getInt("tracks_duration") / 1000)
 
     }
 
@@ -62,4 +65,33 @@ class PlaylistEditFragment : Fragment() {
         }
         return word
     }
+
+    private fun wordMinuteModifier(duration: Int?): String {
+        var word = ""
+        var preLastChar: Char? = null
+        var lastChar: Char? = null
+
+        lastChar = duration.toString().last()
+        if (duration.toString().length >= 2) {
+            preLastChar = duration.toString()[duration.toString().length - 2]
+        }
+
+        when (preLastChar) {
+            '1' -> {
+                word = " минут"
+            }
+
+            else -> {
+                when (lastChar) {
+                    '1' -> word = " минута"
+                    '2' -> word = " минуты"
+                    '3' -> word = " минуты"
+                    '4' -> word = " минуты"
+                    else -> word = " минут"
+                }
+            }
+        }
+        return word
+    }
+
 }

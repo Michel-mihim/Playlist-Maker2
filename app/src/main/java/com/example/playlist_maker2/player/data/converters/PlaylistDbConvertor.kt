@@ -15,6 +15,7 @@ class PlaylistDbConvertor {
             playlist.playlistName,
             playlist.playlistAbout,
             LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+            0,
             0
         )
     }
@@ -23,7 +24,8 @@ class PlaylistDbConvertor {
         return Playlist(
             playlist.playlistName,
             playlist.playlistAbout,
-            playlist.playlistTracksCount
+            playlist.playlistTracksCount,
+            playlist.playlistTracksDuration
         )
     }
 }

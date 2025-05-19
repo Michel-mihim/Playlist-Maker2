@@ -27,13 +27,15 @@ class PlaylistsRepositoryImpl(
         onGetResult.invoke(result)
     }
 
-    override suspend fun setPlaylistTracksCount(
+    override suspend fun setPlaylistTracksCalculation(
         playlistName: String,
-        playlistTracksCount: Int
+        playlistTracksCount: Int,
+        playlistTracksDuration: Int
     ) {
-        appDatabase.playlistDao().setPlaylistTracksCount(
+        appDatabase.playlistDao().setPlaylistTracksCalculation(
             playlistName = playlistName,
-            playlistTracksCount = playlistTracksCount
+            playlistTracksCount = playlistTracksCount,
+            playlistTracksDuration = playlistTracksDuration
             )
     }
 

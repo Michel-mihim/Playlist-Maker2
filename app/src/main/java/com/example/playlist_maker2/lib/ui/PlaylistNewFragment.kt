@@ -194,7 +194,7 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
                     saveImageToPrivateStorage(inputUri!!, playlistName)
                 }
 
-                playlistNewViewModel.onAddPlaylistButtonClicked(Playlist(playlistName, playlistAbout, null))
+                playlistNewViewModel.onAddPlaylistButtonClicked(Playlist(playlistName, playlistAbout, null, null))
             }
         }
 

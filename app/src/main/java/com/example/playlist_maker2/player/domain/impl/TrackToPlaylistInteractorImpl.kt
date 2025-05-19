@@ -11,7 +11,7 @@ class TrackToPlaylistInteractorImpl(
 
     override suspend fun addTrack(
         playlistTrack: PlaylistTrack,
-        onGetResult: (Long, Int) -> Unit
+        onGetResult: (Long, Int, Int) -> Unit
     ) {
         trackToPlaylistRepository.addTrack(
             playlistTrack,

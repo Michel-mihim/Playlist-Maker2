@@ -14,4 +14,7 @@ interface PlaylistTracksDao {
 
     @Query("SELECT COUNT(trackId) FROM playlist_tracks_table WHERE playlistName = :playlistName")
     suspend fun getTracksCount(playlistName: String): Int
+
+    @Query("SELECT SUM(trackDuration) FROM playlist_tracks_table WHERE playlistName = :playlistName")
+    suspend fun getTracksDuration(playlistName: String): Int
 }
