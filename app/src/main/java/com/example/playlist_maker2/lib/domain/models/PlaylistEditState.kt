@@ -7,6 +7,6 @@ sealed interface PlaylistEditState {
     data class Content(
         val tracksDurationString: String,
         val tracksCountString: String,
-        val tracks: List<Track>
+        val tracks: List<PlaylistTrack>
     ): PlaylistEditState
 }

@@ -1,5 +1,6 @@
 package com.example.playlist_maker2.player.domain.impl
 
+import com.example.playlist_maker2.lib.domain.models.PlaylistEditState
 import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
 import com.example.playlist_maker2.player.domain.api.TrackToPlaylistInteractor
 import com.example.playlist_maker2.player.domain.api.TrackToPlaylistRepository
@@ -20,8 +21,12 @@ class TrackToPlaylistInteractorImpl(
         )
     }
 
-    override fun getTracks(playlistName: String): Flow<List<Track>> {
+    override fun getTracks(playlistName: String): Flow<List<PlaylistTrack>> {
         return trackToPlaylistRepository.getTracks(playlistName)
+    }
+
+    override fun getState(playlistName: String): Flow<PlaylistEditState> {
+        return trackToPlaylistRepository.getState(playlistName)
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.playlist_maker2.player.domain.api
 
+import com.example.playlist_maker2.lib.domain.models.PlaylistEditState
 import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
 import com.example.playlist_maker2.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
@@ -12,5 +13,7 @@ interface TrackToPlaylistInteractor {
     )
 
     fun getTracks(playlistName: String): Flow<List<PlaylistTrack>>
+
+    fun getState(playlistName: String): Flow<PlaylistEditState>
 
 }

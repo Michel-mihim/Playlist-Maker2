@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.playlist_maker2.lib.domain.models.Playlist
 import com.example.playlist_maker2.player.data.db.entities.PlaylistEntity
 
 @Dao
