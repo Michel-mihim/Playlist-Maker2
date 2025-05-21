@@ -2,11 +2,11 @@ package com.example.playlist_maker2.lib.ui
 
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -37,6 +37,12 @@ class PlaylistEditFragment : Fragment() {
 
     private val adapter = PlaylistTracksAdapter()
 
+    private var isPlaylistEmpty = true
+
+    private var playlistEditName = ""
+    private var playlistEditAbout = ""
+    private var playlistEditTracksCount = 0
+
     private val trackPlaylistTrackConvertor = TrackPlaylistTrackConvertor()
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
@@ -66,6 +72,10 @@ class PlaylistEditFragment : Fragment() {
             startActivity(intent)
         }
 
+        playlistEditViewModel.observeShareActivityIntentLiveData().observe(viewLifecycleOwner) { intent ->
+            startActivity(intent)
+        }
+
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Удалить трек")
             .setMessage("Вы уверены, что хотите удалить трек из плейлиста?")
@@ -75,9 +85,11 @@ class PlaylistEditFragment : Fragment() {
                 playlistEditViewModel.deletePlaylistTrack(currentTrackId!!, currentPlaylistName!!)
             }
 
-        val playlistEditName = requireArguments().getString("name")
+        playlistEditName = requireArguments().getString("name")!!
         binding.playlistEditName.text = playlistEditName
-        binding.playlistEditAbout.text = requireArguments().getString("about")
+        playlistEditAbout = requireArguments().getString("about")!!
+        binding.playlistEditAbout.text = playlistEditAbout
+        playlistEditTracksCount = requireArguments().getInt("capacity")
 
         val filePath = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_album")
         val file = File(filePath, playlistEditName+".jpg")
@@ -110,6 +122,19 @@ class PlaylistEditFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+        binding.playlistEditShare.setOnClickListener {
+            if (isPlaylistEmpty) {
+                Toast.makeText(
+                    requireContext(),
+                    "В этом плейлисте нет списка треков, которым можно поделиться",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                playlistEditViewModel.sharePlaylist(myPlaylist())
+            }
+
+        }
+
     }
 
     private fun showContent(state: PlaylistEditState) {
@@ -132,6 +157,12 @@ class PlaylistEditFragment : Fragment() {
                 else -> View.GONE
             }
 
+            if (tracks.isEmpty()) {
+                isPlaylistEmpty = true
+            } else {
+                isPlaylistEmpty = false
+            }
+
         }
 
     }
@@ -150,6 +181,42 @@ class PlaylistEditFragment : Fragment() {
 
     private fun convertToTrack(playlistTrack: PlaylistTrack): Track {
         return trackPlaylistTrackConvertor.map(playlistTrack)
+    }
+
+    private fun myPlaylist(): String {
+        var playlist = playlistEditName + "\n"
+        playlist += playlistEditAbout + "\n"
+        playlist += phraseTrackGenerator(playlistEditTracksCount) + "\n"
+
+        return playlist
+    }
+
+    private fun phraseTrackGenerator(tracksCount: Int?): String {
+        var word = ""
+        var preLastChar: Char? = null
+        var lastChar: Char? = null
+
+        lastChar = tracksCount.toString().last()
+        if (tracksCount.toString().length >= 2) {
+            preLastChar = tracksCount.toString()[tracksCount.toString().length - 2]
+        }
+
+        when (preLastChar) {
+            '1' -> {
+                word = tracksCount.toString() + " треков"
+            }
+
+            else -> {
+                when (lastChar) {
+                    '1' -> word = tracksCount.toString() + " трек"
+                    '2' -> word = tracksCount.toString() + " трека"
+                    '3' -> word = tracksCount.toString() + " трека"
+                    '4' -> word = tracksCount.toString() + " трека"
+                    else -> word = tracksCount.toString() + " треков"
+                }
+            }
+        }
+        return word
     }
 
 }

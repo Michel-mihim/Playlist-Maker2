@@ -1,7 +1,9 @@
 package com.example.playlist_maker2.di
 
 
+import com.example.playlist_maker2.lib.domain.api.PlaylistSharingInteractor
 import com.example.playlist_maker2.lib.domain.api.PlaylistsInteractor
+import com.example.playlist_maker2.lib.domain.impl.PlaylistSharingInteractorImpl
 import com.example.playlist_maker2.lib.domain.impl.PlaylistsInteractorImpl
 import com.example.playlist_maker2.player.domain.api.FavoriteTracksInteractor
 import com.example.playlist_maker2.player.domain.api.MediaPlayerInteractor
@@ -56,6 +58,10 @@ val interactorModule = module {
 
     factory<TrackToPlaylistInteractor> {
         TrackToPlaylistInteractorImpl(get())
+    }
+
+    factory<PlaylistSharingInteractor> {
+        PlaylistSharingInteractorImpl(get())
     }
 
 }

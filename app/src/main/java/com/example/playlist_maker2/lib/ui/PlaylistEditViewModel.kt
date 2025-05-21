@@ -6,9 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlist_maker2.lib.domain.api.PlaylistSharingInteractor
 import com.example.playlist_maker2.lib.domain.api.PlaylistsInteractor
 import com.example.playlist_maker2.lib.domain.models.PlaylistEditState
-import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
 import com.example.playlist_maker2.player.domain.api.TrackToPlaylistInteractor
 import com.example.playlist_maker2.search.domain.api.GetPlayerIntentUseCase
 import com.example.playlist_maker2.search.domain.models.Track
@@ -19,7 +19,8 @@ import kotlinx.coroutines.runBlocking
 class PlaylistEditViewModel(
     private val trackToPlaylistInteractor: TrackToPlaylistInteractor,
     private val playlistInteractor: PlaylistsInteractor,
-    private val getPlayerIntentUseCase: GetPlayerIntentUseCase
+    private val getPlayerIntentUseCase: GetPlayerIntentUseCase,
+    private val playlistSharingInteractor: PlaylistSharingInteractor
 ) : ViewModel() {
 
     private val playlistEditStateLiveData = MutableLiveData<PlaylistEditState>()
@@ -27,6 +28,9 @@ class PlaylistEditViewModel(
 
     private val playerActivityIntentLiveData = SingleLiveEvent<Intent>()
     fun observePlayerActivityIntent(): LiveData<Intent> = playerActivityIntentLiveData
+
+    private val shareActivityIntentLiveData = SingleLiveEvent<Intent>()
+    fun observeShareActivityIntentLiveData(): LiveData<Intent> = shareActivityIntentLiveData
 
     fun showContent(playlistName: String) {
         viewModelScope.launch {
@@ -56,6 +60,14 @@ class PlaylistEditViewModel(
         showContent(playlistName)
     }
 
+    fun sharePlaylist(text: String) {
+        playlistSharingInteractor.sharePlaylist(
+            text,
+            onChooserReady = { intent ->
+                startShareActivity(intent as Intent)
+            })
+    }
+
     suspend fun setPlaylistTracksCalculation(playlistName: String, tracksCount: Int, tracksDuration: Int) {
         playlistInteractor.setPlaylistTracksCalculation(
             playlistName = playlistName,
@@ -81,6 +93,10 @@ class PlaylistEditViewModel(
     //POSTING=======================================================================================
     private fun renderPlaylistEditState(state: PlaylistEditState) {
         playlistEditStateLiveData.postValue(state)
+    }
+
+    private fun startShareActivity(intent: Intent) {
+        shareActivityIntentLiveData.postValue(intent)
     }
 
 }

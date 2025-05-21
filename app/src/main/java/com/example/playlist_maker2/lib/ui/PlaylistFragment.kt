@@ -60,6 +60,7 @@ class PlaylistFragment: Fragment() {
             val bundle = Bundle()
             bundle.putString("name", playlist.playlistName)
             bundle.putString("about", playlist.playlistAbout)
+            bundle.putInt("capacity", playlist.playlistTracksCount!!)
 
             findNavController().navigate(R.id.action_libFragment_to_playlistEditFragment, bundle)
         }

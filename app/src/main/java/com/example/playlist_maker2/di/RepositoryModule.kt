@@ -1,6 +1,8 @@
 package com.example.playlist_maker2.di
 
 import android.content.Intent
+import com.example.playlist_maker2.lib.data.impl.PlaylistSharingRepositoryImpl
+import com.example.playlist_maker2.lib.domain.api.PlaylistSharingRepository
 import com.example.playlist_maker2.lib.domain.api.PlaylistsRepository
 import com.example.playlist_maker2.player.data.converters.PlaylistDbConvertor
 import com.example.playlist_maker2.player.data.converters.PlaylistTrackDbConvertor
@@ -86,6 +88,14 @@ val repositoryModule = module {
 
     single<TrackToPlaylistRepository> {
         TrackToPlaylistRepositoryImpl(get(), get())
+    }
+
+    factory<PlaylistSharingRepository> {
+        val playlistShareIntent = Intent(Intent.ACTION_SEND)
+        PlaylistSharingRepositoryImpl(
+            playlistShareIntent,
+            Intent.createChooser(playlistShareIntent, "Share playlist")
+        )
     }
 
 }
