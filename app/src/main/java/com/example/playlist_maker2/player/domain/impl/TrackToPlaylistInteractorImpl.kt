@@ -22,6 +22,18 @@ class TrackToPlaylistInteractorImpl(
         )
     }
 
+    override suspend fun deleteTrack(
+        trackId: String,
+        playlistName: String,
+        onGetResult: (Int, Int) -> Unit
+    ) {
+        trackToPlaylistRepository.deleteTrack(
+            trackId,
+            playlistName,
+            onGetResult
+        )
+    }
+
     override fun getTracks(playlistName: String): Flow<List<PlaylistTrack>> {
         return trackToPlaylistRepository.getTracks(playlistName)
     }

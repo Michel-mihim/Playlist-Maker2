@@ -65,7 +65,7 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
     private var nameIsLoaded = false
     private var aboutIsLoaded = false
 
-    lateinit var confirmDialog: MaterialAlertDialogBuilder
+    private lateinit var confirmDialog: MaterialAlertDialogBuilder
 
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {

@@ -18,10 +18,10 @@ import com.example.playlist_maker2.databinding.FragmentEditPlaylistBinding
 import com.example.playlist_maker2.lib.domain.models.PlaylistEditState
 import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
 import com.example.playlist_maker2.player.data.converters.TrackPlaylistTrackConvertor
-import com.example.playlist_maker2.player.data.db.entities.PlaylistTrackEntity
 import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants.CLICK_DEBOUNCE_DELAY
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,6 +40,11 @@ class PlaylistEditFragment : Fragment() {
     private val trackPlaylistTrackConvertor = TrackPlaylistTrackConvertor()
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+
+    private lateinit var confirmDialog: MaterialAlertDialogBuilder
+
+    private var currentTrackId: String? = null
+    private var currentPlaylistName: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,6 +65,15 @@ class PlaylistEditFragment : Fragment() {
         playlistEditViewModel.observePlayerActivityIntent().observe(viewLifecycleOwner) { intent ->
             startActivity(intent)
         }
+
+        confirmDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Удалить трек")
+            .setMessage("Вы уверены, что хотите удалить трек из плейлиста?")
+            .setNeutralButton("Отмена") { dialog, which ->
+                // ничего не делаем
+            }.setNegativeButton("Удалить") { dialog, which ->
+                playlistEditViewModel.deletePlaylistTrack(currentTrackId!!, currentPlaylistName!!)
+            }
 
         val playlistEditName = requireArguments().getString("name")
         binding.playlistEditName.text = playlistEditName
@@ -84,6 +98,12 @@ class PlaylistEditFragment : Fragment() {
             if (clickDebouncer()) {
                 playlistEditViewModel.getPlayerIntent(convertToTrack(track))
             }
+        }
+
+        adapter.onItemLongClickListener = { track ->
+            currentTrackId = track.trackId
+            currentPlaylistName = track.playlistName
+            confirmDialog.show()
         }
 
         binding.playlistEditBackButton.setOnClickListener {

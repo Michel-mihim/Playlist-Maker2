@@ -12,6 +12,7 @@ class PlaylistTracksAdapter() : RecyclerView.Adapter<PlaylistTrackViewHolder>() 
     var tracks = ArrayList<PlaylistTrack>()
 
     var onItemClickListener: ((PlaylistTrack) -> Unit)? = null
+    var onItemLongClickListener: ((PlaylistTrack) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistTrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
@@ -25,6 +26,12 @@ class PlaylistTracksAdapter() : RecyclerView.Adapter<PlaylistTrackViewHolder>() 
             //передача трека в активити
             val track: PlaylistTrack = tracks[position]
             onItemClickListener?.invoke(track)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            val track: PlaylistTrack = tracks[position]
+            onItemLongClickListener?.invoke(track)
+            true
         }
     }
 

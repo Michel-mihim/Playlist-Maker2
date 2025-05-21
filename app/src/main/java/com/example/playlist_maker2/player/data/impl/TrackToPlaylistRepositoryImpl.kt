@@ -27,6 +27,20 @@ class TrackToPlaylistRepositoryImpl(
         onGetResult.invoke(result, tracksCount, tracksDuration)
     }
 
+    override suspend fun deleteTrack(
+        trackId: String,
+        playlistName: String,
+        onGetResult: (Int, Int) -> Unit
+    ) {
+        appDatabase.playlistTracksDao().deletePlaylistTrack(
+            trackId = trackId,
+            playlistName = playlistName
+        )
+        val tracksCount = appDatabase.playlistTracksDao().getTracksCount(playlistName)
+        val tracksDuration = appDatabase.playlistTracksDao().getTracksDuration(playlistName) ?: 0
+        onGetResult.invoke(tracksCount, tracksDuration)
+    }
+
     override fun getTracks(playlistName: String): Flow<List<PlaylistTrack>> = flow {
         val tracks = appDatabase.playlistTracksDao().getEditTracks(playlistName)
         emit(convertFromPlaylistTrackEntity(tracks))
