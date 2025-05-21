@@ -16,6 +16,10 @@ import com.example.playlist_maker2.R
 import com.example.playlist_maker2.adapters.PlaylistTracksAdapter
 import com.example.playlist_maker2.databinding.FragmentEditPlaylistBinding
 import com.example.playlist_maker2.lib.domain.models.PlaylistEditState
+import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
+import com.example.playlist_maker2.player.data.converters.TrackPlaylistTrackConvertor
+import com.example.playlist_maker2.player.data.db.entities.PlaylistTrackEntity
+import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants.CLICK_DEBOUNCE_DELAY
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.delay
@@ -33,6 +37,8 @@ class PlaylistEditFragment : Fragment() {
 
     private val adapter = PlaylistTracksAdapter()
 
+    private val trackPlaylistTrackConvertor = TrackPlaylistTrackConvertor()
+
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     override fun onCreateView(
@@ -49,6 +55,10 @@ class PlaylistEditFragment : Fragment() {
 
         playlistEditViewModel.observePlaylistEditState().observe(viewLifecycleOwner) {
             showContent(it)
+        }
+
+        playlistEditViewModel.observePlayerActivityIntent().observe(viewLifecycleOwner) { intent ->
+            startActivity(intent)
         }
 
         val playlistEditName = requireArguments().getString("name")
@@ -72,7 +82,7 @@ class PlaylistEditFragment : Fragment() {
 
         adapter.onItemClickListener = { track ->
             if (clickDebouncer()) {
-
+                playlistEditViewModel.getPlayerIntent(convertToTrack(track))
             }
         }
 
@@ -116,6 +126,10 @@ class PlaylistEditFragment : Fragment() {
             }
         }
         return current
+    }
+
+    private fun convertToTrack(playlistTrack: PlaylistTrack): Track {
+        return trackPlaylistTrackConvertor.map(playlistTrack)
     }
 
 }
