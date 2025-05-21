@@ -2,6 +2,7 @@ package com.example.playlist_maker2.search.data.impl
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.example.playlist_maker2.search.domain.api.PlayerIntentGetter
 import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants
@@ -23,7 +24,7 @@ class PlayerIntentGetterImpl(
         bundle.putString(Constants.TRACK_NAME_KEY, track.trackName)
         bundle.putString(Constants.ARTIST_NAME_KEY, track.artistName)
         bundle.putInt(Constants.TRACK_DURATION_KEY, track.trackTimeMillis)
-        bundle.putString(Constants.TRACK_TIME_KEY, SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))
+        bundle.putInt(Constants.TRACK_TIME_KEY, track.trackTimeMillis)
         bundle.putString(Constants.PIC_URL_KEY, getCoverArtwork(track.artworkUrl100))
         bundle.putString(Constants.TRACK_ALBUM_KEY, track.collectionName)
         bundle.putString(Constants.TRACK_YEAR_KEY, isoDateToYearConvert(track.releaseDate))

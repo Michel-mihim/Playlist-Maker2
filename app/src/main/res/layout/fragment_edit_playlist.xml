@@ -130,12 +130,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/add_track_to_playlist_bottom_sheet"
+        android:id="@+id/playlist_edit_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/rounded_bottom_sheet"
         android:orientation="vertical"
         app:behavior_hideable="false"
+        app:behavior_peekHeight="150dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <androidx.recyclerview.widget.RecyclerView

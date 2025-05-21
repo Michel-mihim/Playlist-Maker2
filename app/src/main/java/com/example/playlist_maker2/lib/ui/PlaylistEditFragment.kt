@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -14,6 +15,7 @@ import com.example.playlist_maker2.R
 import com.example.playlist_maker2.adapters.PlaylistTracksAdapter
 import com.example.playlist_maker2.databinding.FragmentEditPlaylistBinding
 import com.example.playlist_maker2.lib.domain.models.PlaylistEditState
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
@@ -24,6 +26,8 @@ class PlaylistEditFragment : Fragment() {
     private val playlistEditViewModel: PlaylistEditViewModel by viewModel()
 
     private val adapter = PlaylistTracksAdapter()
+
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +62,8 @@ class PlaylistEditFragment : Fragment() {
 
         playlistEditViewModel.showContent(playlistEditName!!)
 
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistEditBottomSheet)
+
         binding.playlistEditBackButton.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -77,9 +83,14 @@ class PlaylistEditFragment : Fragment() {
 
             binding.playlistEditTracksCount.text = state.tracksCountString
 
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+            binding.playlistEditBottomSheet.visibility = when {
+                tracks.isNotEmpty() -> View.VISIBLE
+                else -> View.GONE
+            }
+
         }
-
-
 
     }
 

@@ -213,6 +213,7 @@ class PlayerViewModel(
     }
 
     fun addPlaylistTrack(playlistTrack: PlaylistTrack) {
+        Log.d("wtf", "PlayerViewModel: "+playlistTrack.toString())
         viewModelScope.launch {
             trackToPlaylistInteractor.addTrack(
                 playlistTrack,

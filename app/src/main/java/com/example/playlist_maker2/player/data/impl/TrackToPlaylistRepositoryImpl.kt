@@ -21,6 +21,7 @@ class TrackToPlaylistRepositoryImpl(
         onGetResult: (Long, Int, Int) -> Unit
     ) {
         val playlistTrackEntity = convertToPlaylistTrackEntity(playlistTrack)
+        Log.d("wtf", "TrackToPlaylistRepositoryImpl: "+playlistTrack.toString())
         val result = appDatabase.playlistTracksDao().insertPlaylistTrack(playlistTrackEntity)
         val tracksCount = appDatabase.playlistTracksDao().getTracksCount(playlistTrackEntity.playlistName)
         val tracksDuration = appDatabase.playlistTracksDao().getTracksDuration(playlistTrackEntity.playlistName) ?: 0
