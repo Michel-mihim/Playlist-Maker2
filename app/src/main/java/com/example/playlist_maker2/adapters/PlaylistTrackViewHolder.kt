@@ -1,6 +1,5 @@
 package com.example.playlist_maker2.adapters
 
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView

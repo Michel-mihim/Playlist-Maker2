@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.player.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,14 +10,12 @@ import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
 import com.example.playlist_maker2.player.domain.api.FavoriteTracksInteractor
 import com.example.playlist_maker2.player.domain.api.MediaPlayerInteractor
 import com.example.playlist_maker2.player.domain.api.TrackToPlaylistInteractor
-import com.example.playlist_maker2.player.domain.models.DBPlaylistsState
 import com.example.playlist_maker2.player.domain.models.PlayerActivityState
 import com.example.playlist_maker2.player.domain.models.PlayerStatus
 import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.classes.SingleLiveEvent
 import com.example.playlist_maker2.utils.constants.Constants
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
@@ -213,7 +210,6 @@ class PlayerViewModel(
     }
 
     fun addPlaylistTrack(playlistTrack: PlaylistTrack) {
-        Log.d("wtf", "PlayerViewModel: "+playlistTrack.toString())
         viewModelScope.launch {
             trackToPlaylistInteractor.addTrack(
                 playlistTrack,

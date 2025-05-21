@@ -20,7 +20,6 @@ class PlaylistTracksAdapter() : RecyclerView.Adapter<PlaylistTrackViewHolder>() 
 
     override fun onBindViewHolder(holder: PlaylistTrackViewHolder, position: Int) {
         holder.bind(tracks[position])
-        Log.d("wtf", "PlaylistTracksAdapter: "+tracks[position].toString())
         //слушатель нажатия на трек в результатах поиска
         holder.itemView.setOnClickListener {
             //передача трека в активити

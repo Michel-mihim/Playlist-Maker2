@@ -9,19 +9,25 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlist_maker2.R
 import com.example.playlist_maker2.adapters.PlaylistTracksAdapter
 import com.example.playlist_maker2.databinding.FragmentEditPlaylistBinding
 import com.example.playlist_maker2.lib.domain.models.PlaylistEditState
+import com.example.playlist_maker2.utils.constants.Constants.CLICK_DEBOUNCE_DELAY
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
 class PlaylistEditFragment : Fragment() {
 
     private lateinit var binding: FragmentEditPlaylistBinding
+
+    private var isClickAllowed = true
 
     private val playlistEditViewModel: PlaylistEditViewModel by viewModel()
 
@@ -64,6 +70,12 @@ class PlaylistEditFragment : Fragment() {
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistEditBottomSheet)
 
+        adapter.onItemClickListener = { track ->
+            if (clickDebouncer()) {
+
+            }
+        }
+
         binding.playlistEditBackButton.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -92,6 +104,18 @@ class PlaylistEditFragment : Fragment() {
 
         }
 
+    }
+
+    private fun clickDebouncer() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
     }
 
 }
