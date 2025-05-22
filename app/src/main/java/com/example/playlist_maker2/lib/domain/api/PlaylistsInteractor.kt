@@ -11,6 +11,8 @@ interface PlaylistsInteractor {
         onGetResult: (Long) -> Unit
         )
 
+    suspend fun deletePlaylist(playlistName: String)
+
     suspend fun setPlaylistTracksCalculation(
         playlistName: String,
         playlistTracksCount: Int,

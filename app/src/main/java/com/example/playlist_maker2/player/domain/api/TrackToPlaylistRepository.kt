@@ -18,6 +18,8 @@ interface TrackToPlaylistRepository {
         onGetResult: (Int, Int) -> Unit
     )
 
+    suspend fun deletePlaylist(playlistName: String)
+
     fun getTracks(playlistName: String): Flow<List<PlaylistTrack>>
 
     fun getState(playlistName: String): Flow<PlaylistEditState>

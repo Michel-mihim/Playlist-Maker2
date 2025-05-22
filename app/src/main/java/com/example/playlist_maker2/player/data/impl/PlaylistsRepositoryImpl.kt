@@ -27,6 +27,10 @@ class PlaylistsRepositoryImpl(
         onGetResult.invoke(result)
     }
 
+    override suspend fun deletePlaylist(playlistName: String) {
+        appDatabase.playlistDao().deletePlaylist(playlistName)
+    }
+
     override suspend fun setPlaylistTracksCalculation(
         playlistName: String,
         playlistTracksCount: Int,

@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlist_maker2.R
 import com.example.playlist_maker2.adapters.PlaylistTracksAdapter
 import com.example.playlist_maker2.databinding.FragmentEditPlaylistBinding
@@ -23,6 +25,7 @@ import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
 import com.example.playlist_maker2.player.data.converters.TrackPlaylistTrackConvertor
 import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants.CLICK_DEBOUNCE_DELAY
+import com.example.playlist_maker2.utils.converters.dimensionsFloatToIntConvert
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.delay
@@ -48,13 +51,15 @@ class PlaylistEditFragment : Fragment() {
     private var playlistEditAbout = ""
     private var playlistEditTracksCount = 0
     private var tracks = emptyList<PlaylistTrack>()
+    private var currentTracksCountString = ""
 
     private val trackPlaylistTrackConvertor = TrackPlaylistTrackConvertor()
 
     private lateinit var bottomSheetBehaviorTracksRecycler: BottomSheetBehavior<LinearLayout>
     private lateinit var bottomSheetBehaviorMenu: BottomSheetBehavior<LinearLayout>
 
-    private lateinit var confirmDialog: MaterialAlertDialogBuilder
+    private lateinit var trackDeleteConfirmDialog: MaterialAlertDialogBuilder
+    private lateinit var playlistDeleteConfirmDialog: MaterialAlertDialogBuilder
 
     private var currentTrackId: String? = null
     private var currentPlaylistName: String? = null
@@ -68,6 +73,7 @@ class PlaylistEditFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -83,7 +89,11 @@ class PlaylistEditFragment : Fragment() {
             startActivity(intent)
         }
 
-        confirmDialog = MaterialAlertDialogBuilder(requireContext())
+        playlistEditViewModel.observePlaylistDeletedNotifier().observe(viewLifecycleOwner) {
+            findNavController().navigateUp()
+        }
+
+        trackDeleteConfirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Удалить трек")
             .setMessage("Вы уверены, что хотите удалить трек из плейлиста?")
             .setNeutralButton("Отмена") { dialog, which ->
@@ -97,6 +107,15 @@ class PlaylistEditFragment : Fragment() {
         playlistEditAbout = requireArguments().getString("about")!!
         binding.playlistEditAbout.text = playlistEditAbout
         playlistEditTracksCount = requireArguments().getInt("capacity")
+
+        playlistDeleteConfirmDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Удалить плейлист")
+            .setMessage("Хотите удалить плейлист?")
+            .setNeutralButton("Нет") { dialog, which ->
+                // ничего не делаем
+            }.setNegativeButton("Да") { dialog, which ->
+                playlistEditViewModel.deletePlaylist(playlistEditName)
+            }
 
         val filePath = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_album")
         val file = File(filePath, playlistEditName+".jpg")
@@ -113,6 +132,7 @@ class PlaylistEditFragment : Fragment() {
 
         bottomSheetBehaviorTracksRecycler = BottomSheetBehavior.from(binding.playlistEditBottomSheet)
         bottomSheetBehaviorMenu = BottomSheetBehavior.from(binding.playlistEditMenuBottomSheet)
+        bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_HIDDEN
 
         bottomSheetBehaviorMenu.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             @RequiresApi(Build.VERSION_CODES.O)
@@ -150,7 +170,7 @@ class PlaylistEditFragment : Fragment() {
         adapter.onItemLongClickListener = { track ->
             currentTrackId = track.trackId
             currentPlaylistName = track.playlistName
-            confirmDialog.show()
+            trackDeleteConfirmDialog.show()
         }
 
         binding.playlistEditBackButton.setOnClickListener {
@@ -171,9 +191,37 @@ class PlaylistEditFragment : Fragment() {
         }
 
         binding.playlistEditMenu.setOnClickListener {
-            binding.playlistEditMenuBottomSheet.visibility = View.VISIBLE
+            if (clickDebouncer()) {
+                binding.bottomTrackName.text = playlistEditName
+                binding.bottomTracksCount.text = currentTracksCountString
 
-            bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_EXPANDED
+                val filePath = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_album")
+                val file = File(filePath, playlistEditName+".jpg")
+
+                if (file.exists()) {
+                    binding.bottomTrackImage.setImageURI(file.toUri())
+                } else {
+                    binding.bottomTrackImage.setImageDrawable(requireContext().getDrawable(R.drawable.placeholder_large))
+                }
+
+                bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
+
+        binding.playlistEditBottomMenuShare.setOnClickListener {
+            if (isPlaylistEmpty) {
+                Toast.makeText(
+                    requireContext(),
+                    "В этом плейлисте нет списка треков, которым можно поделиться",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                playlistEditViewModel.sharePlaylist(myPlaylist())
+            }
+        }
+
+        binding.playlistEditBottomMenuDelete.setOnClickListener {
+            playlistDeleteConfirmDialog.show()
         }
 
     }
@@ -209,6 +257,7 @@ class PlaylistEditFragment : Fragment() {
             binding.playlistEditTracksDuration.text = state.tracksDurationString
 
             binding.playlistEditTracksCount.text = state.tracksCountString
+            currentTracksCountString = state.tracksCountString
 
             bottomSheetBehaviorTracksRecycler.state = BottomSheetBehavior.STATE_COLLAPSED
 
@@ -262,7 +311,6 @@ class PlaylistEditFragment : Fragment() {
             playlist += item
             counter += 1
         }
-        Log.d("wtf", playlist)
         return playlist
     }
 

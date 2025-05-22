@@ -32,6 +32,9 @@ class PlaylistEditViewModel(
     private val shareActivityIntentLiveData = SingleLiveEvent<Intent>()
     fun observeShareActivityIntentLiveData(): LiveData<Intent> = shareActivityIntentLiveData
 
+    private val playlistDeletedNotifierLiveData = SingleLiveEvent<Boolean>()
+    fun observePlaylistDeletedNotifier(): LiveData<Boolean> = playlistDeletedNotifierLiveData
+
     fun showContent(playlistName: String) {
         viewModelScope.launch {
             trackToPlaylistInteractor.getState(playlistName).collect { state ->
@@ -58,6 +61,15 @@ class PlaylistEditViewModel(
         }
 
         showContent(playlistName)
+    }
+
+    fun deletePlaylist(playlistName: String) {
+        runBlocking {
+            trackToPlaylistInteractor.deletePlaylist(playlistName)
+            playlistInteractor.deletePlaylist(playlistName)
+        }
+
+        playlistDeletedNotify()
     }
 
     fun sharePlaylist(text: String) {
@@ -97,6 +109,10 @@ class PlaylistEditViewModel(
 
     private fun startShareActivity(intent: Intent) {
         shareActivityIntentLiveData.postValue(intent)
+    }
+
+    private fun playlistDeletedNotify() {
+        playlistDeletedNotifierLiveData.postValue(true)
     }
 
 }

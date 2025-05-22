@@ -17,6 +17,10 @@ class PlaylistsInteractorImpl(
         playlistsRepository.addPlaylist(playlist, onGetResult)
     }
 
+    override suspend fun deletePlaylist(playlistName: String) {
+        playlistsRepository.deletePlaylist(playlistName)
+    }
+
     override suspend fun setPlaylistTracksCalculation(playlistName: String, playlistTracksCount: Int, playlistTracksDuration: Int) {
         playlistsRepository.setPlaylistTracksCalculation(
             playlistName = playlistName,

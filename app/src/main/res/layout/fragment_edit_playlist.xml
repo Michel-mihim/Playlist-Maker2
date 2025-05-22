@@ -135,7 +135,6 @@
 
     <LinearLayout
         android:id="@+id/playlist_edit_bottom_sheet"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/rounded_bottom_sheet"
@@ -164,7 +163,6 @@
 
     <LinearLayout
         android:id="@+id/playlist_edit_menu_bottom_sheet"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_bottom_sheet"
@@ -237,6 +235,7 @@
         </FrameLayout>
 
         <TextView
+            android:id="@+id/playlist_edit_bottom_menu_share"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/share_playlist"
@@ -247,6 +246,7 @@
             android:textColor="@color/menu_items_text_color"/>
 
         <TextView
+            android:id="@+id/playlist_edit_bottom_menu_edit_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/edit_playlist"
@@ -257,6 +257,7 @@
             android:textColor="@color/menu_items_text_color"/>
 
         <TextView
+            android:id="@+id/playlist_edit_bottom_menu_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/delete_playlist"
