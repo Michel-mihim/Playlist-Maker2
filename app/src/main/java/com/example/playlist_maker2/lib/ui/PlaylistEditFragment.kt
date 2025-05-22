@@ -1,5 +1,6 @@
 package com.example.playlist_maker2.lib.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -49,7 +51,8 @@ class PlaylistEditFragment : Fragment() {
 
     private val trackPlaylistTrackConvertor = TrackPlaylistTrackConvertor()
 
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+    private lateinit var bottomSheetBehaviorTracksRecycler: BottomSheetBehavior<LinearLayout>
+    private lateinit var bottomSheetBehaviorMenu: BottomSheetBehavior<LinearLayout>
 
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
 
@@ -108,7 +111,35 @@ class PlaylistEditFragment : Fragment() {
 
         playlistEditViewModel.showContent(playlistEditName!!)
 
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistEditBottomSheet)
+        bottomSheetBehaviorTracksRecycler = BottomSheetBehavior.from(binding.playlistEditBottomSheet)
+        bottomSheetBehaviorMenu = BottomSheetBehavior.from(binding.playlistEditMenuBottomSheet)
+
+        bottomSheetBehaviorMenu.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+                        overlay(true)
+                    }
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        overlay(true)
+                    }
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        overlay(false)
+                    }
+                    else -> {}
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                binding.menuOverlay.alpha = (slideOffset + 1) / 2
+            }
+
+        })
+
+        binding.menuOverlay.setOnClickListener {
+            bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_HIDDEN
+        }
 
         adapter.onItemClickListener = { track ->
             if (clickDebouncer()) {
@@ -139,6 +170,31 @@ class PlaylistEditFragment : Fragment() {
 
         }
 
+        binding.playlistEditMenu.setOnClickListener {
+            binding.playlistEditMenuBottomSheet.visibility = View.VISIBLE
+
+            bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun overlay(enabled: Boolean) {
+        if (enabled) {
+            binding.menuOverlay.apply {
+                visibility = View.VISIBLE
+                focusable = View.FOCUSABLE
+                isEnabled = true
+                isActivated = true
+            }
+        } else {
+            binding.menuOverlay.apply {
+                visibility = View.GONE
+                focusable = View.NOT_FOCUSABLE
+                isEnabled = false
+                isActivated = false
+            }
+        }
     }
 
     private fun showContent(state: PlaylistEditState) {
@@ -154,7 +210,7 @@ class PlaylistEditFragment : Fragment() {
 
             binding.playlistEditTracksCount.text = state.tracksCountString
 
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            bottomSheetBehaviorTracksRecycler.state = BottomSheetBehavior.STATE_COLLAPSED
 
             binding.playlistEditBottomSheet.visibility = when {
                 tracks.isNotEmpty() -> View.VISIBLE

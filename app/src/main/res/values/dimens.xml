@@ -93,6 +93,8 @@
     -->
     <dimen name="sp24">24sp</dimen>
     <dimen name="sp18">18sp</dimen>
+    <dimen name="dp21">21dp</dimen>
+    <dimen name="sp16">16sp</dimen>
 
 
 </resources>

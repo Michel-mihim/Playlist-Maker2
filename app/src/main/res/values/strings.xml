@@ -58,5 +58,8 @@
     -->
     <string name="playlist_edit_name">Название плейлиста</string>
     <string name="tracks_duration">Длительность треков</string>
+    <string name="share_playlist">Поделиться</string>
+    <string name="edit_playlist">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
 
 </resources>
