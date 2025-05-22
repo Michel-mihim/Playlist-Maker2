@@ -2,6 +2,7 @@ package com.example.playlist_maker2.lib.ui
 
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class PlaylistEditFragment : Fragment() {
 
@@ -42,6 +45,7 @@ class PlaylistEditFragment : Fragment() {
     private var playlistEditName = ""
     private var playlistEditAbout = ""
     private var playlistEditTracksCount = 0
+    private var tracks = emptyList<PlaylistTrack>()
 
     private val trackPlaylistTrackConvertor = TrackPlaylistTrackConvertor()
 
@@ -141,7 +145,7 @@ class PlaylistEditFragment : Fragment() {
         binding.bottomPlaylistEditRecycler.adapter = adapter
 
         if (state is PlaylistEditState.Content) {
-            val tracks = state.tracks
+            tracks = state.tracks
             adapter.tracks.clear()
             adapter.tracks.addAll(tracks)
             adapter.notifyDataSetChanged()
@@ -188,6 +192,21 @@ class PlaylistEditFragment : Fragment() {
         playlist += playlistEditAbout + "\n"
         playlist += phraseTrackGenerator(playlistEditTracksCount) + "\n"
 
+        var counter = 1
+        for (track in tracks) {
+            val item = counter.toString() +
+                    ". " +
+                    track.artistName +
+                    " - " +
+                    track.trackName +
+                    " (" +
+                    SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis) +
+                    ")" +
+                    "\n"
+            playlist += item
+            counter += 1
+        }
+        Log.d("wtf", playlist)
         return playlist
     }
 
