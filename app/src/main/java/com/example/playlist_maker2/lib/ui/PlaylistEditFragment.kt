@@ -220,6 +220,10 @@ class PlaylistEditFragment : Fragment() {
             }
         }
 
+        binding.playlistEditBottomMenuEditInformation.setOnClickListener {
+
+        }
+
         binding.playlistEditBottomMenuDelete.setOnClickListener {
             playlistDeleteConfirmDialog.show()
         }
