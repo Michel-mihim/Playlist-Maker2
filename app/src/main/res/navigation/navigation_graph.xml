@@ -45,5 +45,14 @@
         android:id="@+id/playlistEditFragment"
         android:name="com.example.playlist_maker2.lib.ui.PlaylistEditFragment"
         android:label="fragment_edit_playlist"
-        tools:layout="@layout/fragment_edit_playlist" />
+        tools:layout="@layout/fragment_edit_playlist" >
+        <action
+            android:id="@+id/action_playlistEditFragment_to_playlistEditInformationFragment"
+            app:destination="@id/playlistEditInformationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playlistEditInformationFragment"
+        android:name="com.example.playlist_maker2.lib.ui.PlaylistEditInformationFragment"
+        android:label="fragment_information_edit_playlist"
+        tools:layout="@layout/fragment_information_edit_playlist" />
 </navigation>

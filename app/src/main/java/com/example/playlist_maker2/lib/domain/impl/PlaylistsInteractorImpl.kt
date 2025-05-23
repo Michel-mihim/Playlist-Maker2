@@ -29,7 +29,23 @@ class PlaylistsInteractorImpl(
         )
     }
 
+    override suspend fun setPlaylistInformation(
+        oldPlaylistName: String,
+        newPlaylistName: String,
+        newPlaylistAbout: String
+    ) {
+        playlistsRepository.setPlaylistInformation(
+            oldPlaylistName = oldPlaylistName,
+            newPlaylistName = newPlaylistName,
+            newPlaylistAbout = newPlaylistAbout
+        )
+    }
+
     override fun getPlaylists(): Flow<List<Playlist>> {
         return playlistsRepository.getPlaylists()
+    }
+
+    override fun readPlaylist(playlistName: String): Flow<Playlist> {
+        return playlistsRepository.readPlaylist(playlistName)
     }
 }

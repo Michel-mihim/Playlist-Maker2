@@ -3,7 +3,6 @@ package com.example.playlist_maker2.lib.ui
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlist_maker2.R
 import com.example.playlist_maker2.adapters.PlaylistTracksAdapter
 import com.example.playlist_maker2.databinding.FragmentEditPlaylistBinding
@@ -24,8 +21,8 @@ import com.example.playlist_maker2.lib.domain.models.PlaylistEditState
 import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
 import com.example.playlist_maker2.player.data.converters.TrackPlaylistTrackConvertor
 import com.example.playlist_maker2.search.domain.models.Track
+import com.example.playlist_maker2.utils.constants.Constants
 import com.example.playlist_maker2.utils.constants.Constants.CLICK_DEBOUNCE_DELAY
-import com.example.playlist_maker2.utils.converters.dimensionsFloatToIntConvert
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.delay
@@ -102,11 +99,11 @@ class PlaylistEditFragment : Fragment() {
                 playlistEditViewModel.deletePlaylistTrack(currentTrackId!!, currentPlaylistName!!)
             }
 
-        playlistEditName = requireArguments().getString("name")!!
+        playlistEditName = requireArguments().getString(Constants.PLAYLIST_NAME_KEY)!!
         binding.playlistEditName.text = playlistEditName
-        playlistEditAbout = requireArguments().getString("about")!!
+        playlistEditAbout = requireArguments().getString(Constants.PLAYLIST_ABOUT_KEY)!!
         binding.playlistEditAbout.text = playlistEditAbout
-        playlistEditTracksCount = requireArguments().getInt("capacity")
+        playlistEditTracksCount = requireArguments().getInt(Constants.PLAYLIST_CAPACITY_KEY)
 
         playlistDeleteConfirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Удалить плейлист")
@@ -161,6 +158,7 @@ class PlaylistEditFragment : Fragment() {
             bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_HIDDEN
         }
 
+        //НАЖАТИЕ НА ТРЕК В СПИСКЕ==================================================================
         adapter.onItemClickListener = { track ->
             if (clickDebouncer()) {
                 playlistEditViewModel.getPlayerIntent(convertToTrack(track))
@@ -177,6 +175,7 @@ class PlaylistEditFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+        //НАЖАТИЕ НА ОТДЕЛЬНЫЕ КВАДРАТНЫЕ КНОПКИ====================================================
         binding.playlistEditShare.setOnClickListener {
             if (isPlaylistEmpty) {
                 Toast.makeText(
@@ -208,6 +207,7 @@ class PlaylistEditFragment : Fragment() {
             }
         }
 
+        //НАЖАТИЕ НА ПУНКТЫ МЕНЮ====================================================================
         binding.playlistEditBottomMenuShare.setOnClickListener {
             if (isPlaylistEmpty) {
                 Toast.makeText(
@@ -221,7 +221,10 @@ class PlaylistEditFragment : Fragment() {
         }
 
         binding.playlistEditBottomMenuEditInformation.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString(Constants.PLAYLIST_NAME_KEY, playlistEditName)
 
+            findNavController().navigate(R.id.action_playlistEditFragment_to_playlistEditInformationFragment, bundle)
         }
 
         binding.playlistEditBottomMenuDelete.setOnClickListener {

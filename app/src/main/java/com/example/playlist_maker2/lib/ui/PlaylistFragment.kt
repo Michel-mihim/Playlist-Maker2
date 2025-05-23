@@ -16,6 +16,7 @@ import com.example.playlist_maker2.databinding.FragmentPlaylistBinding
 import com.example.playlist_maker2.lib.domain.models.Playlist
 import com.example.playlist_maker2.main.ui.RootActivity
 import com.example.playlist_maker2.player.domain.models.DBPlaylistsState
+import com.example.playlist_maker2.utils.constants.Constants
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistFragment: Fragment() {
@@ -58,9 +59,9 @@ class PlaylistFragment: Fragment() {
 
         adapter.onItemClickListener = {playlist ->
             val bundle = Bundle()
-            bundle.putString("name", playlist.playlistName)
-            bundle.putString("about", playlist.playlistAbout)
-            bundle.putInt("capacity", playlist.playlistTracksCount!!)
+            bundle.putString(Constants.PLAYLIST_NAME_KEY, playlist.playlistName)
+            bundle.putString(Constants.PLAYLIST_ABOUT_KEY, playlist.playlistAbout)
+            bundle.putInt(Constants.PLAYLIST_CAPACITY_KEY, playlist.playlistTracksCount!!)
 
             findNavController().navigate(R.id.action_libFragment_to_playlistEditFragment, bundle)
         }

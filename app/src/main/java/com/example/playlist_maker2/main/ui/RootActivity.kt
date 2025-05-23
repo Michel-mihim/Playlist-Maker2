@@ -32,6 +32,9 @@ class RootActivity : AppCompatActivity() {
                 R.id.playlistEditFragment -> {
                     false
                 }
+                R.id.playlistEditInformationFragment -> {
+                    false
+                }
                 else -> {
                     true
                 }

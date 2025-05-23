@@ -139,7 +139,6 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
                         (activity as NewPlaylistNameLoadNotifier).loadUpdate(false)
                     } catch (e: Exception) {}
 
-
                 }
             }
 

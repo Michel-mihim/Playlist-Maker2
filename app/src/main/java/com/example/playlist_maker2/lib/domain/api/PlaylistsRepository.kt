@@ -19,5 +19,13 @@ interface PlaylistsRepository {
         playlistTracksDuration: Int
     )
 
+    suspend fun setPlaylistInformation(
+        oldPlaylistName: String,
+        newPlaylistName: String,
+        newPlaylistAbout: String
+    )
+
     fun getPlaylists(): Flow<List<Playlist>>
+
+    fun readPlaylist(playlistName: String): Flow<Playlist>
 }

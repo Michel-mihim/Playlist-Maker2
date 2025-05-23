@@ -20,6 +20,11 @@ interface TrackToPlaylistInteractor {
 
     suspend fun deletePlaylist(playlistName: String)
 
+    suspend fun setPlaylistName(
+        oldPlaylistName: String,
+        newPlaylistName: String
+    )
+
     fun getTracks(playlistName: String): Flow<List<PlaylistTrack>>
 
     fun getState(playlistName: String): Flow<PlaylistEditState>

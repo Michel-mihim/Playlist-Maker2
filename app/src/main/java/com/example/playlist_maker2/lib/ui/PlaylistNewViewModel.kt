@@ -12,7 +12,7 @@ import com.example.playlist_maker2.utils.classes.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class PlaylistNewViewModel(
-    val playlistNewInteractor: PlaylistsInteractor
+    val playlistInteractor: PlaylistsInteractor
 ) : ViewModel() {
 
     private val playlistFragmentToastStateLiveData = SingleLiveEvent<String>()
@@ -20,7 +20,7 @@ class PlaylistNewViewModel(
 
     fun onAddPlaylistButtonClicked(playlist: Playlist) {
         viewModelScope.launch {
-            playlistNewInteractor.addPlaylist(
+            playlistInteractor.addPlaylist(
                 playlist,
                 onGetResult = { result ->
                     var message = ""

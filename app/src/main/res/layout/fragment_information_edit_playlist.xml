@@ -5,7 +5,7 @@
     android:background="@color/player_background"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.playlist_maker2.lib.ui.PlaylistNewFragment">
+    tools:context="com.example.playlist_maker2.lib.ui.PlaylistEditInformationFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -122,7 +122,7 @@
             android:visibility="gone"/>
 
         <Button
-            android:id="@+id/edit_playlist_button"
+            android:id="@+id/edit_playlist_save_button"
             style="@style/create_new_playlist_button_style"
             android:layout_width="@dimen/dp_0"
             android:layout_height="@dimen/dp56"

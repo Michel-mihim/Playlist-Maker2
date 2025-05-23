@@ -38,6 +38,13 @@ class TrackToPlaylistInteractorImpl(
         trackToPlaylistRepository.deletePlaylist(playlistName)
     }
 
+    override suspend fun setPlaylistName(oldPlaylistName: String, newPlaylistName: String) {
+        trackToPlaylistRepository.setPlaylistName(
+            oldPlaylistName = oldPlaylistName,
+            newPlaylistName = newPlaylistName
+        )
+    }
+
     override fun getTracks(playlistName: String): Flow<List<PlaylistTrack>> {
         return trackToPlaylistRepository.getTracks(playlistName)
     }

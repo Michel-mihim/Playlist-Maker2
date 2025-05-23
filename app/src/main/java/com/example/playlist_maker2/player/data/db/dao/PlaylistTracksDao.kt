@@ -27,4 +27,7 @@ interface PlaylistTracksDao {
 
     @Query("SELECT SUM(trackDuration) FROM playlist_tracks_table WHERE playlistName = :playlistName")
     suspend fun getTracksDuration(playlistName: String): Int?
+
+    @Query("UPDATE playlist_tracks_table SET playlistName = :newPlaylistName WHERE playlistName = :oldPlaylistName")
+    suspend fun setPlaylistName(oldPlaylistName: String, newPlaylistName: String)
 }

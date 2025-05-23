@@ -45,6 +45,13 @@ class TrackToPlaylistRepositoryImpl(
         appDatabase.playlistTracksDao().deletePlaylist(playlistName)
     }
 
+    override suspend fun setPlaylistName(oldPlaylistName: String, newPlaylistName: String) {
+        appDatabase.playlistTracksDao().setPlaylistName(
+            oldPlaylistName = oldPlaylistName,
+            newPlaylistName = newPlaylistName
+        )
+    }
+
     override fun getTracks(playlistName: String): Flow<List<PlaylistTrack>> = flow {
         val tracks = appDatabase.playlistTracksDao().getEditTracks(playlistName)
         emit(convertFromPlaylistTrackEntity(tracks))
