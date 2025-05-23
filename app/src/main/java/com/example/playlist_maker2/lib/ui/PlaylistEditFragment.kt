@@ -3,6 +3,7 @@ package com.example.playlist_maker2.lib.ui
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -101,9 +102,8 @@ class PlaylistEditFragment : Fragment() {
 
         playlistEditName = requireArguments().getString(Constants.PLAYLIST_NAME_KEY)!!
         binding.playlistEditName.text = playlistEditName
-        playlistEditAbout = requireArguments().getString(Constants.PLAYLIST_ABOUT_KEY)!!
-        binding.playlistEditAbout.text = playlistEditAbout
-        playlistEditTracksCount = requireArguments().getInt(Constants.PLAYLIST_CAPACITY_KEY)
+
+        playlistEditViewModel.showContent(playlistEditName!!)
 
         playlistDeleteConfirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Удалить плейлист")
@@ -124,8 +124,6 @@ class PlaylistEditFragment : Fragment() {
 
         binding.bottomPlaylistEditRecycler.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.VERTICAL, false)
-
-        playlistEditViewModel.showContent(playlistEditName!!)
 
         bottomSheetBehaviorTracksRecycler = BottomSheetBehavior.from(binding.playlistEditBottomSheet)
         bottomSheetBehaviorMenu = BottomSheetBehavior.from(binding.playlistEditMenuBottomSheet)
@@ -260,6 +258,8 @@ class PlaylistEditFragment : Fragment() {
             adapter.tracks.clear()
             adapter.tracks.addAll(tracks)
             adapter.notifyDataSetChanged()
+
+            binding.playlistEditAbout.text = state.playlistAbout
 
             binding.playlistEditTracksDuration.text = state.tracksDurationString
 

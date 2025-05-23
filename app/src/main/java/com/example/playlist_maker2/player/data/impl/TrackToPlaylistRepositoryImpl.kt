@@ -59,10 +59,11 @@ class TrackToPlaylistRepositoryImpl(
 
     override fun getState(playlistName: String): Flow<PlaylistEditState> = flow {
         val tracks = appDatabase.playlistTracksDao().getEditTracks(playlistName)
+        val playlistAbout = appDatabase.playlistDao().readPlaylistAbout(playlistName)
         val tracksCountString = phraseTrackGenerator(appDatabase.playlistTracksDao().getTracksCount(playlistName))
         val tracksDurationString = phraseMinuteGenerator((appDatabase.playlistTracksDao().getTracksDuration(playlistName) ?: 0) / 1000)
 
-        emit(PlaylistEditState.Content(tracksDurationString, tracksCountString, convertFromPlaylistTrackEntity(tracks)))
+        emit(PlaylistEditState.Content(playlistAbout, tracksDurationString, tracksCountString, convertFromPlaylistTrackEntity(tracks)))
     }
 
     private fun convertToPlaylistTrackEntity(playlistTrack: PlaylistTrack): PlaylistTrackEntity {
