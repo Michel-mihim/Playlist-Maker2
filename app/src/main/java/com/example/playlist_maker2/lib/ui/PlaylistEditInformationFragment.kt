@@ -1,6 +1,9 @@
 package com.example.playlist_maker2.lib.ui
 
 import android.app.Activity
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.text.Editable
@@ -20,6 +23,8 @@ import com.example.playlist_maker2.utils.constants.Constants
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 class PlaylistEditInformationFragment() : Fragment() {
 
@@ -86,8 +91,11 @@ class PlaylistEditInformationFragment() : Fragment() {
                 newName,
                 newAbout,
                 onPlaylistEdited = {
-                    //val isEdited = (playlistName != newName)
+                    val isEdited = (playlistName != newName)
                     //rootViewModel.setPlaylistEditedResult(isEdited, newName)
+                    if (isEdited) {
+                        changeImageName(playlistName, newName)
+                    }
 
                     val savedStateHandle = findNavController().previousBackStackEntry?.savedStateHandle
                     savedStateHandle?.set(Constants.PLAYLIST_NAME_KEY, newName)
@@ -121,6 +129,40 @@ class PlaylistEditInformationFragment() : Fragment() {
         } else {
             false
         }
+    }
+
+    private fun changeImageName(
+        oldPlaylistName: String,
+        newPlaylistName: String
+    ) {
+
+        //создаём экземпляр класса File, который указывает на нужный каталог
+        val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_album")
+
+        //создаем каталог, если он не создан
+        if (!filePath.exists()){
+            filePath.mkdirs()
+        }
+
+        //создаём экземпляры класса File, который указывает на файл внутри каталога
+        val oldFile = File(filePath, oldPlaylistName+".jpg")
+        val newFile = File(filePath, newPlaylistName+".jpg")
+
+        try {
+            // создаём входящий и исходящий потоки байтов для передачи между старым и новым файлами
+            val inputStream = FileInputStream(oldFile)
+            val outputStream = FileOutputStream(newFile)
+            // записываем картинку с помощью BitmapFactory
+            BitmapFactory
+                .decodeStream(inputStream)
+                .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
+
+            //удаляем файл со старым названием
+            if (oldFile.exists() && oldFile.isFile) {
+                oldFile.delete()
+            }
+        } catch (e: Exception) {}
+
     }
 
 }
