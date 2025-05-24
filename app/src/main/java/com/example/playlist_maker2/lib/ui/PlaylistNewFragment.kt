@@ -207,6 +207,7 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 confirmationDialogManager()
+                Log.d("wtf", "внутри переопределенного при присоединении")
             }
         })
     }
@@ -219,7 +220,9 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
         aboutIsLoaded = false
 
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {}
+            override fun handleOnBackPressed() {
+                Log.d("wtf", "внутри переопределенного при отсоединении")
+            }
         })
 
     }

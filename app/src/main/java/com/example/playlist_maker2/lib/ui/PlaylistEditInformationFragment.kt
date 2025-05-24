@@ -104,6 +104,13 @@ class PlaylistEditInformationFragment() : Fragment() {
                 }
             )
         }
+
+        binding.editPlaylistBackButton.setOnClickListener {
+            val savedStateHandle = findNavController().previousBackStackEntry?.savedStateHandle
+            savedStateHandle?.set(Constants.PLAYLIST_NAME_KEY, playlistName)
+
+            findNavController().navigateUp()
+        }
     }
 
     private fun showContent(state: PlaylistInfoState) {

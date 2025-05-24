@@ -14,7 +14,7 @@
 
         <ImageButton
             style="@style/ArrowBackButtonStyle"
-            android:id="@+id/new_playlist_back_button"/>
+            android:id="@+id/edit_playlist_back_button"/>
 
         <TextView
             style="@style/menu_head_text_style"
