@@ -57,7 +57,7 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
 
     private var isClickAllowed = true
 
-    private lateinit var activity: Activity
+    private lateinit var fragmentOrigin: String
 
     private val requester = PermissionRequester.instance()
 
@@ -97,6 +97,16 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
             showToast(it)
         }
 
+        //фрагмент имеет право знать кто его отец
+        fragmentOrigin = requireArguments().getString(Constants.FRAGMENT_ORIGIN_KEY)!!
+
+        //вынуждены переопределить нажатие системной кнопки НАЗАД из-за диалога подтверждения
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                confirmationDialogManager()
+            }
+        })
+
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Завершить создание плейлиста?")
             .setMessage("Все несохраненные данные будут потеряны")
@@ -104,11 +114,11 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
                 // ничего не делаем
             }.setNegativeButton("Завершить") { dialog, which ->
                 // выходим из окна без сохранения
-                try {//костыль чтобы не проверять каким образом вызван фрагмент
+               if (fragmentOrigin == "fragment") {
                     findNavController().navigateUp()
-                } catch (e: Exception) {//если вход через bottomSheet
+               } else {//если вход через bottomSheet PlayerActivity
                     requireActivity().supportFragmentManager.popBackStack()
-                }
+               }
             }
         //==========================================================================================
         val nameTextWatcher = object : TextWatcher {
@@ -199,43 +209,30 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
 
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        activity = context as Activity
-
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                confirmationDialogManager()
-                Log.d("wtf", "внутри переопределенного при присоединении")
-            }
-        })
-    }
-
     override fun onDetach() {
         super.onDetach()
-
         picIsLoaded = false
         nameIsLoaded = false
         aboutIsLoaded = false
 
+        //вынуждены почистить ссылки при нажатии системной кнопки НАЗАД перед уходом
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                Log.d("wtf", "внутри переопределенного при отсоединении")
+                Log.d("wtf", "я не работаю. Меня почистили")
             }
         })
-
     }
 
     private fun confirmationDialogManager() {
         if (nameIsLoaded || picIsLoaded || aboutIsLoaded) {
             confirmDialog.show()
-        } else try {//костыль чтобы не проверять каким образом вызван фрагмент
-            findNavController().navigateUp()
-        } catch (e: Exception) {//если вход через bottomSheet
-            requireActivity().supportFragmentManager.popBackStack()
+        } else {
+            if (fragmentOrigin == "fragment") {
+                findNavController().navigateUp()
+            } else {
+                requireActivity().supportFragmentManager.popBackStack()
+            }
         }
-
     }
 
     private fun saveImageToPrivateStorage(

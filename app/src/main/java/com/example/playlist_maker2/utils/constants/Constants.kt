@@ -34,6 +34,7 @@ object Constants {
     //медиаплеер
     const val SHOW_PROGRESS_DELAY = 300L
     const val TRACK_IS_OVER_PROGRESS = "00:00"
+    const val FRAGMENT_ORIGIN_KEY = "origin"
 
     //ключи track
     const val TRACK_ID_KEY = "b_track_id"

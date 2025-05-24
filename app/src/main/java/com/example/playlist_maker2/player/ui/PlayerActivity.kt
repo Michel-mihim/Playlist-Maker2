@@ -6,9 +6,11 @@ import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -152,10 +154,15 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
         binding.addPlaylistButton.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
+            val bundle = Bundle()
+            bundle.putString(Constants.FRAGMENT_ORIGIN_KEY, "activity")
+            val playlistFragment = PlaylistNewFragment()
+            playlistFragment.arguments = bundle
+
             if (savedInstanceState == null) {
                 supportFragmentManager.beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.add_playlist_in_player_container_view, PlaylistNewFragment())
+                    .add(R.id.add_playlist_in_player_container_view, playlistFragment)
                     .addToBackStack("new_playlist")
                     .commit()
             }
@@ -188,6 +195,18 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
 
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount == 0) {
+            Log.d("wtf", "из фрагмента вышли, переопределяемся назад")
+            onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    finish()
+                }
+            })
+        } else Log.d("wtf", "из фрагмента НЕ вышли, переопределиться не можем")
+        super.onBackPressed()
+    }
+
+        /*
+        if (supportFragmentManager.backStackEntryCount == 0) {
             finish()
             super.onBackPressed()
         } else {
@@ -197,7 +216,8 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
                 supportFragmentManager.popBackStack()
             }
         }
-    }
+
+         */
 
     override fun onPause() {
         super.onPause()

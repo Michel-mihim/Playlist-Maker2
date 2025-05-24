@@ -54,7 +54,10 @@ class PlaylistFragment: Fragment() {
         binding.playlistsRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
 
         binding.addPlaylistButton.setOnClickListener {
-            findNavController().navigate(R.id.action_libFragment_to_playlistNewFragment)
+            val bundle = Bundle()
+            bundle.putString(Constants.FRAGMENT_ORIGIN_KEY, "fragment")
+
+            findNavController().navigate(R.id.action_libFragment_to_playlistNewFragment, bundle)
         }
 
         adapter.onItemClickListener = {playlist ->

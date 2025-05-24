@@ -1,9 +1,7 @@
 package com.example.playlist_maker2.lib.ui
 
-import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.text.Editable
@@ -17,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.playlist_maker2.R
 import com.example.playlist_maker2.databinding.FragmentInformationEditPlaylistBinding
 import com.example.playlist_maker2.lib.domain.models.PlaylistInfoState
-import com.example.playlist_maker2.main.ui.RootActivity
 import com.example.playlist_maker2.main.ui.RootViewModel
 import com.example.playlist_maker2.utils.constants.Constants
 import org.koin.androidx.viewmodel.ext.android.activityViewModel

@@ -80,28 +80,8 @@ class PlaylistEditFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        Log.d("wtf", "onAttach")
         playlistEditName = requireArguments().getString(Constants.PLAYLIST_NAME_KEY)!!
         intro = true
-        Log.d("wtf", "onViewCreated: пришли извне")
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        Log.d("wtf", "onStart")
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        Log.d("wtf", "onResume")
-    }
-
-    override fun onPrimaryNavigationFragmentChanged(isPrimaryNavigationFragment: Boolean) {
-        super.onPrimaryNavigationFragmentChanged(isPrimaryNavigationFragment)
-
-        Log.d("wtf", "onPrimaryNavigationFragmentChanged = "+isPrimaryNavigationFragment.toString())
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -140,14 +120,12 @@ class PlaylistEditFragment : Fragment() {
 
         //механизм учета откуда пришли
         if (intro == false) {
-            Log.d("wtf", "onViewCreated: пришли из редактора")
             playlistEditName = findNavController().currentBackStackEntry?.savedStateHandle?.get<String>(Constants.PLAYLIST_NAME_KEY)!!
         }
         intro = false
 
         binding.playlistEditName.text = playlistEditName
 
-        Log.d("wtf", "onViewCreated: initial playlistName = "+playlistEditName)
         playlistEditViewModel.showContent(playlistEditName!!)
 
         playlistDeleteConfirmDialog = MaterialAlertDialogBuilder(requireContext())
