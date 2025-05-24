@@ -39,7 +39,8 @@
             android:layout_marginHorizontal="@dimen/dp24"
             android:background="@drawable/dash_frame"
             android:src="@drawable/add_playlist_pic"
-            android:padding="106dp"/>
+            android:padding="106dp"
+            android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/edit_playlist_picture"
@@ -52,7 +53,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginHorizontal="@dimen/dp24"
-            android:background="@drawable/dash_frame"/>
+            android:background="@drawable/clip_frame"/>
 
         <EditText
             android:id="@+id/edit_playlist_name"
