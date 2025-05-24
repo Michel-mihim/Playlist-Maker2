@@ -72,7 +72,7 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
             binding.newPlaylistPicture.setImageURI(uri)
             inputUri = uri
         } else {
-            Toast.makeText(requireContext(), "Изображение не выбрано", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), Constants.PICTURE_NOT_TAKEN, Toast.LENGTH_SHORT)
         }
     }
 

@@ -1,7 +1,9 @@
 package com.example.playlist_maker2.lib.ui
 
+import android.Manifest
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.text.Editable
@@ -11,14 +13,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.playlist_maker2.R
 import com.example.playlist_maker2.databinding.FragmentInformationEditPlaylistBinding
 import com.example.playlist_maker2.lib.domain.models.PlaylistInfoState
 import com.example.playlist_maker2.main.ui.RootViewModel
 import com.example.playlist_maker2.utils.constants.Constants
+import com.markodevcic.peko.PermissionRequester
+import com.markodevcic.peko.PermissionResult
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -31,10 +39,23 @@ class PlaylistEditInformationFragment() : Fragment() {
 
     private var nameIsLoaded = false
 
+    private var inputUri: Uri? = null
+
+    private val requester = PermissionRequester.instance()
+
     private var playlistName = ""
 
     private val playlistEditInformationViewModel: PlaylistEditInformationViewModel by viewModel()
     private val rootViewModel: RootViewModel by activityViewModel()
+
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            binding.editPlaylistPicture.setImageURI(uri)
+            inputUri = uri
+        } else {
+            Toast.makeText(requireContext(), Constants.PICTURE_NOT_TAKEN, Toast.LENGTH_SHORT)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -112,6 +133,10 @@ class PlaylistEditInformationFragment() : Fragment() {
                             changeImageName(playlistName, newName)
                         }
 
+                        if (inputUri != null) {
+                            saveImageToPrivateStorage(inputUri!!, newName)
+                        }
+
                         val savedStateHandle = findNavController().previousBackStackEntry?.savedStateHandle
                         savedStateHandle?.set(Constants.PLAYLIST_NAME_KEY, newName)
 
@@ -127,6 +152,23 @@ class PlaylistEditInformationFragment() : Fragment() {
 
             findNavController().navigateUp()
         }
+
+        binding.editPlaylistPicture.setOnClickListener {
+            lifecycleScope.launch {
+                requester.request(Manifest.permission.READ_MEDIA_IMAGES).collect { result ->
+                    when (result) {
+                        is PermissionResult.Granted -> {
+                            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                        }
+                        else -> {
+                            Toast.makeText(requireContext(), Constants.READ_MEDIA_IMAGES_DENIED,
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     private fun showContent(state: PlaylistInfoState) {
@@ -198,6 +240,29 @@ class PlaylistEditInformationFragment() : Fragment() {
 
     private fun showPlaylistDuplicateToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun saveImageToPrivateStorage(
+        uri: Uri,
+        playlistName: String
+    ) {
+        // создаём входящий поток байтов из выбранной картинки
+        val inputStream = requireActivity().contentResolver.openInputStream(uri)
+
+        //создаём экземпляр класса File, который указывает на нужный каталог
+        val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_album")
+        //создаем каталог, если он не создан
+        if (!filePath.exists()){
+            filePath.mkdirs()
+        }
+        //создаём экземпляр класса File, который указывает на файл внутри каталога
+        val file = File(filePath, playlistName+".jpg")
+        // создаём исходящий поток байтов в созданный выше файл
+        val outputStream = FileOutputStream(file)
+        // записываем картинку с помощью BitmapFactory
+        BitmapFactory
+            .decodeStream(inputStream)
+            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
     }
 
 }
