@@ -100,6 +100,7 @@ class PlaylistEditFragment : Fragment() {
                 playlistEditViewModel.deletePlaylistTrack(currentTrackId!!, currentPlaylistName!!)
             }
 
+        //тут заводим playlistName, вокруг которого всё и будет крутиться
         playlistEditName = requireArguments().getString(Constants.PLAYLIST_NAME_KEY)!!
         binding.playlistEditName.text = playlistEditName
 
