@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
@@ -49,6 +50,10 @@ class PlaylistEditInformationFragment() : Fragment() {
 
         playlistEditInformationViewModel.observePlaylistInfoState().observe(viewLifecycleOwner) {
             showContent(it)
+        }
+
+        playlistEditInformationViewModel.observePlaylistDuplicateToast().observe(viewLifecycleOwner) {
+            showPlaylistDuplicateToast(it)
         }
 
         //==========================================================================================
@@ -99,17 +104,19 @@ class PlaylistEditInformationFragment() : Fragment() {
                 playlistName,
                 newName,
                 newAbout,
-                onPlaylistEdited = {
-                    val isEdited = (playlistName != newName)
-                    //rootViewModel.setPlaylistEditedResult(isEdited, newName)
-                    if (isEdited) {
-                        changeImageName(playlistName, newName)
+                onPlaylistEdited = { result ->
+                    if (result) {
+                        val isEdited = (playlistName != newName)
+                        //rootViewModel.setPlaylistEditedResult(isEdited, newName)
+                        if (isEdited) {
+                            changeImageName(playlistName, newName)
+                        }
+
+                        val savedStateHandle = findNavController().previousBackStackEntry?.savedStateHandle
+                        savedStateHandle?.set(Constants.PLAYLIST_NAME_KEY, newName)
+
+                        findNavController().navigateUp()
                     }
-
-                    val savedStateHandle = findNavController().previousBackStackEntry?.savedStateHandle
-                    savedStateHandle?.set(Constants.PLAYLIST_NAME_KEY, newName)
-
-                    findNavController().navigateUp()
                 }
             )
         }
@@ -187,6 +194,10 @@ class PlaylistEditInformationFragment() : Fragment() {
             outputString += inputString[i].lowercaseChar()
         }
         return outputString
+    }
+
+    private fun showPlaylistDuplicateToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
 }

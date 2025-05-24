@@ -55,6 +55,11 @@ class PlaylistsRepositoryImpl(
         )
     }
 
+    override fun checkPlaylistDuplicate(playlistName: String): Flow<Boolean> = flow {
+        val playlistCount = appDatabase.playlistDao().countPlaylist(playlistName)
+        emit(playlistCount > 0)
+    }
+
     override fun getPlaylists(): Flow<List<Playlist>> = flow {
         val playlists = appDatabase.playlistDao().getPlaylists()
         emit(convertFromPlaylistEntity(playlists))

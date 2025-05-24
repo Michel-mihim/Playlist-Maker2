@@ -41,6 +41,10 @@ class PlaylistsInteractorImpl(
         )
     }
 
+    override fun checkPlaylistDuplicate(playlistName: String): Flow<Boolean> {
+        return playlistsRepository.checkPlaylistDuplicate(playlistName)
+    }
+
     override fun getPlaylists(): Flow<List<Playlist>> {
         return playlistsRepository.getPlaylists()
     }

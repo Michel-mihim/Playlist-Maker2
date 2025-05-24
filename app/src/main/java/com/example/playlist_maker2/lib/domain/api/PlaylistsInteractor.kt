@@ -25,6 +25,8 @@ interface PlaylistsInteractor {
         newPlaylistAbout: String
         )
 
+    fun checkPlaylistDuplicate(playlistName: String): Flow<Boolean>
+
     fun getPlaylists(): Flow<List<Playlist>>
 
     fun readPlaylist(playlistName: String): Flow<Playlist>

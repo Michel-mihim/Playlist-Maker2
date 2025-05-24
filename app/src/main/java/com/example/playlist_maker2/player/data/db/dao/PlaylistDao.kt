@@ -22,6 +22,9 @@ interface PlaylistDao {
     @Query("SELECT playlistAbout FROM playlist_table WHERE playlistName = :playlistName")
     suspend fun readPlaylistAbout(playlistName: String): String
 
+    @Query("SELECT COUNT(playlistName) FROM playlist_table WHERE playlistName = :playlistName")
+    suspend fun countPlaylist(playlistName: String): Int
+
     @Query("DELETE FROM playlist_table WHERE playlistName = :playlistName")
     suspend fun deletePlaylist(playlistName: String)
 

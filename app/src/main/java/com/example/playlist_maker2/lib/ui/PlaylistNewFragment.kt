@@ -196,14 +196,19 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
         //==========================================================================================
         binding.createNewPlaylistButton.setOnClickListener {
             if (clickDebouncer()) {
-                val playlistName = binding.newPlaylistName.text.toString()
+                val playlistName = letterCorrector(binding.newPlaylistName.text.toString())
                 val playlistAbout = binding.newPlaylistAbout.text.toString()
 
-                if (inputUri != null) {
-                    saveImageToPrivateStorage(inputUri!!, playlistName)
-                }
-
-                playlistNewViewModel.onAddPlaylistButtonClicked(Playlist(letterCorrector(playlistName), playlistAbout, null, null))
+                playlistNewViewModel.onAddPlaylistButtonClicked(
+                    Playlist(playlistName, playlistAbout, null, null),
+                    onPlaylistAddResult = { result ->
+                        if (result) {
+                            if (inputUri != null) {
+                                saveImageToPrivateStorage(inputUri!!, playlistName)
+                            }
+                        }
+                    }
+                )
             }
         }
 

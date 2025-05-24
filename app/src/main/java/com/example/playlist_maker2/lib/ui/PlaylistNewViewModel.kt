@@ -18,7 +18,10 @@ class PlaylistNewViewModel(
     private val playlistFragmentToastStateLiveData = SingleLiveEvent<String>()
     fun observePlaylistFragmentToastState(): LiveData<String> = playlistFragmentToastStateLiveData
 
-    fun onAddPlaylistButtonClicked(playlist: Playlist) {
+    fun onAddPlaylistButtonClicked(
+        playlist: Playlist,
+        onPlaylistAddResult: (Boolean) -> Unit
+    ) {
         viewModelScope.launch {
             playlistInteractor.addPlaylist(
                 playlist,
@@ -26,8 +29,10 @@ class PlaylistNewViewModel(
                     var message = ""
                     if (result.toInt() == -1) {
                         message = "Плейлист уже существует"
+                        onPlaylistAddResult.invoke(false)
                     } else {
                         message = "Плейлист "+playlist.playlistName+" создан"
+                        onPlaylistAddResult.invoke(true)
                     }
                     showResult(message)
                 }
