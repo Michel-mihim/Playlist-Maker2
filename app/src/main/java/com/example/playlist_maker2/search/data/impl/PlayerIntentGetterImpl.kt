@@ -27,10 +27,7 @@ class PlayerIntentGetterImpl(
         bundle.putInt(Constants.TRACK_TIME_KEY, track.trackTimeMillis)
         bundle.putString(Constants.PIC_URL_KEY, getCoverArtwork(track.artworkUrl100))
         bundle.putString(Constants.TRACK_ALBUM_KEY, track.collectionName)
-        bundle.putString(Constants.TRACK_YEAR_KEY, isoDateToYearConvert(track.releaseDate))
-        Log.d("wtf", "1 "+isoDateToYearConvert(track.releaseDate))
-        Log.d("wtf", "1-1 "+track.releaseDate)
-
+        bundle.putString(Constants.TRACK_YEAR_KEY, track.releaseDate)
         bundle.putString(Constants.TRACK_GENRE_KEY, track.primaryGenreName)
         bundle.putString(Constants.TRACK_COUNTRY_KEY, track.country)
         bundle.putString(Constants.PREVIEW_PIC_URL_KEY, track.previewUrl)

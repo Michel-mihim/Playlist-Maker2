@@ -26,6 +26,7 @@ import com.example.playlist_maker2.player.domain.models.PlayerActivityState
 import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants
 import com.example.playlist_maker2.utils.converters.dimensionsFloatToIntConvert
+import com.example.playlist_maker2.utils.converters.isoDateToYearConvert
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
@@ -104,10 +105,7 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
             binding.trackArtistName.text = bundle.getString(Constants.ARTIST_NAME_KEY)
             binding.attr12Time.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(bundle.getInt(Constants.TRACK_TIME_KEY))
             binding.attr22Album.text = bundle.getString(Constants.TRACK_ALBUM_KEY)
-            binding.attr32Year.text = bundle.getString(Constants.TRACK_YEAR_KEY)
-            Log.d("wtf", "2 "+bundle.getString(Constants.TRACK_YEAR_KEY))
-
-
+            binding.attr32Year.text = isoDateToYearConvert(bundle.getString(Constants.TRACK_YEAR_KEY).toString())
             binding.attr42Genre.text = bundle.getString(Constants.TRACK_GENRE_KEY)
             binding.attr52Country.text = bundle.getString(Constants.TRACK_COUNTRY_KEY)
             val trackJson = bundle.getString(Constants.TRACK_JSON)
