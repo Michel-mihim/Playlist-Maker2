@@ -1,6 +1,5 @@
 package com.example.playlist_maker2.lib.ui
 
-import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +8,7 @@ import com.example.playlist_maker2.lib.domain.api.PlaylistsInteractor
 import com.example.playlist_maker2.lib.domain.models.PlaylistInfoState
 import com.example.playlist_maker2.player.domain.api.TrackToPlaylistInteractor
 import com.example.playlist_maker2.utils.classes.SingleLiveEvent
+import com.example.playlist_maker2.utils.constants.Constants
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -56,7 +56,7 @@ class PlaylistEditInformationViewModel(
 
                     onPlaylistEdited.invoke(true)
                 } else {
-                    postPlaylistDuplicateNotification("Плейлист с указанным именем уже существует!")
+                    postPlaylistDuplicateNotification(Constants.PLAYLIST_DUPLICATE_ERROR)
                     onPlaylistEdited.invoke(false)
                 }
             }

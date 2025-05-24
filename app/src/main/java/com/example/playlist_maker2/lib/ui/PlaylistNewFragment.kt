@@ -222,9 +222,7 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
 
         //вынуждены почистить ссылки при нажатии системной кнопки НАЗАД перед уходом
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Log.d("wtf", "я не работаю. Меня почистили")
-            }
+            override fun handleOnBackPressed() {}
         })
     }
 

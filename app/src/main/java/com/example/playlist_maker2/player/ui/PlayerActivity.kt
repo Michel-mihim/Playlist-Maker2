@@ -33,6 +33,8 @@ import com.practicum.playlistmaker.player.ui.PlayerViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 import kotlin.Int
 import kotlin.String
 
@@ -58,9 +60,7 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
 
     //основной листинг==============================================================================
     override fun loadUpdate(isLoaded: Boolean) {
-        Log.d("wtf", "updated in Activity")
         isNewPlaylistNameLoaded = isLoaded
-        Log.d("wtf", isNewPlaylistNameLoaded.toString())
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -102,9 +102,12 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
         if (bundle != null) {
             binding.trackPlayerName.text = bundle.getString(Constants.TRACK_NAME_KEY)
             binding.trackArtistName.text = bundle.getString(Constants.ARTIST_NAME_KEY)
-            binding.attr12Time.text = bundle.getString(Constants.TRACK_TIME_KEY)
+            binding.attr12Time.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(bundle.getInt(Constants.TRACK_TIME_KEY))
             binding.attr22Album.text = bundle.getString(Constants.TRACK_ALBUM_KEY)
             binding.attr32Year.text = bundle.getString(Constants.TRACK_YEAR_KEY)
+            Log.d("wtf", "2 "+bundle.getString(Constants.TRACK_YEAR_KEY))
+
+
             binding.attr42Genre.text = bundle.getString(Constants.TRACK_GENRE_KEY)
             binding.attr52Country.text = bundle.getString(Constants.TRACK_COUNTRY_KEY)
             val trackJson = bundle.getString(Constants.TRACK_JSON)
@@ -195,13 +198,12 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
 
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount == 0) {
-            Log.d("wtf", "из фрагмента вышли, переопределяемся назад")
             onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     finish()
                 }
             })
-        } else Log.d("wtf", "из фрагмента НЕ вышли, переопределиться не можем")
+        }
         super.onBackPressed()
     }
 

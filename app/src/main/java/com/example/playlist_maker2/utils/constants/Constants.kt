@@ -55,4 +55,7 @@ object Constants {
     const val PLAYLIST_ABOUT_KEY = "playlist_about"
     const val PLAYLIST_CAPACITY_KEY = "playlist_capacity"
 
+    //NOTIFICATIONS
+    const val PLAYLIST_DUPLICATE_ERROR = "Плейлист уже существует"
+
 }
