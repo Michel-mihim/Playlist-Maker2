@@ -7,10 +7,7 @@ import com.example.playlist_maker2.search.domain.api.PlayerIntentGetter
 import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants
 import com.example.playlist_maker2.utils.converters.getCoverArtwork
-import com.example.playlist_maker2.utils.converters.isoDateToYearConvert
 import com.google.gson.Gson
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class PlayerIntentGetterImpl(
     private val playerIntent: Intent,

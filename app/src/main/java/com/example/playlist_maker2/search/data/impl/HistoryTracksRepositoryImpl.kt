@@ -1,6 +1,7 @@
 package com.example.playlist_maker2.search.data.impl
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.playlist_maker2.search.domain.OnHistoryUpdatedListener
 import com.example.playlist_maker2.search.domain.api.HistoryTracksRepository
 import com.example.playlist_maker2.search.domain.models.Track
