@@ -86,8 +86,12 @@ class PlaylistEditInformationFragment() : Fragment() {
                 newName,
                 newAbout,
                 onPlaylistEdited = {
-                    val isEdited = (playlistName != newName)
-                    rootViewModel.setPlaylistEditedResult(isEdited, newName)
+                    //val isEdited = (playlistName != newName)
+                    //rootViewModel.setPlaylistEditedResult(isEdited, newName)
+
+                    val savedStateHandle = findNavController().previousBackStackEntry?.savedStateHandle
+                    savedStateHandle?.set(Constants.PLAYLIST_NAME_KEY, newName)
+
                     findNavController().navigateUp()
                 }
             )

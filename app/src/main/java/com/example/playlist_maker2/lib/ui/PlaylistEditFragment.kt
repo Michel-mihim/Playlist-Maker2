@@ -82,6 +82,8 @@ class PlaylistEditFragment : Fragment() {
 
         Log.d("wtf", "onAttach")
         playlistEditName = requireArguments().getString(Constants.PLAYLIST_NAME_KEY)!!
+        intro = true
+        Log.d("wtf", "onViewCreated: пришли извне")
     }
 
     override fun onStart() {
@@ -107,8 +109,8 @@ class PlaylistEditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         rootViewModel.observePlaylistEditedResult().observe(viewLifecycleOwner) { result ->
-            Log.d("wtf", "onViewCreated: observable result = "+result.toString())
-            playlistEditName = result.newName
+            //Log.d("wtf", "onViewCreated: observable result = "+result.toString())
+            //playlistEditName = result.newName
         }
 
         playlistEditViewModel.observePlaylistEditState().observe(viewLifecycleOwner) {
@@ -135,6 +137,13 @@ class PlaylistEditFragment : Fragment() {
             }.setNegativeButton("Удалить") { dialog, which ->
                 playlistEditViewModel.deletePlaylistTrack(currentTrackId!!, currentPlaylistName!!)
             }
+
+        //механизм учета откуда пришли
+        if (intro == false) {
+            Log.d("wtf", "onViewCreated: пришли из редактора")
+            playlistEditName = findNavController().currentBackStackEntry?.savedStateHandle?.get<String>(Constants.PLAYLIST_NAME_KEY)!!
+        }
+        intro = false
 
         binding.playlistEditName.text = playlistEditName
 
