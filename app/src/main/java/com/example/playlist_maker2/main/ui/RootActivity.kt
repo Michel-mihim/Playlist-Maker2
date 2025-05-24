@@ -73,13 +73,7 @@ class RootActivity : AppCompatActivity() {
             //тут мы вляпались в переопределение системной кнопки НАЗАД ради диалога подтверждения
             R.id.playlistNewFragment -> {}
 
-            R.id.playlistEditInformationFragment -> {
-                onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-                    override fun handleOnBackPressed() {
-
-                    }
-                })
-            }
+            R.id.playlistEditInformationFragment -> {}
 
             else -> {
                 onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {

@@ -205,20 +205,6 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
         super.onBackPressed()
     }
 
-        /*
-        if (supportFragmentManager.backStackEntryCount == 0) {
-            finish()
-            super.onBackPressed()
-        } else {
-            if (isNewPlaylistNameLoaded) {
-                confirmDialog.show()
-            } else {
-                supportFragmentManager.popBackStack()
-            }
-        }
-
-         */
-
     override fun onPause() {
         super.onPause()
         playerViewModel.pausePlayer()

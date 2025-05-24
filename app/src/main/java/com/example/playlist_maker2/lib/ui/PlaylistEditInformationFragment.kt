@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -75,13 +76,24 @@ class PlaylistEditInformationFragment() : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         }
 
+            //пришлось переопределить из-за передачи оповещения об изменении названия плейлиста
+            requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val savedStateHandle = findNavController().previousBackStackEntry?.savedStateHandle
+                savedStateHandle?.set(Constants.PLAYLIST_NAME_KEY, playlistName)
+
+                findNavController().navigateUp()
+            }
+        })
+
+        //слушатели=================================================================================
         binding.editPlaylistName.addTextChangedListener(nameTextWatcher)
 
         playlistName = requireArguments().getString(Constants.PLAYLIST_NAME_KEY)!!
         playlistEditInformationViewModel.showInformation(playlistName!!)
 
         binding.editPlaylistSaveButton.setOnClickListener {
-            val newName = binding.editPlaylistName.text.toString()
+            val newName = letterCorrector(binding.editPlaylistName.text.toString())
             val newAbout = binding.editPlaylistAbout.text.toString()
             playlistEditInformationViewModel.setPlaylistInformation(
                 playlistName,
@@ -167,6 +179,14 @@ class PlaylistEditInformationFragment() : Fragment() {
             }
         } catch (e: Exception) {}
 
+    }
+
+    private fun letterCorrector(inputString: String): String {
+        var outputString = inputString[0].uppercaseChar().toString()
+        for (i in 1..inputString.length - 1) {
+            outputString += inputString[i].lowercaseChar()
+        }
+        return outputString
     }
 
 }

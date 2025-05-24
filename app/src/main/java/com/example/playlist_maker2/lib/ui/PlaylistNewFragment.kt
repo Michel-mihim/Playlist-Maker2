@@ -203,7 +203,7 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
                     saveImageToPrivateStorage(inputUri!!, playlistName)
                 }
 
-                playlistNewViewModel.onAddPlaylistButtonClicked(Playlist(playlistName, playlistAbout, null, null))
+                playlistNewViewModel.onAddPlaylistButtonClicked(Playlist(letterCorrector(playlistName), playlistAbout, null, null))
             }
         }
 
@@ -285,6 +285,14 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
             requireActivity().supportFragmentManager.popBackStack()
         }
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun letterCorrector(inputString: String): String {
+        var outputString = inputString[0].uppercaseChar().toString()
+        for (i in 1..inputString.length - 1) {
+            outputString += inputString[i].lowercaseChar()
+        }
+        return outputString
     }
 
 }
