@@ -1,5 +1,6 @@
 package com.example.playlist_maker2.lib.ui
 
+import android.app.Activity
 import android.os.Bundle
 import android.os.Environment
 import android.text.Editable
@@ -13,7 +14,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.playlist_maker2.R
 import com.example.playlist_maker2.databinding.FragmentInformationEditPlaylistBinding
 import com.example.playlist_maker2.lib.domain.models.PlaylistInfoState
+import com.example.playlist_maker2.main.ui.RootActivity
+import com.example.playlist_maker2.main.ui.RootViewModel
 import com.example.playlist_maker2.utils.constants.Constants
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
@@ -26,6 +30,7 @@ class PlaylistEditInformationFragment() : Fragment() {
     private var playlistName = ""
 
     private val playlistEditInformationViewModel: PlaylistEditInformationViewModel by viewModel()
+    private val rootViewModel: RootViewModel by activityViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,12 +79,15 @@ class PlaylistEditInformationFragment() : Fragment() {
         playlistEditInformationViewModel.showInformation(playlistName!!)
 
         binding.editPlaylistSaveButton.setOnClickListener {
+            val newName = binding.editPlaylistName.text.toString()
+            val newAbout = binding.editPlaylistAbout.text.toString()
             playlistEditInformationViewModel.setPlaylistInformation(
                 playlistName,
-                binding.editPlaylistName.text.toString(),
-                binding.editPlaylistAbout.text.toString(),
+                newName,
+                newAbout,
                 onPlaylistEdited = {
-
+                    val isEdited = (playlistName != newName)
+                    rootViewModel.setPlaylistEditedResult(isEdited, newName)
                     findNavController().navigateUp()
                 }
             )

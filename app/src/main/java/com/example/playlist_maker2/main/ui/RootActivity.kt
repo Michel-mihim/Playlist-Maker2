@@ -13,6 +13,8 @@ class RootActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRootBinding
 
+    var playlistNameGlobal = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,6 +27,7 @@ class RootActivity : AppCompatActivity() {
         binding.bottomNavigationView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            Log.d("wtf", "destination = "+destination.id.toString())
             val shouldBottomNavigationHide = when (destination.id) {
                 R.id.playlistNewFragment -> {
                     false

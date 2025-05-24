@@ -5,6 +5,7 @@ import com.example.playlist_maker2.lib.ui.PlaylistEditInformationViewModel
 import com.example.playlist_maker2.lib.ui.PlaylistEditViewModel
 import com.example.playlist_maker2.lib.ui.PlaylistNewViewModel
 import com.example.playlist_maker2.lib.ui.PlaylistViewModel
+import com.example.playlist_maker2.main.ui.RootViewModel
 import com.example.playlist_maker2.search.ui.SearchViewModel
 import com.example.playlist_maker2.settings.ui.SettingsViewModel
 import com.practicum.playlistmaker.player.ui.PlayerViewModel
@@ -44,6 +45,10 @@ val viewModelModule = module {
 
     viewModel {
         PlaylistEditInformationViewModel(get(), get())
+    }
+
+    viewModel {
+        RootViewModel()
     }
 
 }

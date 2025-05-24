@@ -1,5 +1,6 @@
 package com.example.playlist_maker2.lib.ui
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -20,6 +21,7 @@ import com.example.playlist_maker2.adapters.PlaylistTracksAdapter
 import com.example.playlist_maker2.databinding.FragmentEditPlaylistBinding
 import com.example.playlist_maker2.lib.domain.models.PlaylistEditState
 import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
+import com.example.playlist_maker2.main.ui.RootViewModel
 import com.example.playlist_maker2.player.data.converters.TrackPlaylistTrackConvertor
 import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants
@@ -28,6 +30,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.text.SimpleDateFormat
@@ -40,12 +43,15 @@ class PlaylistEditFragment : Fragment() {
     private var isClickAllowed = true
 
     private val playlistEditViewModel: PlaylistEditViewModel by viewModel()
+    private val rootViewModel: RootViewModel by activityViewModel()
 
     private val adapter = PlaylistTracksAdapter()
 
     private var isPlaylistEmpty = true
 
-    private var playlistEditName = ""
+    private lateinit var playlistEditName: String
+    private var intro = true
+
     private var playlistEditAbout = ""
     private var playlistEditTracksCount = 0
     private var tracks = emptyList<PlaylistTrack>()
@@ -71,9 +77,39 @@ class PlaylistEditFragment : Fragment() {
         return binding.root
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        Log.d("wtf", "onAttach")
+        playlistEditName = requireArguments().getString(Constants.PLAYLIST_NAME_KEY)!!
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        Log.d("wtf", "onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        Log.d("wtf", "onResume")
+    }
+
+    override fun onPrimaryNavigationFragmentChanged(isPrimaryNavigationFragment: Boolean) {
+        super.onPrimaryNavigationFragmentChanged(isPrimaryNavigationFragment)
+
+        Log.d("wtf", "onPrimaryNavigationFragmentChanged = "+isPrimaryNavigationFragment.toString())
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        rootViewModel.observePlaylistEditedResult().observe(viewLifecycleOwner) { result ->
+            Log.d("wtf", "onViewCreated: observable result = "+result.toString())
+            playlistEditName = result.newName
+        }
 
         playlistEditViewModel.observePlaylistEditState().observe(viewLifecycleOwner) {
             showContent(it)
@@ -100,10 +136,9 @@ class PlaylistEditFragment : Fragment() {
                 playlistEditViewModel.deletePlaylistTrack(currentTrackId!!, currentPlaylistName!!)
             }
 
-        //тут заводим playlistName, вокруг которого всё и будет крутиться
-        playlistEditName = requireArguments().getString(Constants.PLAYLIST_NAME_KEY)!!
         binding.playlistEditName.text = playlistEditName
 
+        Log.d("wtf", "onViewCreated: initial playlistName = "+playlistEditName)
         playlistEditViewModel.showContent(playlistEditName!!)
 
         playlistDeleteConfirmDialog = MaterialAlertDialogBuilder(requireContext())
