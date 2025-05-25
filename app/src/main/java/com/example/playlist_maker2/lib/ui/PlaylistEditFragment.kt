@@ -109,6 +109,10 @@ class PlaylistEditFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+        playlistEditViewModel.observePlaylistEmptyNotifier().observe(viewLifecycleOwner) {
+            showPlaylistEmptyToast(it)
+        }
+
         trackDeleteConfirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Удалить трек")
             .setMessage("Вы уверены, что хотите удалить трек из плейлиста?")
@@ -304,6 +308,10 @@ class PlaylistEditFragment : Fragment() {
 
         }
 
+    }
+
+    private fun showPlaylistEmptyToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun clickDebouncer() : Boolean {

@@ -13,6 +13,7 @@ import com.example.playlist_maker2.player.domain.api.TrackToPlaylistInteractor
 import com.example.playlist_maker2.search.domain.api.GetPlayerIntentUseCase
 import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.classes.SingleLiveEvent
+import com.example.playlist_maker2.utils.constants.Constants
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -35,10 +36,22 @@ class PlaylistEditViewModel(
     private val playlistDeletedNotifierLiveData = SingleLiveEvent<Boolean>()
     fun observePlaylistDeletedNotifier(): LiveData<Boolean> = playlistDeletedNotifierLiveData
 
+    private val playlistEmptyNotifierLiveData = SingleLiveEvent<String>()
+    fun observePlaylistEmptyNotifier(): LiveData<String> = playlistEmptyNotifierLiveData
+
     fun showContent(playlistName: String) {
         viewModelScope.launch {
             trackToPlaylistInteractor.getState(playlistName).collect { state ->
-                renderPlaylistEditState(state)
+
+                when (state) {
+                    is PlaylistEditState.Content -> {
+                        renderPlaylistEditState(state)
+
+                        if (state.tracks.isEmpty()) {
+                            showNoTracksNotification(Constants.PLAYLIST_EMPTY)
+                        }
+                    }
+                }
             }
         }
     }
@@ -113,6 +126,10 @@ class PlaylistEditViewModel(
 
     private fun playlistDeletedNotify() {
         playlistDeletedNotifierLiveData.postValue(true)
+    }
+
+    private fun showNoTracksNotification(message: String) {
+        playlistEmptyNotifierLiveData.postValue(message)
     }
 
 }
