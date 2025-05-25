@@ -116,7 +116,6 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
 
             //проверял на всех этапах, но тут видно, что глайд отображает ОДНУ И ТУ ЖЕ картинку
             // с более скруглёнными углами на этапе поиска. Почему?
-            Log.d("wtf", "to glide "+bundle.getString(Constants.PIC_URL_KEY).toString())
             Glide.with(this)
                 .load(bundle.getString(Constants.PIC_URL_KEY))
                 .placeholder(R.drawable.placeholder_large)

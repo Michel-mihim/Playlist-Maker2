@@ -53,7 +53,7 @@ class PlaylistEditFragment : Fragment() {
     private var intro = true
 
     private var playlistEditAbout = ""
-    private var playlistEditTracksCount = 0
+    private var playlistEditTracksCount = ""
     private var tracks = emptyList<PlaylistTrack>()
     private var currentTracksCountString = ""
 
@@ -287,11 +287,13 @@ class PlaylistEditFragment : Fragment() {
             adapter.notifyDataSetChanged()
 
             binding.playlistEditAbout.text = state.playlistAbout
+            playlistEditAbout = state.playlistAbout
 
             binding.playlistEditTracksDuration.text = state.tracksDurationString
 
             binding.playlistEditTracksCount.text = state.tracksCountString
             currentTracksCountString = state.tracksCountString
+            playlistEditTracksCount = state.tracksCountString
 
             bottomSheetBehaviorTracksRecycler.state = BottomSheetBehavior.STATE_COLLAPSED
 
@@ -333,7 +335,7 @@ class PlaylistEditFragment : Fragment() {
     private fun myPlaylist(): String {
         var playlist = playlistEditName + "\n"
         playlist += playlistEditAbout + "\n"
-        playlist += phraseTrackGenerator(playlistEditTracksCount) + "\n"
+        playlist += playlistEditTracksCount + "\n"
 
         var counter = 1
         for (track in tracks) {
