@@ -1,6 +1,7 @@
 package com.example.playlist_maker2.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ class BottomPlaylistsAdapter(val context: Context) : RecyclerView.Adapter<Bottom
 
         holder.itemView.setOnClickListener {
             val playlistName = playlists[position].playlistName
+
             onPlaylistItemClickListener?.invoke(playlistName)
         }
 

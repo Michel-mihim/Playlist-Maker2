@@ -10,10 +10,25 @@ interface PlaylistsInteractor {
         playlist: Playlist,
         onGetResult: (Long) -> Unit
         )
-    suspend fun setPlaylistTracksCount(
+
+    suspend fun deletePlaylist(playlistName: String)
+
+    suspend fun setPlaylistTracksCalculation(
         playlistName: String,
-        playlistTracksCount: Int
+        playlistTracksCount: Int,
+        playlistTracksDuration: Int
     )
+
+    suspend fun setPlaylistInformation(
+        oldPlaylistName: String,
+        newPlaylistName: String,
+        newPlaylistAbout: String
+        )
+
+    fun checkPlaylistDuplicate(playlistName: String): Flow<Boolean>
+
     fun getPlaylists(): Flow<List<Playlist>>
+
+    fun readPlaylist(playlistName: String): Flow<Playlist>
 
 }

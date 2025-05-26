@@ -11,14 +11,12 @@ import com.example.playlist_maker2.lib.domain.models.PlaylistTrack
 import com.example.playlist_maker2.player.domain.api.FavoriteTracksInteractor
 import com.example.playlist_maker2.player.domain.api.MediaPlayerInteractor
 import com.example.playlist_maker2.player.domain.api.TrackToPlaylistInteractor
-import com.example.playlist_maker2.player.domain.models.DBPlaylistsState
 import com.example.playlist_maker2.player.domain.models.PlayerActivityState
 import com.example.playlist_maker2.player.domain.models.PlayerStatus
 import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.classes.SingleLiveEvent
 import com.example.playlist_maker2.utils.constants.Constants
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
@@ -216,14 +214,16 @@ class PlayerViewModel(
         viewModelScope.launch {
             trackToPlaylistInteractor.addTrack(
                 playlistTrack,
-                onGetResult = { result, tracksCount ->
+                onGetResult = { result, tracksCount, tracksDuration ->
                     var message = ""
                     if (result.toInt() == -1) {
                         message = "Трек уже добавлен в плейлист "+playlistTrack.playlistName
                     } else {
                         message = "Добавлено в плейлист "+playlistTrack.playlistName
 
-                        viewModelScope.launch { setPlaylistTracksCount(playlistTrack.playlistName, tracksCount) }
+                        viewModelScope.launch {
+                            setPlaylistTracksCalculation(playlistTrack.playlistName, tracksCount, tracksDuration)
+                        }
 
                     }
                     showResult(message)
@@ -232,10 +232,11 @@ class PlayerViewModel(
         }
     }
 
-    suspend fun setPlaylistTracksCount(playlistName: String, tracksCount: Int) {
-        playlistInteractor.setPlaylistTracksCount(
+    suspend fun setPlaylistTracksCalculation(playlistName: String, tracksCount: Int, tracksDuration: Int) {
+        playlistInteractor.setPlaylistTracksCalculation(
             playlistName = playlistName,
-            playlistTracksCount = tracksCount
+            playlistTracksCount = tracksCount,
+            playlistTracksDuration = tracksDuration
         )
     }
 

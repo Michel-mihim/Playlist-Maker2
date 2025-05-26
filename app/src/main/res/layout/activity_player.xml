@@ -192,6 +192,7 @@
             android:textColor="@color/player_track_info_text_color"
             android:textSize="13sp"
             android:gravity="right"
+            android:lines="1"
 
             app:layout_constraintStart_toEndOf="@id/attr1_1_time"
             app:layout_constraintEnd_toEndOf="@id/rightBorder"

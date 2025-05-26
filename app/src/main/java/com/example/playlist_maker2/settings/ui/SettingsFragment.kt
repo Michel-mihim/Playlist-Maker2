@@ -48,7 +48,6 @@ class SettingsFragment: Fragment() {
         }
 
         settingsViewModel.observeTermsIntentLiveData().observe(viewLifecycleOwner) { intent ->
-            Log.d("wtf", "event detected")
             startActivity(intent)
         }
 
@@ -66,7 +65,6 @@ class SettingsFragment: Fragment() {
         }
 
         binding.buttonLicense.setOnClickListener{
-            Log.d("wtf", "buttonLicense clicked")
             settingsViewModel.openTerms()
         }
     }

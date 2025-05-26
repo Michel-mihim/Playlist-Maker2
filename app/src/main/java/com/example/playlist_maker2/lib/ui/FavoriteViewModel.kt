@@ -52,11 +52,11 @@ class FavoriteViewModel(
         )
     }
 
+    //POSTING=======================================================================================
     private fun startPlayerActivity(intent: Intent) {
         playerActivityIntentLiveData.postValue(intent)
     }
 
-    //POSTING=======================================================================================
     private fun renderState(state: DBActivityState) {
         favoriteTracksStateLiveData.postValue(state)
     }

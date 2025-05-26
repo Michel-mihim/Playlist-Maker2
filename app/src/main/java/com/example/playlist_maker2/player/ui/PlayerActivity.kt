@@ -6,9 +6,11 @@ import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -24,6 +26,7 @@ import com.example.playlist_maker2.player.domain.models.PlayerActivityState
 import com.example.playlist_maker2.search.domain.models.Track
 import com.example.playlist_maker2.utils.constants.Constants
 import com.example.playlist_maker2.utils.converters.dimensionsFloatToIntConvert
+import com.example.playlist_maker2.utils.converters.isoDateToYearConvert
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
@@ -31,6 +34,10 @@ import com.practicum.playlistmaker.player.ui.PlayerViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
+import kotlin.Int
+import kotlin.String
 
 
 class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
@@ -54,9 +61,7 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
 
     //основной листинг==============================================================================
     override fun loadUpdate(isLoaded: Boolean) {
-        Log.d("wtf", "updated in Activity")
         isNewPlaylistNameLoaded = isLoaded
-        Log.d("wtf", isNewPlaylistNameLoaded.toString())
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -98,9 +103,9 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
         if (bundle != null) {
             binding.trackPlayerName.text = bundle.getString(Constants.TRACK_NAME_KEY)
             binding.trackArtistName.text = bundle.getString(Constants.ARTIST_NAME_KEY)
-            binding.attr12Time.text = bundle.getString(Constants.TRACK_TIME_KEY)
+            binding.attr12Time.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(bundle.getInt(Constants.TRACK_TIME_KEY))
             binding.attr22Album.text = bundle.getString(Constants.TRACK_ALBUM_KEY)
-            binding.attr32Year.text = bundle.getString(Constants.TRACK_YEAR_KEY)
+            binding.attr32Year.text = isoDateToYearConvert(bundle.getString(Constants.TRACK_YEAR_KEY).toString())
             binding.attr42Genre.text = bundle.getString(Constants.TRACK_GENRE_KEY)
             binding.attr52Country.text = bundle.getString(Constants.TRACK_COUNTRY_KEY)
             val trackJson = bundle.getString(Constants.TRACK_JSON)
@@ -108,6 +113,9 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
 
             val cornerDp = resources.getDimension(R.dimen.track_poster_corner)
             val cornerPx = dimensionsFloatToIntConvert(cornerDp, this)
+
+            //проверял на всех этапах, но тут видно, что глайд отображает ОДНУ И ТУ ЖЕ картинку
+            // с более скруглёнными углами на этапе поиска. Почему?
             Glide.with(this)
                 .load(bundle.getString(Constants.PIC_URL_KEY))
                 .placeholder(R.drawable.placeholder_large)
@@ -150,10 +158,15 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
         binding.addPlaylistButton.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
+            val bundle = Bundle()
+            bundle.putString(Constants.FRAGMENT_ORIGIN_KEY, "activity")
+            val playlistFragment = PlaylistNewFragment()
+            playlistFragment.arguments = bundle
+
             if (savedInstanceState == null) {
                 supportFragmentManager.beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.add_playlist_in_player_container_view, PlaylistNewFragment())
+                    .add(R.id.add_playlist_in_player_container_view, playlistFragment)
                     .addToBackStack("new_playlist")
                     .commit()
             }
@@ -186,15 +199,13 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
 
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount == 0) {
-            finish()
-            super.onBackPressed()
-        } else {
-            if (isNewPlaylistNameLoaded) {
-                confirmDialog.show()
-            } else {
-                supportFragmentManager.popBackStack()
-            }
+            onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    finish()
+                }
+            })
         }
+        super.onBackPressed()
     }
 
     override fun onPause() {
@@ -282,12 +293,32 @@ class PlayerActivity : AppCompatActivity(), NewPlaylistNameLoadNotifier {
         adapter.notifyDataSetChanged()
 
         val trackId = intent.extras?.getString(Constants.TRACK_ID_KEY)
+        val trackDuration = intent.extras?.getInt(Constants.TRACK_DURATION_KEY)
+        val trackName = intent.extras?.getString(Constants.TRACK_NAME_KEY)
+        val artistName = intent.extras?.getString(Constants.ARTIST_NAME_KEY)
+        val trackTimeMillis = intent.extras?.getInt(Constants.TRACK_TIME_KEY)
+        val artworkUrl100 = intent.extras?.getString(Constants.PIC_URL_KEY)
+        val collectionName = intent.extras?.getString(Constants.TRACK_ALBUM_KEY)
+        val releaseDate = intent.extras?.getString(Constants.TRACK_YEAR_KEY)
+        val primaryGenreName = intent.extras?.getString(Constants.TRACK_GENRE_KEY)
+        val country = intent.extras?.getString(Constants.TRACK_COUNTRY_KEY)
+        val previewUrl = intent.extras?.getString(Constants.PREVIEW_PIC_URL_KEY)
 
         adapter.onPlaylistItemClickListener = { playlistName ->
             if (clickDebouncer()) {
                 playerViewModel.addPlaylistTrack(PlaylistTrack(
                     trackId = trackId!!,
-                    playlistName = playlistName
+                    trackDuration = trackDuration!!,
+                    playlistName = playlistName,
+                    trackName = trackName!!,
+                    artistName = artistName!!,
+                    trackTimeMillis = trackTimeMillis!!,
+                    artworkUrl100 = artworkUrl100!!,
+                    collectionName = collectionName!!,
+                    releaseDate = releaseDate!!,
+                    primaryGenreName = primaryGenreName!!,
+                    country = country!!,
+                    previewUrl = previewUrl!!
                 ))
             }
         }

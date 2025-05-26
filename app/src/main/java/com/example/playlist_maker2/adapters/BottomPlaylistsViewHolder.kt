@@ -9,6 +9,7 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlist_maker2.R
 import com.example.playlist_maker2.lib.domain.models.Playlist
+import com.example.playlist_maker2.utils.converters.wordModifier
 import java.io.File
 
 class BottomPlaylistsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -35,34 +36,6 @@ class BottomPlaylistsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
 
         playlistNameView.text = playlist.playlistName
         playlistTracksCount.text = (playlist.playlistTracksCount?.toString() ?: "0") + wordModifier(playlist.playlistTracksCount)
-    }
-
-    private fun wordModifier(tracksCount: Int?): String {
-        var word = ""
-        var preLastChar: Char? = null
-        var lastChar: Char? = null
-
-        lastChar = tracksCount.toString().last()
-        if (tracksCount.toString().length >= 2) {
-            preLastChar = tracksCount.toString()[tracksCount.toString().length - 2]
-        }
-
-        when (preLastChar) {
-            '1' -> {
-                word = " треков"
-            }
-
-            else -> {
-                when (lastChar) {
-                    '1' -> word = " трек"
-                    '2' -> word = " трека"
-                    '3' -> word = " трека"
-                    '4' -> word = " трека"
-                    else -> word = " треков"
-                }
-            }
-        }
-        return word
     }
 
 }

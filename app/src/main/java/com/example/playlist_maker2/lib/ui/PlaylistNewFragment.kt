@@ -57,7 +57,7 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
 
     private var isClickAllowed = true
 
-    private lateinit var activity: Activity
+    private lateinit var fragmentOrigin: String
 
     private val requester = PermissionRequester.instance()
 
@@ -65,14 +65,14 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
     private var nameIsLoaded = false
     private var aboutIsLoaded = false
 
-    lateinit var confirmDialog: MaterialAlertDialogBuilder
+    private lateinit var confirmDialog: MaterialAlertDialogBuilder
 
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
             binding.newPlaylistPicture.setImageURI(uri)
             inputUri = uri
         } else {
-            Toast.makeText(requireContext(), "Изображение не выбрано", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), Constants.PICTURE_NOT_TAKEN, Toast.LENGTH_SHORT)
         }
     }
 
@@ -97,6 +97,16 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
             showToast(it)
         }
 
+        //фрагмент имеет право знать кто его отец
+        fragmentOrigin = requireArguments().getString(Constants.FRAGMENT_ORIGIN_KEY)!!
+
+        //вынуждены переопределить нажатие системной кнопки НАЗАД из-за диалога подтверждения
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                confirmationDialogManager()
+            }
+        })
+
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Завершить создание плейлиста?")
             .setMessage("Все несохраненные данные будут потеряны")
@@ -104,11 +114,11 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
                 // ничего не делаем
             }.setNegativeButton("Завершить") { dialog, which ->
                 // выходим из окна без сохранения
-                try {//костыль чтобы не проверять каким образом вызван фрагмент
+               if (fragmentOrigin == "fragment") {
                     findNavController().navigateUp()
-                } catch (e: Exception) {//если вход через bottomSheet
+               } else {//если вход через bottomSheet PlayerActivity
                     requireActivity().supportFragmentManager.popBackStack()
-                }
+               }
             }
         //==========================================================================================
         val nameTextWatcher = object : TextWatcher {
@@ -138,7 +148,6 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
                     try {
                         (activity as NewPlaylistNameLoadNotifier).loadUpdate(false)
                     } catch (e: Exception) {}
-
 
                 }
             }
@@ -187,53 +196,46 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
         //==========================================================================================
         binding.createNewPlaylistButton.setOnClickListener {
             if (clickDebouncer()) {
-                val playlistName = binding.newPlaylistName.text.toString()
+                val playlistName = letterCorrector(binding.newPlaylistName.text.toString())
                 val playlistAbout = binding.newPlaylistAbout.text.toString()
 
-                if (inputUri != null) {
-                    saveImageToPrivateStorage(inputUri!!, playlistName)
-                }
-
-                playlistNewViewModel.onAddPlaylistButtonClicked(Playlist(playlistName, playlistAbout, null))
+                playlistNewViewModel.onAddPlaylistButtonClicked(
+                    Playlist(playlistName, playlistAbout, null, null),
+                    onPlaylistAddResult = { result ->
+                        if (result) {
+                            if (inputUri != null) {
+                                saveImageToPrivateStorage(inputUri!!, playlistName)
+                            }
+                        }
+                    }
+                )
             }
         }
 
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        activity = context as Activity
-
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                confirmationDialogManager()
-            }
-        })
-    }
-
     override fun onDetach() {
         super.onDetach()
-
         picIsLoaded = false
         nameIsLoaded = false
         aboutIsLoaded = false
 
+        //вынуждены почистить ссылки при нажатии системной кнопки НАЗАД перед уходом
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {}
         })
-
     }
 
     private fun confirmationDialogManager() {
         if (nameIsLoaded || picIsLoaded || aboutIsLoaded) {
             confirmDialog.show()
-        } else try {//костыль чтобы не проверять каким образом вызван фрагмент
-            findNavController().navigateUp()
-        } catch (e: Exception) {//если вход через bottomSheet
-            requireActivity().supportFragmentManager.popBackStack()
+        } else {
+            if (fragmentOrigin == "fragment") {
+                findNavController().navigateUp()
+            } else {
+                requireActivity().supportFragmentManager.popBackStack()
+            }
         }
-
     }
 
     private fun saveImageToPrivateStorage(
@@ -286,6 +288,14 @@ class PlaylistNewFragment: Fragment(), NewPlaylistNameLoadNotifier {
             requireActivity().supportFragmentManager.popBackStack()
         }
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun letterCorrector(inputString: String): String {
+        var outputString = inputString[0].uppercaseChar().toString()
+        for (i in 1..inputString.length - 1) {
+            outputString += inputString[i].lowercaseChar()
+        }
+        return outputString
     }
 
 }

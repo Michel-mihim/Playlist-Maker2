@@ -1,7 +1,7 @@
 package com.example.playlist_maker2.adapters
 
-import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +12,8 @@ class PlaylistsAdapter(val context: Context) : RecyclerView.Adapter<PlaylistView
 
     var playlists = ArrayList<Playlist>()
 
+    var onItemClickListener: ((Playlist) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.playlist_view, parent, false)
         return PlaylistViewHolder(view)
@@ -19,6 +21,12 @@ class PlaylistsAdapter(val context: Context) : RecyclerView.Adapter<PlaylistView
 
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
         holder.bind(playlists[position], context)
+
+        holder.itemView.setOnClickListener {
+            val playlist = playlists[position]
+            onItemClickListener?.invoke(playlist)
+        }
+
     }
 
     override fun getItemCount() = playlists.size

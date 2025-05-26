@@ -27,19 +27,56 @@ class PlaylistsRepositoryImpl(
         onGetResult.invoke(result)
     }
 
-    override suspend fun setPlaylistTracksCount(
+    override suspend fun deletePlaylist(playlistName: String) {
+        appDatabase.playlistDao().deletePlaylist(playlistName)
+    }
+
+    override suspend fun setPlaylistTracksCalculation(
         playlistName: String,
-        playlistTracksCount: Int
+        playlistTracksCount: Int,
+        playlistTracksDuration: Int
     ) {
-        appDatabase.playlistDao().setPlaylistTracksCount(
+        appDatabase.playlistDao().setPlaylistTracksCalculation(
             playlistName = playlistName,
-            playlistTracksCount = playlistTracksCount
+            playlistTracksCount = playlistTracksCount,
+            playlistTracksDuration = playlistTracksDuration
             )
+    }
+
+    override suspend fun setPlaylistInformation(
+        oldPlaylistName: String,
+        newPlaylistName: String,
+        newPlaylistAbout: String
+    ) {
+        appDatabase.playlistDao().setPlaylistInformation(
+            oldPlaylistName = oldPlaylistName,
+            newPlaylistName = newPlaylistName,
+            newPlaylistAbout = newPlaylistAbout
+        )
+    }
+
+    override fun checkPlaylistDuplicate(playlistName: String): Flow<Boolean> = flow {
+        val playlistCount = appDatabase.playlistDao().countPlaylist(playlistName)
+        emit(playlistCount > 0)
     }
 
     override fun getPlaylists(): Flow<List<Playlist>> = flow {
         val playlists = appDatabase.playlistDao().getPlaylists()
         emit(convertFromPlaylistEntity(playlists))
+    }
+
+    override fun readPlaylist(playlistName: String): Flow<Playlist> = flow {
+        val playlist = appDatabase.playlistDao().readPlaylist(playlistName)
+        emit(convertFromReadingPlaylistEntity(playlist))
+    }
+
+    private fun convertFromReadingPlaylistEntity(playlist: PlaylistEntity): Playlist {
+        return Playlist(
+            playlist.playlistName,
+            playlist.playlistAbout,
+            playlist.playlistTracksCount,
+            playlist.playlistTracksDuration
+        )
     }
 
     private fun convertFromPlaylistEntity(playlists: List<PlaylistEntity>): List<Playlist> {

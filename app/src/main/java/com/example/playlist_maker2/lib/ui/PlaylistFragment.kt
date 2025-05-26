@@ -16,6 +16,7 @@ import com.example.playlist_maker2.databinding.FragmentPlaylistBinding
 import com.example.playlist_maker2.lib.domain.models.Playlist
 import com.example.playlist_maker2.main.ui.RootActivity
 import com.example.playlist_maker2.player.domain.models.DBPlaylistsState
+import com.example.playlist_maker2.utils.constants.Constants
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistFragment: Fragment() {
@@ -42,6 +43,8 @@ class PlaylistFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        adapter = PlaylistsAdapter(requireContext())
+
         playlistViewModel.observePlaylistsState().observe(viewLifecycleOwner) {
             showPlaylists(it)
         }
@@ -51,8 +54,21 @@ class PlaylistFragment: Fragment() {
         binding.playlistsRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
 
         binding.addPlaylistButton.setOnClickListener {
-            findNavController().navigate(R.id.action_libFragment_to_playlistNewFragment)
+            val bundle = Bundle()
+            bundle.putString(Constants.FRAGMENT_ORIGIN_KEY, "fragment")
+
+            findNavController().navigate(R.id.action_libFragment_to_playlistNewFragment, bundle)
         }
+
+        adapter.onItemClickListener = {playlist ->
+            val bundle = Bundle()
+            bundle.putString(Constants.PLAYLIST_NAME_KEY, playlist.playlistName)
+            bundle.putString(Constants.PLAYLIST_ABOUT_KEY, playlist.playlistAbout)
+            bundle.putInt(Constants.PLAYLIST_CAPACITY_KEY, playlist.playlistTracksCount!!)
+
+            findNavController().navigate(R.id.action_libFragment_to_playlistEditFragment, bundle)
+        }
+
     }
 
     override fun onStart() {
@@ -76,12 +92,11 @@ class PlaylistFragment: Fragment() {
     private fun showContent(playlists: List<Playlist>) {
         contentViewsShow()
 
-        adapter = PlaylistsAdapter(requireContext())
-
         binding.playlistsRecycler.adapter = adapter
         adapter.playlists.clear()
         adapter.playlists.addAll(playlists)
         adapter.notifyDataSetChanged()
+
     }
 
     private fun emptyViewsShow() {

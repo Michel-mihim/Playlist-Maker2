@@ -62,14 +62,12 @@ class SettingsViewModel(
     fun openSupport() {
         sharingInteractor.openSupport(
             onSupportEmailIntentReady = { intent ->
-                Log.d("wtf", "Send intent got")
                 startSupportEmailActivity(intent as Intent)
             }
         )
     }
 
     fun openTerms() {
-        Log.d("wtf", "viewModel interactor activated")
         sharingInteractor.openTerms(
             onTermsIntentReady = { intent ->
                 startTermsIntentActivity(intent as Intent)
@@ -87,7 +85,6 @@ class SettingsViewModel(
     }
 
     private fun startTermsIntentActivity(intent: Intent) {
-        Log.d("wtf", "interactor result got, intent posting")
         termsIntentLiveData.postValue(intent)
     }
 
