@@ -58,6 +58,6 @@ object Constants {
     //NOTIFICATIONS
     const val PLAYLIST_DUPLICATE_ERROR = "Плейлист уже существует"
     const val PICTURE_NOT_TAKEN = "Изображение не выбрано"
-    const val PLAYLIST_EMPTY = "В плейлисте не треков"
+    const val PLAYLIST_EMPTY = "В плейлисте нет треков"
 
 }
