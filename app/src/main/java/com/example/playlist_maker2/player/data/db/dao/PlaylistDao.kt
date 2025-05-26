@@ -13,7 +13,7 @@ interface PlaylistDao {
     @Insert(entity = PlaylistEntity::class, onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertPlaylist(playlist: PlaylistEntity): Long
 
-    @Query("SELECT * FROM playlist_table ORDER by playlistName ASC")
+    @Query("SELECT * FROM playlist_table ORDER by dateTime DESC")
     suspend fun getPlaylists(): List<PlaylistEntity>
 
     @Query("SELECT * FROM playlist_table WHERE playlistName = :playlistName")
