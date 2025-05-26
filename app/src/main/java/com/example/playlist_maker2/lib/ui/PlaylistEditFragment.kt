@@ -354,32 +354,4 @@ class PlaylistEditFragment : Fragment() {
         return playlist
     }
 
-    private fun phraseTrackGenerator(tracksCount: Int?): String {
-        var word = ""
-        var preLastChar: Char? = null
-        var lastChar: Char? = null
-
-        lastChar = tracksCount.toString().last()
-        if (tracksCount.toString().length >= 2) {
-            preLastChar = tracksCount.toString()[tracksCount.toString().length - 2]
-        }
-
-        when (preLastChar) {
-            '1' -> {
-                word = tracksCount.toString() + " треков"
-            }
-
-            else -> {
-                when (lastChar) {
-                    '1' -> word = tracksCount.toString() + " трек"
-                    '2' -> word = tracksCount.toString() + " трека"
-                    '3' -> word = tracksCount.toString() + " трека"
-                    '4' -> word = tracksCount.toString() + " трека"
-                    else -> word = tracksCount.toString() + " треков"
-                }
-            }
-        }
-        return word
-    }
-
 }
