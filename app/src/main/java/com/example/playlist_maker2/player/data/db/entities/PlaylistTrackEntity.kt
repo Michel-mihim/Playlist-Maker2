@@ -31,5 +31,7 @@ data class PlaylistTrackEntity(
     @ColumnInfo(name = "country", typeAffinity = TEXT)
     val country: String,
     @ColumnInfo(name = "previewUrl", typeAffinity = TEXT)
-    val previewUrl: String
+    val previewUrl: String,
+    @ColumnInfo(name = "dateTime", typeAffinity = INTEGER)
+    val dateTimeStamp: Long
 )

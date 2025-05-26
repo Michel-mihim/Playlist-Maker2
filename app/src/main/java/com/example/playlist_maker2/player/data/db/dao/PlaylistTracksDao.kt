@@ -19,7 +19,7 @@ interface PlaylistTracksDao {
     @Query("DELETE FROM playlist_tracks_table WHERE playlistName = :playlistName")
     suspend fun deletePlaylist(playlistName: String)
 
-    @Query("SELECT * FROM playlist_tracks_table WHERE playlistName = :playlistName")
+    @Query("SELECT * FROM playlist_tracks_table WHERE playlistName = :playlistName ORDER by dateTime DESC")
     suspend fun getEditTracks(playlistName: String): List<PlaylistTrackEntity>
 
     @Query("SELECT COUNT(trackId) FROM playlist_tracks_table WHERE playlistName = :playlistName")
